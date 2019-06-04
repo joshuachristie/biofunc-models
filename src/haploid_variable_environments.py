@@ -25,6 +25,13 @@ def get_fitness_function(selection_coefficient):
     return haplotype_fitness
 
 def get_environment_distribution(environment_distribution, environment_transition_matrix):
+    """
+    environment_transition_matrix is of the form 
+    e_00 e_01
+    e_10 e_11
+    where e_xy gives the probability of transitioning from env x to env y
+    environment_distribution stores the frequency of E_p in index 0 and E_q in index 1
+    """
     return np.matmul(environment_distribution, environment_transition_matrix)
 
 # PARAMETER VALUES
