@@ -54,8 +54,8 @@ def deterministic_allele_freq_after_selection(allele_freq, environment_distribut
         )
     return np.divide(unnormalised_allele_freq, unnormalised_allele_freq.sum())
 
-def has_allele_fixed(threshold, frequency):
-    return abs(frequency - 1.0) < threshold or abs(frequency - 0.0) < threshold
+def has_allele_fixed(threshold, frequency_tm1, frequency_t):
+    return abs(frequency_tm1 - frequency_t) < threshold
 
 # PARAMETERS
 selection_coefficient = 0.1
