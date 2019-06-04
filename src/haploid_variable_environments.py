@@ -73,12 +73,24 @@ environment_distribution = np.array([env_p_starting_freq, 1 - env_p_starting_fre
 
 # store information from each run of a simulation
 freq_p_allele_over_time = np.empty(0)
-freq_environment_a_over_time = np.empty(0)
-
-while not has_allele_fixed(fixation_threshold, allele_freq[0]):
-    
-    
+freq_env_p_over_time = np.empty(0)
+allele_freq_tm1 = -1 # dummy value to ensure it enters while loop
+gen = 0
 # script
+while not has_allele_fixed(fixation_threshold, allele_freq_tm1, allele_freq[0]):
+    # record information about sim
+    freq_p_allele_over_time = np.append(freq_p_allele_over_time, allele_freq[0])
+    freq_env_p_over_time = np.append(freq_env_p_over_time, environment_distribution[0])
+    allele_freq_tm1 = allele_freq[0]
+    
+    # allele frequencies after selection
+    allele_freq = deterministic_allele_freq_after_selection(
+        allele_freq, environment_distribution, haplotype_fitness)
+    # environment distribution after change
+    environment_distribution = get_environment_distribution(
+        environment_distribution, environment_transition_matrix)
+    gen += 1
 
-    
-    
+plt.plot(freq_p_allele_over_time)
+plt.plot(freq_env_p_over_time)
+plt.show()
