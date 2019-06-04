@@ -10,7 +10,7 @@ Starting with a basic model with the following properties:
 import numpy as np
 import matplotlib.pyplot as plt
 
-def get_fitness_function(selection_coefficient):
+def get_fitness_function(selection_coefficient_p, selection_coefficient_q):
     """
     fitness function relating haplotype to environment
     row 0 stores fitness in E_p; row 1 stores fitness in E_q
@@ -58,15 +58,16 @@ def has_allele_fixed(threshold, frequency_tm1, frequency_t):
     return abs(frequency_tm1 - frequency_t) < threshold
 
 # PARAMETERS
-selection_coefficient = 0.1
 p_starting_freq = 0.5 # frequency of p allele at initialisation
 env_p_starting_freq = 0.2 # frequency of E_p at initialisation
 env_trans_p_to_q = 0.5 # transition rate of of E_p to E_q
 env_trans_q_to_p = 0.5 # transition rate of of E_q to E_p
+selection_coefficient_p = 0.01 # cost to p of being in env q
+selection_coefficient_q = 0.01 # cost to q of being in env p
 environment_transition_matrix = np.array([(1 - env_trans_p_to_q, env_trans_p_to_q),
                                           (env_trans_q_to_p, 1 - env_trans_q_to_p)])
-haplotype_fitness = get_fitness_function(selection_coefficient)
-fixation_threshold = 0.0000001
+haplotype_fitness = get_fitness_function(selection_coefficient_p, selection_coefficient_q)
+fixation_threshold = 0.000000001
 # VARIABLES
 allele_freq = np.array([p_starting_freq, 1 - p_starting_freq])
 environment_distribution = np.array([env_p_starting_freq, 1 - env_p_starting_freq])
