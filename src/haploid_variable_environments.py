@@ -17,11 +17,12 @@ def get_fitness_function(selection_coefficient_p, selection_coefficient_q):
     col 0 stores fitness of allele p; col 1 stores fitness of allele q
     w_pp w_pq
     w_qp w_qq
+    where w_xy is read as "the fitness of y in env x"
     """
     haplotype_fitness = np.zeros((2,2))
     for i in range(2):
-        haplotype_fitness[0, i] = 1 - selection_coefficient * i
-        haplotype_fitness[1, i] = 1 - selection_coefficient * (1 - i)
+        haplotype_fitness[i, 0] = 1 - selection_coefficient_p * i
+        haplotype_fitness[i, 1] = 1 - selection_coefficient_q * (1 - i)
     return haplotype_fitness
 
 def get_environment_distribution(environment_distribution, environment_transition_matrix):
