@@ -24,6 +24,15 @@ def get_fitness_function(selection_coefficient):
         haplotype_fitness[1, i] = 1 - selection_coefficient * (1 - i)
     return haplotype_fitness
 
+def get_environment_distribution(environment_distribution, environment_transition_matrix):
+    return np.matmul(environment_distribution, environment_transition_matrix)
 
 # PARAMETER VALUES
 selection_coefficient = 0.1
+env_p_starting_freq = 0.2 # frequency of E_p at initialisation
+env_trans_p_to_q = 0.5 # transition rate of of E_p to E_q
+env_trans_q_to_p = 0.5 # transition rate of of E_q to E_p
+
+environment_distribution = np.array([env_p_starting_freq, 1 - env_p_starting_freq])
+environment_transition_matrix = np.array([(1 - env_trans_p_to_q, env_trans_p_to_q),
+                                          (env_trans_q_to_p, 1 - env_trans_q_to_p)])
