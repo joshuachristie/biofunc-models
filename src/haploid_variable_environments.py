@@ -54,6 +54,9 @@ def deterministic_allele_freq_after_selection(allele_freq, environment_distribut
         )
     return np.divide(unnormalised_allele_freq, unnormalised_allele_freq.sum())
 
+def has_allele_fixed(threshold, frequency):
+    return abs(frequency - 1.0) < threshold or abs(frequency - 0.0) < threshold
+
 # PARAMETERS
 selection_coefficient = 0.1
 p_starting_freq = 0.5 # frequency of p allele at initialisation
@@ -63,6 +66,7 @@ env_trans_q_to_p = 0.5 # transition rate of of E_q to E_p
 environment_transition_matrix = np.array([(1 - env_trans_p_to_q, env_trans_p_to_q),
                                           (env_trans_q_to_p, 1 - env_trans_q_to_p)])
 haplotype_fitness = get_fitness_function(selection_coefficient)
+fixation_threshold = 0.0000001
 # VARIABLES
 allele_freq = np.array([p_starting_freq, 1 - p_starting_freq])
 environment_distribution = np.array([env_p_starting_freq, 1 - env_p_starting_freq])
@@ -71,7 +75,9 @@ environment_distribution = np.array([env_p_starting_freq, 1 - env_p_starting_fre
 freq_p_allele_over_time = np.empty(0)
 freq_environment_a_over_time = np.empty(0)
 
-
+while not has_allele_fixed(fixation_threshold, allele_freq[0]):
+    
+    
 # script
 
     
