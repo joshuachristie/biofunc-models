@@ -23,8 +23,8 @@ def get_fitness_function(selection_coefficient_p, selection_coefficient_q):
     """
     haplotype_fitness = np.zeros((2,2))
     for i in range(2):
-        haplotype_fitness[i, 0] = 1 - selection_coefficient_p * i
-        haplotype_fitness[i, 1] = 1 - selection_coefficient_q * (1 - i)
+        haplotype_fitness[i, 0] = 1 + selection_coefficient_p * i
+        haplotype_fitness[i, 1] = 1 + selection_coefficient_q * (1 - i)
     return haplotype_fitness
 
 def get_environment_distribution(environment_distribution, environment_transition_matrix):
@@ -69,8 +69,8 @@ def num_gens_to_pass_threshold(threshold, gen, threshold_gen):
 # PARAMETERS
 script, scp, scq, psf, epsf, etpq, etqp, fn = argv
 
-selection_coefficient_p = float(scp) # cost to p of being in env q
-selection_coefficient_q = float(scq) # cost to q of being in env p
+selection_coefficient_p = float(scp) # benefit to p of being in env q
+selection_coefficient_q = float(scq) # benefit to q of being in env p
 p_starting_freq = float(psf) # frequency of p allele at initialisation
 env_p_starting_freq = float(epsf) # frequency of E_p at initialisation
 env_trans_p_to_q = float(etpq) # transition rate of of E_p to E_q
