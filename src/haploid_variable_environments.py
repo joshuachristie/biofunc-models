@@ -9,6 +9,8 @@ Starting with a basic model with the following properties:
 
 import numpy as np
 import matplotlib.pyplot as plt
+from sys import argv
+import math
 
 def get_fitness_function(selection_coefficient_p, selection_coefficient_q):
     """
@@ -59,12 +61,15 @@ def has_allele_fixed(threshold, frequency_tm1, frequency_t):
     return abs(frequency_tm1 - frequency_t) < threshold
 
 # PARAMETERS
-p_starting_freq = 0.5 # frequency of p allele at initialisation
-env_p_starting_freq = 0.2 # frequency of E_p at initialisation
-env_trans_p_to_q = 0.5 # transition rate of of E_p to E_q
-env_trans_q_to_p = 0.5 # transition rate of of E_q to E_p
-selection_coefficient_p = 0.01 # cost to p of being in env q
-selection_coefficient_q = 0.01 # cost to q of being in env p
+script, scp, scq, psf, epsf, etpq, etqp, fn = argv
+
+selection_coefficient_p = float(scp) # cost to p of being in env q
+selection_coefficient_q = float(scq) # cost to q of being in env p
+p_starting_freq = float(psf) # frequency of p allele at initialisation
+env_p_starting_freq = float(epsf) # frequency of E_p at initialisation
+env_trans_p_to_q = float(etpq) # transition rate of of E_p to E_q
+env_trans_q_to_p = float(etqp) # transition rate of of E_q to E_p
+
 environment_transition_matrix = np.array([(1 - env_trans_p_to_q, env_trans_p_to_q),
                                           (env_trans_q_to_p, 1 - env_trans_q_to_p)])
 haplotype_fitness = get_fitness_function(selection_coefficient_p, selection_coefficient_q)
