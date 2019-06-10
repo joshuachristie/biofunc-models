@@ -60,6 +60,12 @@ def deterministic_allele_freq_after_selection(allele_freq, environment_distribut
 def has_allele_fixed(threshold, frequency_tm1, frequency_t):
     return abs(frequency_tm1 - frequency_t) < threshold
 
+def num_gens_to_pass_threshold(threshold, gen, threshold_gen):
+    if allele_freq[0] >= threshold and math.isnan(threshold_gen):
+        threshold_gen = int(gen)
+    return threshold_gen
+
+
 # PARAMETERS
 script, scp, scq, psf, epsf, etpq, etqp, fn = argv
 
@@ -83,6 +89,7 @@ freq_p_allele_over_time = np.empty(0)
 freq_env_p_over_time = np.empty(0)
 allele_freq_tm1 = -1 # dummy value to ensure it enters while loop
 gen = 0
+threshold_gen = float('nan')
 # script
 while not has_allele_fixed(fixation_threshold, allele_freq_tm1, allele_freq[0]):
     # record information about sim
@@ -97,6 +104,7 @@ while not has_allele_fixed(fixation_threshold, allele_freq_tm1, allele_freq[0]):
     environment_distribution = get_environment_distribution(
         environment_distribution, environment_transition_matrix)
     gen += 1
+    threshold_gen = num_gens_to_pass_threshold(1 - p_starting_freq, gen, threshold_gen)
 
 plt.plot(freq_p_allele_over_time)
 plt.plot(freq_env_p_over_time)
