@@ -12,7 +12,8 @@ import matplotlib.pyplot as plt
 from sys import argv
 import math
 
-def get_fitness_function(selection_coefficient_p, selection_coefficient_q):
+def get_fitness_function(selection_coefficient_pp, selection_coefficient_qq,
+                         selection_coefficient_qp, selection_coefficient_pq):
     """
     fitness function relating haplotype to environment
     row 0 stores fitness in E_p; row 1 stores fitness in E_q
@@ -22,9 +23,12 @@ def get_fitness_function(selection_coefficient_p, selection_coefficient_q):
     where w_xy is read as "the fitness of y in env x"
     """
     haplotype_fitness = np.zeros((2,2))
-    for i in range(2):
-        haplotype_fitness[i, 0] = 1 + selection_coefficient_p * i
-        haplotype_fitness[i, 1] = 1 + selection_coefficient_q * (1 - i)
+    
+    haplotype_fitness[0, 0] = 1 + selection_coefficient_pp
+    haplotype_fitness[1, 0] = 1 + selection_coefficient_pq
+    haplotype_fitness[0, 1] = 1 + selection_coefficient_qp
+    haplotype_fitness[1, 1] = 1 + selection_coefficient_qq
+        
     return haplotype_fitness
 
 def get_environment_distribution(environment_distribution, environment_transition_matrix):
@@ -67,10 +71,12 @@ def num_gens_to_pass_threshold(threshold, gen, threshold_gen):
 
 
 # PARAMETERS
-script, scp, scq, psf, epsf, etpq, etqp, fn = argv
+script, scpp, scqq, scpq, scqp, psf, epsf, etpq, etqp, fn = argv
 
-selection_coefficient_p = float(scp) # benefit to p of being in env q
-selection_coefficient_q = float(scq) # benefit to q of being in env p
+selection_coefficient_pp = float(scpp) # benefit to p of being in env p
+selection_coefficient_qq = float(scqq) # benefit to q of being in env q
+selection_coefficient_pq = float(scpq) # benefit to p of being in env q
+selection_coefficient_qp = float(scqp) # benefit to q of being in env p
 p_starting_freq = float(psf) # frequency of p allele at initialisation
 env_p_starting_freq = float(epsf) # frequency of E_p at initialisation
 env_trans_p_to_q = float(etpq) # transition rate of of E_p to E_q
@@ -78,7 +84,8 @@ env_trans_q_to_p = float(etqp) # transition rate of of E_q to E_p
 
 environment_transition_matrix = np.array([(1 - env_trans_p_to_q, env_trans_p_to_q),
                                           (env_trans_q_to_p, 1 - env_trans_q_to_p)])
-haplotype_fitness = get_fitness_function(selection_coefficient_p, selection_coefficient_q)
+haplotype_fitness = get_fitness_function(selection_coefficient_pp, selection_coefficient_qq,
+                         selection_coefficient_qp, selection_coefficient_pq)
 fixation_threshold = 0.000000001
 # VARIABLES
 allele_freq = np.array([p_starting_freq, 1 - p_starting_freq])
