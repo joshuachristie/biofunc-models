@@ -113,6 +113,19 @@ while not has_allele_fixed(fixation_threshold, allele_freq_tm1, allele_freq[0]):
     gen += 1
     threshold_gen = num_gens_to_pass_threshold(1 - p_starting_freq, gen, threshold_gen)
 
-plt.plot(freq_p_allele_over_time)
-plt.plot(freq_env_p_over_time)
-plt.show()
+fig, ax1 = plt.subplots(1, 1, sharex=True, sharey=True)
+fig.text(0.5, 0.02, 'generations', ha='center')
+fig.text(0.02, 0.5, 'frequency', va='center', rotation='vertical')
+ax1.plot(freq_p_allele_over_time, '--k', label='$p$')
+ax1.plot(freq_env_p_over_time, 'r', label = '$e_p$')
+legend1 = ax1.legend(loc='center right', shadow=True, fontsize='x-large')
+legend1.get_frame().set_facecolor('C0')
+
+filename = '/home/joshua/insync-gdrive/projects/active/seleff/models/docs/figs/{}.png'.format(fn)
+_ = plt.savefig(filename)
+# _ = plt.show()
+
+if not math.isnan(threshold_gen):
+    print('Time to fixation = {} generations'.format(threshold_gen))
+else:
+    print('p did not fix; p = {0:1.2f}'.format(allele_freq[0]))
