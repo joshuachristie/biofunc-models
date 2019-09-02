@@ -21,10 +21,10 @@ int main(int argc, char* argv[]){
   // iterate over generations and replicates
   for (int rep = 0; rep < number_replicates; rep++){
     double allele_A_freq = 1.0 / static_cast<double>(number_generations); // initial freq is 1/N
-    iterateOverGenerations(allele_A_freq, haploid_fitnesses, population_size, number_generations);
+    iterateOverGenerations(allele_A_freq, haploid_fitnesses, population_size, number_generations, rng);
     closeToValue(allele_A_freq, 1.0) ? final_A_freqs.push_back(1) : final_A_freqs.push_back(0);
   }
-  std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(). 0.0) / static_cast<double>(number_replicates) << std::endl;
+  std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(number_replicates) << std::endl;
   return 0;
 }
   
