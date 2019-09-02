@@ -14,7 +14,7 @@ void expectedAlleleFreqs(double &allele_A_freq, std::vector<double> &haploid_fit
 								 expected_allele_freq_raw.end(), 0.0));
 }
 
-void realisedAlleleFreqs(double &allele_A_freq, const int population_size){
+void realisedAlleleFreqs(double &allele_A_freq, const int population_size, std::mt19937 &rng){
   // realised frequency of allele A after selection
  std:binomial_distribution<int> surviving_As(population_size, allele_A_freq); // use expectation of allele A
   allele_A_freq = static_cast<double>(surviving_As(rng)) / static_cast<double>(population_size); // proportion
