@@ -25,9 +25,11 @@ void realisedAlleleFreqs(double &allele_A_freq, const int population_size, std::
 
 void iterateOverGenerations(double &allele_A_freq, const std::vector<double> haploid_fitnesses,
 			    const int population_size, const int number_generations, std::mt19937 &rng){
-  for (int gen = 0; gen < number_generations; gen++){
+  int gen = 0;
+  while (gen < number_generations && !(closeToValue(allele_A_freq, 0.0) || closeToValue(allele_A_freq, 1.0))){
     expectedAlleleFreqs(allele_A_freq, haploid_fitnesses);
     realisedAlleleFreqs(allele_A_freq, population_size, rng);
+    ++gen;
   }
 }
 
