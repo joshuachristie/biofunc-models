@@ -20,3 +20,18 @@ void realisedAlleleFreqs(double &allele_A_freq, const int population_size, std::
   allele_A_freq = static_cast<double>(surviving_As(rng)) / static_cast<double>(population_size); // proportion
 }
 
+void iterateOverGenerations(double &allele_A_freq, std::vector<double> &haploid_fitnesses,
+			    const int population_size, const int number_generations){
+  for (int gen = 0; gen < number_generations; gen++){
+    expectedAlleleFreqs(allele_A_freq, haploid_fitnesses);
+    realisedAlleleFreqs(allele_A_freq, population_size);
+  }
+}
+
+bool closeToValue(double allele_freq, double value){
+  if (std::abs(allele_freq - value) < 0.00000001){
+    return 1;
+  } else {
+    return 0;
+  }
+}
