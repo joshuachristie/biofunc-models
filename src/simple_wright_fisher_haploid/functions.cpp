@@ -1,3 +1,6 @@
+#include <cmath>
+#include "functions.h"
+
 std::vector<double> getFitnessFunction(const double selection_coefficient){
   // haploid_fitnesses[w_A, w_a] gives relative fitness of A allele
   std::vector<double> haploid_fitnesses {1.0 + selection_coefficient, 1.0};

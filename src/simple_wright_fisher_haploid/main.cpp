@@ -1,6 +1,6 @@
+#include <iostream>
 #include <vector>
 #include <random>
-#include <cmath>
 #include <chrono>
 #include "functions.h"
 int main(int argc, char* argv[]){
