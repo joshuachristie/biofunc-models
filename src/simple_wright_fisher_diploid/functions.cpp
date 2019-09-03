@@ -23,7 +23,7 @@ void expectedAlleleFreqs(double &allele_A_freq, const std::vector<double> genoty
 
 void realisedAlleleFreqs(double &allele_A_freq, const int population_size, std::mt19937 &rng){
   // realised frequency of allele A after selection
-  std::binomial_distribution<int> surviving_As(population_size, allele_A_freq);
+  std::binomial_distribution<int> surviving_As(population_size * 2, allele_A_freq);
   allele_A_freq = static_cast<double>(surviving_As(rng)) / static_cast<double>(population_size * 2);
 }
 
