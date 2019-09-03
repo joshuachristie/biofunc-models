@@ -18,7 +18,7 @@ int main(int argc, char* argv[]){
   std::vector<bool> final_A_freqs;
   // iterate over generations and replicates
   for (int rep = 0; rep < number_replicates; rep++){
-    double allele_A_freq = 1.0 / static_cast<double>(population_size); // initial freq is 1/N
+    double allele_A_freq = 1.0 / static_cast<double>(population_size * 2); // initial freq is 1/2N
     iterateOverGenerations(allele_A_freq, haploid_fitnesses, population_size, number_generations, rng);
     // record 0 if extinct, 1 otherwise (indicating the allele exists at a non-zero proportion)
     closeToValue(allele_A_freq, 0.0) ? final_A_freqs.push_back(0) : final_A_freqs.push_back(1);
