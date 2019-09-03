@@ -11,7 +11,7 @@ void expectedAlleleFreqs(double &allele_A_freq, const std::vector<double> genoty
 // realised frequency of allele A after selection
 void realisedAlleleFreqs(double &allele_A_freq, const int population_size, std::mt19937 &rng);
 // iterate through generations until one allele is fixed or the max number of generations is reached
-void iterateOverGenerations(double &allele_A_freq, const std::vector<double> haploid_fitnesses,
+void iterateOverGenerations(double &allele_A_freq, const std::vector<double> genotype_fitnesses,
 			    const int population_size, const int number_generations, std::mt19937 &rng);
 // returns true if allele_freq is approx equal to value
 bool closeToValue(double allele_freq, double value);
