@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
   const int number_replicates = atoi(argv[4]);
   // set rng
   std::mt19937 rng = initialiseRNG();
-  const std::vector<double> haploid_fitnesses = getFitnessFunction(selection_coefficient);
+  const std::vector<double> diploid_fitnesses = getFitnessFunction(selection_coefficient);
   std::vector<bool> final_A_freqs;
   // iterate over generations and replicates
   for (int rep = 0; rep < number_replicates; rep++){

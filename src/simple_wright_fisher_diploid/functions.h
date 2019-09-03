@@ -4,7 +4,7 @@
 #include <vector>
 #include <random>
 
-// haploid_fitnesses[w_A, w_a] gives relative fitness of A allele
+// diploid_fitnesses[w_AA, w_Aa, w_aa] gives relative fitness of genotypes
 std::vector<double> getFitnessFunction(const double selection_coefficient);
 // expected frequency of allele A after selection
 void expectedAlleleFreqs(double &allele_A_freq, const std::vector<double> haploid_fitnesses);

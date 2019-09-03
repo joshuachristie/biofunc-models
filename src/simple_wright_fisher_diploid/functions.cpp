@@ -4,9 +4,10 @@
 #include "functions.h"
 
 std::vector<double> getFitnessFunction(const double selection_coefficient){
-  // haploid_fitnesses[w_A, w_a] gives relative fitness of A allele
-  std::vector<double> haploid_fitnesses {1.0 + selection_coefficient, 1.0};
-  return haploid_fitnesses;
+  // diploid_fitnesses[w_AA, w_Aa, w_aa] gives relative fitness of genotypes
+  std::vector<double> diploid_fitnesses {1.0 + 2 * selection_coefficient,
+					 1.0 + selection_coefficient, 1.0};
+  return diploid_fitnesses;
 }
 
 void expectedAlleleFreqs(double &allele_A_freq, const std::vector<double> haploid_fitnesses){
