@@ -5,7 +5,7 @@
 #include <vector>
 #include <numeric>
 #include "functions.h"
-#include "../headers/rng.h"
+#include "../../headers/rng.h"
 int main(int argc, char* argv[]){
   // parameters
   const double selection_coefficient = atof(argv[1]);
