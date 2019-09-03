@@ -1,3 +1,6 @@
+// basic wright-fisher haploid model (one locus, two alleles, single environment)
+// used to map from fixation probability to function metric (via selection coefficient)
+
 #include <iostream>
 #include <vector>
 #include <random>
@@ -25,6 +28,7 @@ int main(int argc, char* argv[]){
     // record 0 if extinct, 1 otherwise (indicating the allele exists at a non-zero proportion)
     closeToValue(allele_A_freq, 0.0) ? final_A_freqs.push_back(0) : final_A_freqs.push_back(1);
   }
+  // print fixation probability
   std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(number_replicates) << std::endl;
   return 0;
 }
