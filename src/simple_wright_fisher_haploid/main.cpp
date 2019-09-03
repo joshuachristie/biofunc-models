@@ -3,9 +3,9 @@
 
 #include <iostream>
 #include <vector>
-#include <random>
-#include <chrono>
+#include <numeric>
 #include "functions.h"
+#include "rng.h"
 int main(int argc, char* argv[]){
   // parameters
   const double selection_coefficient = atof(argv[1]);
@@ -13,12 +13,7 @@ int main(int argc, char* argv[]){
   const int number_generations = atoi(argv[3]);
   const int number_replicates = atoi(argv[4]);
   // set rng
-  std::mt19937 temp_rng(std::random_device{}());
-  std::uniform_int_distribution<> adjust_seed(0, 5000);
-  int factor_to_adjust_seed = adjust_seed(temp_rng);
-  auto seed =
-    (std::chrono::high_resolution_clock::now().time_since_epoch().count()) * factor_to_adjust_seed;
-  std::mt19937 rng(seed);
+  std::mt19937 rng = initialiseRNG();
   const std::vector<double> haploid_fitnesses = getFitnessFunction(selection_coefficient);
   std::vector<bool> final_A_freqs;
   // iterate over generations and replicates

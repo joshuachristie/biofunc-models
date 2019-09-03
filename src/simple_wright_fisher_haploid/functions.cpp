@@ -1,4 +1,6 @@
 #include <cmath>
+#include <random>
+#include <numeric>
 #include "functions.h"
 
 std::vector<double> getFitnessFunction(const double selection_coefficient){
