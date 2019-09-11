@@ -3,10 +3,13 @@
 #include <numeric>
 #include "functions.h"
 
-std::vector<double> getFitnessFunction(const double selection_coefficient, const double dominance_coefficient){
+std::vector<double> getFitnessFunction(const double selection_coefficient_homozygote, const double selection_coefficient_heterozygote){
   // diploid_fitnesses[w_AA, w_Aa, w_aa] gives relative fitness of genotypes
-  std::vector<double> genotype_fitnesses {1.0 + selection_coefficient * 2,
-					 1.0 + selection_coefficient * 2 * dominance_coefficient, 1.0};
+  // std::vector<double> genotype_fitnesses {1.0 + selection_coefficient * 2,
+  // 					  1.0 + selection_coefficient * 2 * dominance_coefficient, 1.0};
+  std::vector<double> genotype_fitnesses {1.0 + selection_coefficient_homozygote,
+					  1.0 + selection_coefficient_heterozygote, 1.0};
+
   return genotype_fitnesses;
 }
 
