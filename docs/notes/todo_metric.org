@@ -1,1 +1,8 @@
-* TODO reorganise directory structure
+#+ARCHIVE: %s_archive::
+* analysis
+** compare kimura vs simulation fixation probability 
+   - [ ] add subprocess to python script to interface with C++
+* models
+** finish individual-based model [0/1]
+   - [ ] 
+
