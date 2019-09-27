@@ -1,8 +1,19 @@
 #+ARCHIVE: %s_archive::
 * analysis
 ** compare kimura vs simulation fixation probability 
-   - [ ] add subprocess to python script to interface with C++
+*** TODO fix import of diffusion approx (make module instead of package)
+*** add python subprocess module that contains function needed to interface with C++ [0/3]
+    - [ ] check whether correct output files exist: get a list of those that don't
+    - [ ] run C++ model in parallel to generate missing simulation fix probs
+    - [ ] change C++ main so that it prints to an output file (named by parameter values) rather than to std::cout
+*** loop through files with fixation probs [0/2]
+    - [ ] add wait in script until all simulation fix prob output files have been produced
+    - [ ] open files, get fixation probs, and plot
 * models
-** finish individual-based model [0/1]
-   - [ ] 
+** finish individual-based model [0/5]
+   - [ ] use simple IBM model (simple_model.py) as base
+   - [ ] add environmental state as Individual class variable
+   - [ ] update fitnesses
+   - [ ] add number of max gens to termination condition
+   - [ ] add number of replicates to model
 
