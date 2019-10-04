@@ -9,7 +9,7 @@ std::vector<double> getFitnessFunction(const double selection_coefficient){
   return haploid_fitnesses;
 }
 
-void expectedAlleleFreqs(double &allele_A_freq, const std::vector<double> haploid_fitnesses){
+void expectedAlleleFreqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses){
   // expected frequency of allele A after selection
   std::vector<double> expected_allele_freq_raw(2);
   expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[0];
@@ -25,7 +25,7 @@ void realisedAlleleFreqs(double &allele_A_freq, const int population_size, std::
   allele_A_freq = static_cast<double>(surviving_As(rng)) / static_cast<double>(population_size); // proportion
 }
 
-void iterateOverGenerations(double &allele_A_freq, const std::vector<double> haploid_fitnesses,
+void iterateOverGenerations(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
 			    const int population_size, const int number_generations, std::mt19937 &rng){
   // iterate through generations until one allele is fixed or the max number of generations is reached
   int gen = 0;
