@@ -9,6 +9,14 @@
 *** loop through files with fixation probs [0/2]
     - [ ] add wait in script until all simulation fix prob output files have been produced
     - [ ] open files, get fixation probs, and plot
+** calculate metric from fixation probability
+   - [ ] input fixation probability for specified model
+   - [ ] input upper bound of selection coefficient
+   - [ ] map from selection coefficient (for the given fixation probability) to metric
+** calculate metric for fixed allele based on comparison with a counterfactual
+   - [ ] input selection coefficient of counterfactual, determine its fixation probability (by calling the C++ model), and take its complement
+   - [ ] input upper bound of selection coefficient
+   - [ ] map from selection coefficient (for the complement) to metric
 * models
 ** finish individual-based model [0/5]
    - [ ] use simple IBM model (simple_model.py) as base
@@ -16,4 +24,5 @@
    - [ ] update fitnesses
    - [ ] add number of max gens to termination condition
    - [ ] add number of replicates to model
+
 
