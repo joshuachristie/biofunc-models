@@ -1,0 +1,58 @@
+* general thoughts
+
+We want our metric for partial biological function to satisfy the following desiderata (required properties):
+
+1. Metric must reflect selective force over history, not effect of drift
+2. Metric must be graded/continuous (accounts for the fact that selective forces can vary in strength)
+3. Traits can have multiple commensurable functions (a trait may have multiple effects, each of which partially explain why the trait exists)
+4. Metric must be a increasing monotonic function of increasing selective force
+5. Metric must be surjective function (each selective force maps onto a single metric value).
+6. Generalisability/contextualism (can be applied to multiple evolutionary scenarios)
+7. Must be able to apply metric to a single realised evolutionary trajectory
+
+The first because we must be able to distinguish between selection/drift (selected for/selected of, etc.).
+The second and third because they reflect the reality of selection by natural selection.
+The fourth because biological function is meant to be proportional to the degree to which that effect of the trait was involved in selection.
+The fifth because we must be able to map back from the metric to a unique set of model parameter values.
+The sixth because we want to be able to apply the metric to a range of theoretical scenarios in which we might ask questions about biological function.
+The seventh because, in order to apply the metric to any /actual/ case of evolution, we only have a single realized trajectory to work with.
+
+Functions can thus be partial in several senses.
+First, even if a trait only has one function, the degree to which the function has been selected is a graded notion (other things, such as drift, are involved in the spread of a trait).
+Second, a trait may have multiple functions, in which case each will partially contribute to selection on the trait.
+Third, selection on a trait may be due, in part, to selection on other traits (e.g. genetic linkage (hitchhiking), different traits sharing genetic elements), in which case a trait's function only forms a part of selection on the trait.
+Fourth, selection on the trait might have changed over time, or it might differ between environments (this one isn't really a justification for partial functions but rather for decomposing total function so as to better understand the contributions).
+
+Desired characteristics:
+- can account for a trait's evolution as well as its maintenance
+- can account for a trait going extinct more slowly than another
+
+A candidate that fulfils these criteria is fixation probability, or as we will implement it, a modified form that is better described as a probability of being within a specified range  (i.e. 1 - probability-allele-of-interest-is-not-within-specified-frequency-range; this is in order to account for the case of polymorphisms where we might want to ask a question like "why is allele x maintained at 30% +/- 5%?").
+
+Some decisions that will need to be made:
+- How to scale metric? Metric = 0 should be drift; Metric = -1 should be fix_prob of ~0; Metric = +1 should be "paradigmatic" function (this latter one will be the most arbitrary---I could choose selection coefficient of 1, not_lost_prob of 1, or just choose a value based off of the mutational distribution of fitness effects; for all but the latter, I'd probably have to log transform in order to avoid having tiny metric values for everything)
+- Balance between a selective expectation (needed to disentangle realized from expected fitness) and explanation of /actual/ evolutionary history (which requires explicit specification of explanatory depth and what to marginalise over). Pure propensity interpretations go too far towards function being an expectation over all possible trajectories that life could have taken (even though the vast majority will not occur). Pure selected effects interpretations would require a metaphysical specification of all possible environmental states that actually occurred, which is obviously infeasible. My approach requires a balance of the two (set the explanatory depth (e.g. grain of description of the environments to consider), record the observed environmental states, and calculate the expected fitness over those realised environmental states.
+- Will require specification of selection regime (effectively an evolutionary history), which includes the explanatory depth (e.g. description of environments and observed environmental states), as well as the period of time to consider
+
+What are some potentially interesting cases that I might want to use the metric to compare?
+- Single locus, haploid (two allele), each with one effect---simplest setup
+- Single locus, diploid (three genotypes), each with one effect, that share an underlying allele (e.g. sickle cell)
+- Two locus, haploid (four haplotypes), each of the four haplotypes with one effect (e.g. epistasis)
+- Age structured population to test antagonistic pleiotropy (have to think about how to model this in a simple way)
+- Single locus, haploid (two allele), two different (but temporally overlapping) environments (with each allele having an effect in each environment---e.g. bet-hedging). (A consideration here is whether the effect in each environment should count as a separate function, as arguably a trait might be performing the same action, it just has different effects in the two environments.)
+- Single locus, haploid (two allele) two different (and temporally separated) environments (with each allele having an effect in each environment---e.g. exaptation/vestigial). (A consideration here is whether the effect in each environment should count as a separate function, as arguably a trait might be performing the same action, it just has different effects over the evolutionary history.)
+
+I had initially set up the metric for a single fixation event, but a potential problem quickly arose. What if an allele was maintained indefinitely (either at a polymorphism or being fixed)? I only assign metric values based on individual ``competitions''. If something ``wins'' multiple competitions, how do I reflect this? Do I then allow function values of individual events accumulate additively?
+
+Instead, I've decided to take a different approach and simply set the metric relative to a investigator-determined set of conditions. I then lose the simplicity of having the metric defined relative to the simplest Wright-Fisher model. Even if it would be nice to have the analogy with Ne retained, I then can no longer compare models over different regimes (if I have to do an additive metric, then something that is maintained in the population for a long time could have an arbitrarily high metric value). Taking this approach makes it very easy to standardise the metric between -1 and 1 for any arbitrary regime (of course it raises a serious concern as to how one would ever infer a generative model/regime and parameter values for that model in the real world but that's always going to be an issue).
+
+(Note the below are the OLD desiderata)
+With the basic PID script I have now, I can do 3 (diploid), 1 (obviously), I should be able to do 2 but need to think of a model that allows it (two loci?), and I can do 4 (at least the bit about selection strength changing)
+For 2:
+Say we have a two locus system, 1 and 2, with alleles A/a and B/b respectively.
+That gives us the following genotypes: AB, Ab, aB, ab.
+So I can get away with the basic PID script if I stick to a haploid model? But then what are the initialisation conditions and counterfactuals? I could start with AB and then introduce one Ab? This doesn't become easier if it's diploid either (although there I could start with AaBb and assume recombination, but this seems very specific...).
+I suppose I could just start with AB and then have four separate scenarios (AB vs Ab, aB, ab). I wonder how the decompositions would compare (I'll have the same four fixation probabilities, only what's the focal case and what's the counterfactual will change...it presumably won't decompose the same since fixation probabilities will be dependent upon the resident type). Could also get epistasis from this model if I wanted to say something about synergistic information. This one is going to be a bit of a mess (would also require that I track two different allele trajectories when it comes to matching realized trajectories to a metric--this should be fine though because it just makes it a bivariate time series. Might leave this one for later though.)
+* resources
+https://towardsdatascience.com/deep-learning-for-time-series-classification-inceptiontime-245703f422db
+https://arxiv.org/pdf/1909.04939.pdf
