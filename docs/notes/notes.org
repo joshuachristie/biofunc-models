@@ -58,4 +58,10 @@ I think this weakens the analogy because in the function case one might have dif
 Not an issue for the approach that I'll take---as this is simply inferring the parameters of a specified model---but more of an issue with the model is unspecified, which is what would be the case for the effective population size analogy.
 * resources
 https://towardsdatascience.com/deep-learning-for-time-series-classification-inceptiontime-245703f422db
+fawaz2019a and fawaz2019b
+lines2016
 https://arxiv.org/pdf/1909.04939.pdf
+https://github.com/twosigma/flint
+https://www.deeplearningbook.org/
+https://learning.oreilly.com/library/view/deep-learning-with/9781617294433/OEBPS/Text/title.xhtml
+https://towardsdatascience.com/how-to-train-your-neural-networks-in-parallel-with-keras-and-apache-spark-ea8a3f48cae6
