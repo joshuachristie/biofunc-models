@@ -1,0 +1,41 @@
+// Wright-fisher haploid model (two effects, single environment)
+// Let's say that the resident population has trait (allele) a which is invaded by allele A
+// Trait A has two effects, given by selection_coefficient_A1 and selection_coefficient_A2
+// Our trait of interest, a, also has two effects, selection_coefficient_a1 and selection_coefficient_a2
+// The fitness of the trait of interest is  wA = 1.0 + selection_coefficient_A1 + selection_coefficient_A2
+// The fitness of the resident trait is  wa = 1.0 + selection_coefficient_a1 + selection_coefficient_a2
+// For PID purposes, I will fix the value of wa (and thus selection_coefficient_a1 and selection_coefficient_a2)
+// systematically varying selection_coefficient_A1 and selection_coefficient_A2.
+
+#include <iostream>
+#include <vector>
+#include <numeric>
+#include "functions.h"
+#include "../headers/rng.h"
+int main(int argc, char* argv[]){
+  // parameters
+  const double selection_coefficient_A1 = atof(argv[1]);
+  const double selection_coefficient_A2 = atof(argv[2]);
+  const double selection_coefficient_a1 = atof(argv[3]);
+  const double selection_coefficient_a2 = atof(argv[4]);
+  const int population_size = atoi(argv[5]);
+  const int number_generations = atoi(argv[6]);
+  const int number_replicates = atoi(argv[7]);
+  // set rng
+  std::mt19937 rng = initialiseRNG();
+  const std::vector<double> haploid_fitnesses = getFitnessFunction(selection_coefficient_A1,
+								   selection_coefficient_A2,
+								   selection_coefficient_a1,
+								   selection_coefficient_a2);
+  std::vector<bool> final_A_freqs;
+  // iterate over generations and replicates
+  for (int rep = 0; rep < number_replicates; rep++){
+    double allele_A_freq = 1.0 / static_cast<double>(population_size); // initial freq is 1/N
+    iterateOverGenerations(allele_A_freq, haploid_fitnesses, population_size, number_generations, rng);
+    // record 0 if extinct, 1 otherwise (indicating the allele exists at a non-zero proportion)
+    closeToValue(allele_A_freq, 0.0) ? final_A_freqs.push_back(0) : final_A_freqs.push_back(1);
+  }
+  // print fixation probability
+  std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(number_replicates) << std::endl;
+  return 0;
+}
