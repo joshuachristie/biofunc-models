@@ -1,6 +1,6 @@
-#include <cmath>
 #include <random>
 #include <numeric>
+#include "../include/helper_functions.h"
 #include "functions.h"
 
 std::vector<double> getFitnessFunction(const double selection_coefficient){
@@ -26,21 +26,14 @@ void realisedAlleleFreqs(double &allele_A_freq, const int population_size, std::
 }
 
 void iterateOverGenerations(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
-			    const int population_size, const int number_generations, std::mt19937 &rng){
+			    const int population_size, const int number_generations, std::mt19937 &rng,
+			    const double tolerance){
   // iterate through generations until one allele is fixed or the max number of generations is reached
   int gen = 0;
-  while (gen < number_generations && !(closeToValue(allele_A_freq, 0.0) || closeToValue(allele_A_freq, 1.0))){
+  while (gen < number_generations && !(closeToValue(allele_A_freq, 0.0, tolerance) ||
+				       closeToValue(allele_A_freq, 1.0, tolerance))){
     expectedAlleleFreqs(allele_A_freq, haploid_fitnesses);
     realisedAlleleFreqs(allele_A_freq, population_size, rng);
     ++gen;
-  }
-}
-
-bool closeToValue(double allele_freq, double value){
-  // returns true if allele_freq is approx equal to value
-  if (std::abs(allele_freq - value) < 0.00000001){
-    return 1;
-  } else {
-    return 0;
   }
 }
