@@ -23,7 +23,6 @@ int main(int argc, char* argv[]){
   const int gen_env_2 = atoi(argv[7]);
   const int number_replicates = atoi(argv[8]);
 
-  const int number_generations = gen_env_1 + gen_env_2
   // set rng
   std::mt19937 rng = initialiseRNG();
   const std::vector<double> haploid_fitnesses = getFitnessFunction(selection_coefficient_A_env_1,
@@ -35,7 +34,7 @@ int main(int argc, char* argv[]){
   for (int rep = 0; rep < number_replicates; rep++){
     const double tolerance = 0.000001; // for double comparison
     double allele_A_freq = 1.0 / static_cast<double>(population_size); // initial freq is 1/N
-    iterateOverGenerations(allele_A_freq, haploid_fitnesses, population_size, number_generations, rng,
+    iterateOverGenerations(allele_A_freq, haploid_fitnesses, population_size, gen_env_1, gen_env_2, rng,
 			   tolerance);
     // record 0 if extinct, 1 otherwise (indicating the allele exists at a non-zero proportion)
     closeToValue(allele_A_freq, 0.0, tolerance) ? final_A_freqs.push_back(0) : final_A_freqs.push_back(1);
