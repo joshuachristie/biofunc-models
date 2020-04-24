@@ -19,7 +19,7 @@ int main(int argc, char* argv[]){
   std::vector<bool> final_A_freqs;
   // iterate over generations and replicates
   for (int rep = 0; rep < number_replicates; rep++){
-    const double tolerance = 0.000001; // for double comparison
+    const double tolerance = 1.0 / static_cast<double>(population_size * 2); // for double comparison
     double allele_A_freq = 1.0 / static_cast<double>(population_size); // initial freq is 1/N
     iterateOverGenerations(allele_A_freq, haploid_fitnesses, population_size, number_generations, rng,
 			   tolerance);
