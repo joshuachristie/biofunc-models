@@ -40,3 +40,11 @@ for i in range(2):
         persistence_probabilities[counter] = float(process.stdout.read().strip())
         counter += 1
 
+filename = '../../data/HTEOE/A1_{}_A2_{}_a1_{}_a2_{}_N_{}_g_{}_r_{}.csv'.format(
+    selection_coefficient_A1, selection_coefficient_A2, selection_coefficient_a1,
+    selection_coefficient_a2, population_size, number_generations, number_replicates)
+
+with open(filename,'w') as f:
+    [f.write(str(persistence_probabilities[i]) + ',') if i < len(persistence_probabilities) - 1
+    else f.write(str(persistence_probabilities[i])) for i in range(len(persistence_probabilities))]
+    f.write('\n')
