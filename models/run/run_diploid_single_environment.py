@@ -33,5 +33,10 @@ for i in range(2):
 
         persistence_probabilities[counter] = float(process.stdout.read().strip())
         counter += 1
-        
-print(persistence_probabilities)
+filename = '../../data/DSE/ho_{}_he_{}_N_{}_g_{}_r_{}.csv'.format(
+    selection_coefficient_homozygote, selection_coefficient_heterozygote, population_size, number_generations, number_replicates)
+with open(filename,'w') as f:
+    [f.write(str(persistence_probabilities[i]) + ',') if i < len(persistence_probabilities) - 1
+    else f.write(str(persistence_probabilities[i])) for i in range(len(persistence_probabilities))]
+    f.write('\n')
+
