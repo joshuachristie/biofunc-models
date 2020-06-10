@@ -5,7 +5,7 @@
 % 
 % All p's should add to 1
 
-function redAsMinIComponentTotal(pTable)
+function normalised_PID_both_sources_present = redAsMinIComponentTotal(pTable)
     fprintf('\n');    
 	numSources = size(pTable,2)-2;
 	if (numSources <= 0)
@@ -51,6 +51,11 @@ function redAsMinIComponentTotal(pTable)
 	fprintf('c-\t');
 	fprintf('\n');
 	rowsInPTable = size(pTable,1);
+        
+        % initialise vector to store information from s1=1, s2=1
+        % (t={0,1})
+        raw_PID_both_sources_present = zeros(2,8);
+        
 	for r = 1 : rowsInPTable
 		% For each row, which is a unique sample configuration
 		posInfo = zeros(1, numSources);
@@ -129,6 +134,15 @@ function redAsMinIComponentTotal(pTable)
         higherOrderNegVec(r) = higherOrderNeg;
 		fprintf('%.3f\n', higherOrderNeg);
         higherOrderComb = higherOrderPos - higherOrderNeg;
+        
+        % record terms if s1 = 1 and s2 = 1 (t = {0,1})
+        if r < 3
+            % [r+, u+(s1), u+(s2), c+, r-, u-(s1), u-(s2), c-]
+            raw_PID_both_sources_present(r, :) = [rPos, uPoss(1), ...
+                                uPoss(2), higherOrderPos, rNeg, ...
+                                uNegs(1), uNegs(2), higherOrderNeg];
+        end
+        
     end
 
     rPosVec(isnan(rPosVec)) = 0;
@@ -172,5 +186,21 @@ function redAsMinIComponentTotal(pTable)
     fprintf('%.3f\t', U2);
     fprintf('%.3f\t', R);
     fprintf('%.3f\t\n\n', C);
+    
+    % calculate weighted decomposition for s1 = 1, s2 = 1, t =
+    % {0,1} (i.e. top two lines of the decomposition)
+    % order is R, U1, U2, C
+    weighted_PID_both_sources_present = zeros(1,4);
+    normalised_probs = [pTable(1,4), pTable(2,4)] / (pTable(1,4) + pTable(2,4));
+    for i = 1:4
+        weighted_PID_both_sources_present(i) = (raw_PID_both_sources_present(1, i) - ...
+            raw_PID_both_sources_present(1, i + 4)) * normalised_probs(1) + ...
+            (raw_PID_both_sources_present(2, i) - raw_PID_both_sources_present(2, i + 4)) ...
+            * normalised_probs(2);
+    end
+    % normalise so that we can talk about decomposing the function metric
+    % value (as opposed to talking about the amount of information in bits)
+    normalised_PID_both_sources_present = ...
+        weighted_PID_both_sources_present / sum(weighted_PID_both_sources_present);
 end
 
