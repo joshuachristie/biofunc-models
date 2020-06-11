@@ -1,5 +1,14 @@
-// basic wright-fisher haploid model (one locus, two alleles, single environment)
-// used to map from fixation probability to function metric (via selection coefficient)
+// This model explores biological function in the context of a trait whose spread is influenced, not only by
+// its own effects, but also by the effects of another trait.
+// The set-up is a Wright-Fisher diploid model: one locus, two alleles, single environment
+
+// Let's say that the resident population has trait (genotype) aa, which is "invaded" by our allele of interest, A (i.e. an aa individual mutates to Aa).
+// Let's say that our trait of interest is the heterozygote Aa.
+// Whether A allele persists in the population depends not only on the fitness of Aa but also on the fitness of AA
+// Since I use allele frequencies---not genotype frequencies---to calculate the function metric, the function of
+// allele A needs to be apportioned over the traits (genotypes) Aa and AA (as well as their redundant/synergistic effects).
+// For this I use PID, where the two "sources" are the fitnesses of Aa and AA.
+// By combining the function metric and the PID, we can calculate the function of traits Aa and AA.
 
 #include <iostream>
 #include <vector>

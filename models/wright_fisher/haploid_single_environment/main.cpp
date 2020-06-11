@@ -1,5 +1,8 @@
-// basic wright-fisher haploid model (one locus, two alleles, single environment)
-// used to map from fixation probability to function metric (via selection coefficient)
+// This model explores biological function in the simplest case: a single trait with a single effect
+// The set-up is a Wright-Fisher haploid model: one locus, two alleles, single environment
+// There is no need to apportion the function metric between components using PID because there is a simple
+// mapping between trait -> selection_coefficient -> persistence_probability (i.e. the function can be wholly
+// assigned to the single effect of the trait)
 
 #include <iostream>
 #include <vector>
