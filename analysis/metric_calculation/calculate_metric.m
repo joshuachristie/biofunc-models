@@ -41,14 +41,16 @@ for i = 1:numel(subdirs)
         % 1st element: selection_coefficient_A2 alone
         % 2nd element: selection_coefficient_A1 alone
         % 3rd element: focal situation (effect of both selection_coefficient_A_env_1 and selection_coefficient_A_env_2)
-                  
-        %NOTE THAT THE ORDER IN PERSISTENCE PROBS AND redAsMin... are
-        %inconsistent, this should be changed (safest option is to change
-        %Conor's PID script so it aligns with the scheme above)
-        pTable = [1, 1, 1, persistence_probs(4) / 4; 1, 1, 0, 1-persistence_probs(4) / 4;...
-            0, 0, 1, persistence_probs(1) / 4; 0, 0, 0, 1-persistence_probs(1) / 4;...
-            0, 1, 1, persistence_probs(2) / 4; 0, 1, 0, 1-persistence_probs(2) / 4;...
-            1, 0, 1, persistence_probs(3) / 4; 1, 0, 0, 1-persistence_probs(3) / 4];
+        
+        % source 1 refers to the homozygote (DSE) and A1 (HTEOE/HTE)
+        % source 2 refers to the heterozygote (DSE) and A2 (HTEOE/HTE)
+
+        pTable = [
+            0, 0, 1, persistence_probs(1) / 4; 0, 0, 0, (1-persistence_probs(1)) / 4;...
+            0, 1, 1, persistence_probs(2) / 4; 0, 1, 0, (1-persistence_probs(2)) / 4;...
+            1, 0, 1, persistence_probs(3) / 4; 1, 0, 0, (1-persistence_probs(3)) / 4;...
+            1, 1, 1, persistence_probs(4) / 4; 1, 1, 0, (1-persistence_probs(4)) / 4
+            ];
         
         % call redAsMinIComponentTotal(pTable) to get normalised PID scores
        % call function to calculate metric

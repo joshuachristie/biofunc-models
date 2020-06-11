@@ -52,10 +52,12 @@ function normalised_PID_both_sources_present = redAsMinIComponentTotal(pTable)
 	fprintf('\n');
 	rowsInPTable = size(pTable,1);
         
-        % initialise vector to store information from s1=1, s2=1
-        % (t={0,1})
-        raw_PID_both_sources_present = zeros(2,8);
-        
+    %% JRC edit
+    % initialise to store information from s1=1, s2=1 (t={0,1})
+    raw_PID_both_sources_present = zeros(2,8);
+    count = 1;
+    %%
+    
 	for r = 1 : rowsInPTable
 		% For each row, which is a unique sample configuration
 		posInfo = zeros(1, numSources);
@@ -135,14 +137,17 @@ function normalised_PID_both_sources_present = redAsMinIComponentTotal(pTable)
 		fprintf('%.3f\n', higherOrderNeg);
         higherOrderComb = higherOrderPos - higherOrderNeg;
         
+        %% JRC edit
         % record terms if s1 = 1 and s2 = 1 (t = {0,1})
-        if r < 3
+        indices = [7, 8]; % rows for s1 = s2 = 1
+        if r == indices(1) || r == indices(2)
             % [r+, u+(s1), u+(s2), c+, r-, u-(s1), u-(s2), c-]
-            raw_PID_both_sources_present(r, :) = [rPos, uPoss(1), ...
+            raw_PID_both_sources_present(count, :) = [rPos, uPoss(1), ...
                                 uPoss(2), higherOrderPos, rNeg, ...
-                                uNegs(1), uNegs(2), higherOrderNeg];
+                                uNegs(1), uNegs(2), higherOrderNeg];                            
+            count = count + 1;
         end
-        
+        %%
     end
 
     rPosVec(isnan(rPosVec)) = 0;
@@ -187,20 +192,21 @@ function normalised_PID_both_sources_present = redAsMinIComponentTotal(pTable)
     fprintf('%.3f\t', R);
     fprintf('%.3f\t\n\n', C);
     
-    % calculate weighted decomposition for s1 = 1, s2 = 1, t =
-    % {0,1} (i.e. top two lines of the decomposition)
+    %% JRC edit
+    % calculate weighted decomposition for s1 = 1, s2 = 1, t = {0,1}
     % order is R, U1, U2, C
-    weighted_PID_both_sources_present = zeros(1,4);
-    normalised_probs = [pTable(1,4), pTable(2,4)] / (pTable(1,4) + pTable(2,4));
+    weighted_PID_both_sources_present = zeros(1, 4);
+    normalised_probs = [pTable(indices(1), 4), pTable(indices(2), 4)] ...
+        / (pTable(indices(1), 4) + pTable(indices(2), 4));
     for i = 1:4
         weighted_PID_both_sources_present(i) = (raw_PID_both_sources_present(1, i) - ...
             raw_PID_both_sources_present(1, i + 4)) * normalised_probs(1) + ...
-            (raw_PID_both_sources_present(2, i) - raw_PID_both_sources_present(2, i + 4)) ...
-            * normalised_probs(2);
+            (raw_PID_both_sources_present(2, i) - raw_PID_both_sources_present(2, i + 4)) * ...
+            normalised_probs(2);
     end
     % normalise so that we can talk about decomposing the function metric
     % value (as opposed to talking about the amount of information in bits)
-    normalised_PID_both_sources_present = ...
-        weighted_PID_both_sources_present / sum(weighted_PID_both_sources_present);
+    normalised_PID_both_sources_present = weighted_PID_both_sources_present / ...
+        sum(weighted_PID_both_sources_present);
+    %%
 end
-
