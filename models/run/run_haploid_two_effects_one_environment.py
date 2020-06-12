@@ -20,7 +20,7 @@ from subprocess import Popen, PIPE
 population_size = '1000'
 number_generations = '100000'
 number_replicates = '100000'
-binary = '/home/joshua/projects/metric/models/wright_fisher/haploid_two_effects_one_environment/hteoe'
+binary = '../wright_fisher/haploid_two_effects_one_environment/hteoe'
 
 selection_coefficient_A1 = '0.015'
 selection_coefficient_A2 = '0.03'
@@ -40,7 +40,7 @@ for i in range(2):
         persistence_probabilities[counter] = float(process.stdout.read().strip())
         counter += 1
 
-filename = '../../data/HTEOE/A1_{}_A2_{}_a1_{}_a2_{}_N_{}_g_{}_r_{}.csv'.format(
+filename = '../../data/persistence_probabilities/HTEOE/A1_{}_A2_{}_a1_{}_a2_{}_N_{}_g_{}_r_{}.csv'.format(
     selection_coefficient_A1, selection_coefficient_A2, selection_coefficient_a1,
     selection_coefficient_a2, population_size, number_generations, number_replicates)
 

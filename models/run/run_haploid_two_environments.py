@@ -23,7 +23,7 @@ population_size = '1000'
 gen_env_1 = '5000'
 gen_env_2 = '5000'
 number_replicates = '100000'
-binary = '/home/joshua/projects/metric/models/wright_fisher/haploid_two_environments/hte'
+binary = '../wright_fisher/haploid_two_environments/hte'
 
 selection_coefficient_A_env_1 = '0.015'
 selection_coefficient_A_env_2 = '0.03'
@@ -43,7 +43,7 @@ for i in range(2):
         persistence_probabilities[counter] = float(process.stdout.read().strip())
         counter += 1
 
-filename = '../../data/HTE/A1_{}_A2_{}_a1_{}_a2_{}_N_{}_g1_{}_g2_{}_r_{}.csv'.format(
+filename = '../../data/persistence_probabilities/HTE/A1_{}_A2_{}_a1_{}_a2_{}_N_{}_g1_{}_g2_{}_r_{}.csv'.format(
     selection_coefficient_A_env_1, selection_coefficient_A_env_2, selection_coefficient_a_env_1,
     selection_coefficient_a_env_2, population_size, gen_env_1, gen_env_2, number_replicates)
 

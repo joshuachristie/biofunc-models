@@ -16,7 +16,7 @@ from subprocess import Popen, PIPE
 population_size = '1000'
 number_generations = '10000'
 number_replicates = '10000'
-binary = '/home/joshua/projects/metric/models/wright_fisher/diploid_single_environment/dse'
+binary = '../wright_fisher/diploid_single_environment/dse'
 
 selection_coefficient_homozygote = 0.2
 selection_coefficient_heterozygote = 0.1
@@ -33,7 +33,7 @@ for i in range(2):
 
         persistence_probabilities[counter] = float(process.stdout.read().strip())
         counter += 1
-filename = '../../data/DSE/ho_{}_he_{}_N_{}_g_{}_r_{}.csv'.format(
+filename = '../../data/persistence_probabilities/DSE/ho_{}_he_{}_N_{}_g_{}_r_{}.csv'.format(
     selection_coefficient_homozygote, selection_coefficient_heterozygote, population_size, number_generations, number_replicates)
 with open(filename,'w') as f:
     [f.write(str(persistence_probabilities[i]) + ',') if i < len(persistence_probabilities) - 1
