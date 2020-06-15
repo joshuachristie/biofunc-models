@@ -22,7 +22,7 @@ for i = 1:numel(subdirs)
             persistence_probs = csvread(strcat(path_to_folder, '/', list_of_files(j).name)); 
         end
             
-        % csv has four floats and contains persistence probabilities according to the following scheme:
+        % csv has four floats and contains persistence probabilities according to the following scheme (0-based indexing):
         
         % DSE
         % 0th element: neutral drift
@@ -56,7 +56,24 @@ for i = 1:numel(subdirs)
        % call function to calculate metric
        % weight metric by PID
     else
-        % call function to calculate metric for HSE (no PID)
+        % HSE
+        % csv has two floats (doesn't require PID)
+        % 0th element: neutral drift
+        % 1st element: selection_coefficient
+        
+        path_to_folder = strcat(subdirs(i).folder, '/', subdirs(i).name);
+        list_of_files = dir(path_to_folder);
+        list_of_files = list_of_files(~ismember({list_of_files.name}, {'.', '..'}));
+        
+        % calculate metric and print to file
+        for j = 1:numel(list_of_files)            
+            persistence_probs = csvread(strcat(path_to_folder, '/', list_of_files(j).name)); 
+            metric = calculate_metric(persistence_probs(1), persistence_probs(2));
+            csvwrite(sprintf('../../data/calculated_metric_values/%s/%s', subdirs(i).name, ...
+                regexprep(list_of_files(j).name, '.csv', '_metric.csv')), metric);
+        end
+
     end
 end
+
         
