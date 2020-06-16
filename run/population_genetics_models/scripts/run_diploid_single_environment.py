@@ -28,7 +28,7 @@ parser.add_argument("selection_coefficient_heterozygote", type=float,
                     help="selection coefficient of allele A in environment 2")
 args = parser.parse_args()
 
-binary = '../wright_fisher/diploid_single_environment/dse'
+binary = '../../../population_genetics_models/diploid_single_environment/dse'
 SC_homo = [0.0, args.selection_coefficient_homozygote]
 SC_hetero = [0.0, args.selection_coefficient_heterozygote]
 
@@ -42,7 +42,7 @@ for i in range(2):
                         stdout=PIPE)
         persistence_probabilities[counter] = float(process.stdout.read().strip())
         counter += 1
-filename = '../../data/persistence_probabilities/DSE/ho_{}_he_{}_N_{}_g_{}_r_{}.csv'.format(
+filename = '../../../data/persistence_probabilities/DSE/ho_{}_he_{}_N_{}_g_{}_r_{}.csv'.format(
     args.selection_coefficient_homozygote, args.selection_coefficient_heterozygote, args.population_size,
     args.number_generations, args.number_replicates)
 with open(filename,'w') as f:

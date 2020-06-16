@@ -21,7 +21,7 @@ parser.add_argument("selection_coefficient", type=float,
 args = parser.parse_args()
 
 SC = [0.0, args.selection_coefficient]
-binary = '../wright_fisher/haploid_single_environment/hse'
+binary = '../../../population_genetics_models/haploid_single_environment/hse'
 
 persistence_probabilities = [0] * 2
 counter = 0
@@ -31,7 +31,7 @@ for i in range(2):
     persistence_probabilities[counter] = float(process.stdout.read().strip())
     counter +=1
     
-filename = '../../data/persistence_probabilities/HSE/s_{}_N_{}_g_{}_r_{}.csv'.format(
+filename = '../../../data/persistence_probabilities/HSE/s_{}_N_{}_g_{}_r_{}.csv'.format(
     args.selection_coefficient, args.population_size, args.number_generations, args.number_replicates)
 
 with open(filename,'w') as f:

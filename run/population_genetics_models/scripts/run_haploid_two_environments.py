@@ -42,7 +42,7 @@ args = parser.parse_args()
 
 SC_A_e_1 = [0.0, args.selection_coefficient_A_env_1]
 SC_A_e_2 = [0.0, args.selection_coefficient_A_env_2]
-binary = '../wright_fisher/haploid_two_environments/hte'
+binary = '../../../population_genetics_models/haploid_two_environments/hte'
 
 persistence_probabilities = [0] * 4
 counter = 0
@@ -54,7 +54,7 @@ for i in range(2):
         persistence_probabilities[counter] = float(process.stdout.read().strip())
         counter += 1
 
-filename = '../../data/persistence_probabilities/HTE/A1_{}_A2_{}_a1_{}_a2_{}_N_{}_g1_{}_g2_{}_r_{}.csv'.format(
+filename = '../../../data/persistence_probabilities/HTE/A1_{}_A2_{}_a1_{}_a2_{}_N_{}_g1_{}_g2_{}_r_{}.csv'.format(
     args.selection_coefficient_A_env_1, args.selection_coefficient_A_env_2, args.selection_coefficient_a_env_1,
     args.selection_coefficient_a_env_2, args.population_size, args.gen_env_1, args.gen_env_2,
     args.number_replicates)
