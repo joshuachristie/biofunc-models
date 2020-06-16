@@ -8,20 +8,29 @@ The probabilities that the allele is not lost will be stored in persistence_prob
 The order is:
     0th element: neutral drift
     1st element: heterozygote effect alone
-    2nd element: homozygote effect alone
+    2nd element: homozygote (AA) effect alone
     3rd element: focal situation (effect of both heterozygote and homozygote)
 """
 from subprocess import Popen, PIPE
+import argparse
 
-population_size = '1000'
-number_generations = '10000'
-number_replicates = '10000'
+# parse parameters
+parser = argparse.ArgumentParser()
+parser.add_argument("population_size", type=int,
+                    help="number of individuals in the population")
+parser.add_argument("number_generations", type=int,
+                    help="number of generations to run simulation for")
+parser.add_argument("number_replicates", type=int,
+                    help="number of sims to run for each parameter value set")
+parser.add_argument("selection_coefficient_homozygote", type=float,
+                    help="selection coefficient of AA homozygote")
+parser.add_argument("selection_coefficient_heterozygote", type=float,
+                    help="selection coefficient of allele A in environment 2")
+args = parser.parse_args()
+
 binary = '../wright_fisher/diploid_single_environment/dse'
-
-selection_coefficient_homozygote = 0.2
-selection_coefficient_heterozygote = 0.1
-SC_homo = [0.0, selection_coefficient_homozygote]
-SC_hetero = [0.0, selection_coefficient_heterozygote]
+SC_homo = [0.0, args.selection_coefficient_homozygote]
+SC_hetero = [0.0, args.selection_coefficient_heterozygote]
 
 persistence_probabilities = [0] * 4
 counter = 0
@@ -29,12 +38,13 @@ for i in range(2):
     for j in range(2):
         
         process = Popen([binary, str(SC_homo[i]), str(SC_hetero[j]),
-                         population_size, number_generations, number_replicates], stdout=PIPE)
-
+                         str(args.population_size), str(args.number_generations), str(args.number_replicates)],
+                        stdout=PIPE)
         persistence_probabilities[counter] = float(process.stdout.read().strip())
         counter += 1
 filename = '../../data/persistence_probabilities/DSE/ho_{}_he_{}_N_{}_g_{}_r_{}.csv'.format(
-    selection_coefficient_homozygote, selection_coefficient_heterozygote, population_size, number_generations, number_replicates)
+    args.selection_coefficient_homozygote, args.selection_coefficient_heterozygote, args.population_size,
+    args.number_generations, args.number_replicates)
 with open(filename,'w') as f:
     [f.write(str(persistence_probabilities[i]) + ',') if i < len(persistence_probabilities) - 1
     else f.write(str(persistence_probabilities[i])) for i in range(len(persistence_probabilities))]

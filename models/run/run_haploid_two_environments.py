@@ -18,34 +18,46 @@ The order is:
     3rd element: focal situation (effect of both selection_coefficient_A_env_1 and selection_coefficient_A_env_2)
 """
 from subprocess import Popen, PIPE
+import argparse
 
-population_size = '1000'
-gen_env_1 = '5000'
-gen_env_2 = '5000'
-number_replicates = '100000'
+# parse parameters
+parser = argparse.ArgumentParser()
+parser.add_argument("population_size", type=int,
+                    help="number of individuals in the population")
+parser.add_argument("gen_env_1", type=int,
+                    help="number of generations that environment 1 persists for")
+parser.add_argument("gen_env_2", type=int,
+                    help="number of generations that environment 2 persists for")
+parser.add_argument("number_replicates", type=int,
+                    help="number of sims to run for each parameter value set")
+parser.add_argument("selection_coefficient_A_env_1", type=float,
+                    help="selection coefficient of allele A in environment 1")
+parser.add_argument("selection_coefficient_A_env_2", type=float,
+                    help="selection coefficient of allele A in environment 2")
+parser.add_argument("selection_coefficient_a_env_1", type=float,
+                    help="selection coefficient of allele a in environment 1")
+parser.add_argument("selection_coefficient_a_env_2", type=float,
+                    help="selection coefficient of allele a in environment 2")
+args = parser.parse_args()
+
+SC_A_e_1 = [0.0, args.selection_coefficient_A_env_1]
+SC_A_e_2 = [0.0, args.selection_coefficient_A_env_2]
 binary = '../wright_fisher/haploid_two_environments/hte'
-
-selection_coefficient_A_env_1 = '0.015'
-selection_coefficient_A_env_2 = '0.03'
-selection_coefficient_a_env_1 = '0.01'
-selection_coefficient_a_env_2 = '0.02'
-SC_A_e_1 = [0.0, selection_coefficient_A_env_1]
-SC_A_e_2 = [0.0, selection_coefficient_A_env_2]
 
 persistence_probabilities = [0] * 4
 counter = 0
 for i in range(2):
     for j in range(2):
-        process = Popen([binary, str(SC_A_e_1[i]), str(SC_A_e_2[j]), selection_coefficient_a_env_1,
-                 selection_coefficient_a_env_2, population_size, gen_env_1, gen_env_2,
-                 number_replicates], stdout=PIPE)
-
+        process = Popen([binary, str(SC_A_e_1[i]), str(SC_A_e_2[j]), str(args.selection_coefficient_a_env_1),
+                 str(args.selection_coefficient_a_env_2), str(args.population_size), str(args.gen_env_1),
+                         str(args.gen_env_2), str(args.number_replicates)], stdout=PIPE)
         persistence_probabilities[counter] = float(process.stdout.read().strip())
         counter += 1
 
 filename = '../../data/persistence_probabilities/HTE/A1_{}_A2_{}_a1_{}_a2_{}_N_{}_g1_{}_g2_{}_r_{}.csv'.format(
-    selection_coefficient_A_env_1, selection_coefficient_A_env_2, selection_coefficient_a_env_1,
-    selection_coefficient_a_env_2, population_size, gen_env_1, gen_env_2, number_replicates)
+    args.selection_coefficient_A_env_1, args.selection_coefficient_A_env_2, args.selection_coefficient_a_env_1,
+    args.selection_coefficient_a_env_2, args.population_size, args.gen_env_1, args.gen_env_2,
+    args.number_replicates)
 
 with open(filename,'w') as f:
     [f.write(str(persistence_probabilities[i]) + ',') if i < len(persistence_probabilities) - 1
