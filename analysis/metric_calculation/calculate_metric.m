@@ -18,5 +18,5 @@
 function metric = calculate_metric(pp_drift, pp_focal_case)
 axiomatic_metric = [-1, 0, 1];
 axiomatic_pp = [0, pp_drift, 1];
-metric = interp1(axiomatic_metric, axiomatic_pp, pp_focal_case);
+metric = interp1(axiomatic_pp, axiomatic_metric, pp_focal_case);
 end
