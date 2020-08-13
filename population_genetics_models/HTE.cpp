@@ -84,7 +84,6 @@ namespace HTE {
      @param[in] allele_A_freq Frequency of allele A
      @param[in] haploid_fitnesses Vector containing the fitnesses of the A and a alleles in the two environments [wA_1, wA_2, wa_1, wa_2]
      @param[in] HTE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
-     @param[in] HTE_Model_Parameters::Shared_Parameters::number_generations Maximum number of generations for which the simulation will run (for the case in which a trait invades the ancestral population and is not challenged afterwards; for the case in which the fixed trait must withstand invaders, each step runs until an absorbing state is reached).
      @param[in] HTE_Model_Parameters::HTE_Specific_Parameters::gen_env_1 Number of generations spent in environment 1
      @param[in] HTE_Model_Parameters::HTE_Specific_Parameters::gen_env_2 Number of generations spent in environment 2
      @param[in, out] rng Random number generator
