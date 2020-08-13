@@ -1,6 +1,10 @@
 #ifndef DSE_H
 #define DSE_H
 
+#include <vector>
+#include <random>
+#include "Parameters.h"
+
 namespace DSE {
   
   DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]);
