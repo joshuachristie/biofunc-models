@@ -1,13 +1,15 @@
-// provides initialiseRNG(), which sets a random seed using both
-// random_device and the high precision clock
-
-#ifndef RNG_H
-#define RNG_H
-
+/**
+   @file rng.cpp
+   @brief Provides \p initialise_rng
+*/
 #include <random>
 #include <chrono>
-
-std::mt19937 initialiseRNG(){
+#include "rng.h"
+/**
+   @brief Initialises a Mersenne Twister rng object using both \p std::random_device and \p std::chrono::high_resolution_clock
+   @return An rng object
+*/
+std::mt19937 initialise_rng(){
   std::mt19937 temp_rng(std::random_device{}());
   std::uniform_int_distribution<> adjust_seed(0, 50000);
   int factor_to_adjust_seed = adjust_seed(temp_rng);
@@ -16,5 +18,3 @@ std::mt19937 initialiseRNG(){
   std::mt19937 rng(seed);
   return rng;
 }
-
-#endif 
