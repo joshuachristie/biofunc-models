@@ -9,9 +9,9 @@
 #include <numeric>
 #include <random>
 #include "Parameters.h"
-#include "include/helper_functions.h"
+#include "helper_functions.h"
 #include "HTEOE.h"
-#include "include/rng.h"
+#include "rng.h"
 #include <iostream> // will probably need to be deleted once after refactoring and addition of print methods
 
 /**
@@ -95,8 +95,8 @@ namespace HTEOE {
 
     int gen = 0;
     while (gen < parameters.model.number_generations &&
-	   !(closeToValue(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
-					 closeToValue(allele_A_freq, 1.0, parameters.fixed.tolerance))){
+	   !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
+					 close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
       expected_allele_freqs(allele_A_freq, haploid_fitnesses);
       realised_allele_freqs(allele_A_freq, parameters, rng);
       ++gen;
@@ -118,8 +118,8 @@ namespace HTEOE {
     for (int rep = 0; rep < params.fixed.number_replicates; rep++){
       double allele_A_freq = 1.0 / static_cast<double>(params.shared.population_size); // initial freq is 1/N
       run_simulation(allele_A_freq, haploid_fitnesses, params, rng);
-      // note that I also need to update closeToValue() (at the very least, change to snake_case; might also be worth hardcoding the tolerance given that it's now a fixed parameter)
-      closeToValue(allele_A_freq, 0.0, params.fixed.tolerance) ? final_A_freqs.push_back(0) : final_A_freqs.push_back(1);
+      // note that I also need to update close_to_value() (at the very least, change to snake_case; might also be worth hardcoding the tolerance given that it's now a fixed parameter)
+      close_to_value(allele_A_freq, 0.0, params.fixed.tolerance) ? final_A_freqs.push_back(0) : final_A_freqs.push_back(1);
     }
     // will alter output in a later extension (will print to file directly from c++ rather than via the python run script)
     std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(params.fixed.number_replicates) << std::endl;
