@@ -114,8 +114,7 @@ namespace HTE {
      @return Nothing (but prints results)
 */
   void run_model(int argc, char* argv[]){
-    // should update initialiseRNG to snake case for consistency
-    std::mt19937 rng = initialiseRNG();
+    std::mt19937 rng = initialise_rng();
     HTE_Model_Parameters params = parse_parameter_values(argc, argv);
     std::vector<double> haploid_fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
