@@ -11,6 +11,9 @@
 #include "Parameters.h"
 #include "include/helper_functions.h"
 #include "DSE.h"
+#include "include/rng.h"
+#include <iostream> // will probably need to be deleted once after refactoring and addition of print methods
+
 /**
    @brief Namespace for Diploid Single Environment
 */
@@ -24,7 +27,7 @@ namespace DSE {
   */
   DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "DSE");
-    assert(argc == 6);
+    assert(argc == 6 && "The DSE model must have 5 command line arguments (the first must be 'DSE')");
     const int population_size = atoi(argv[2]);
     const int number_generations = atoi(argv[3]);
     const double selection_coefficient_homozygote = atof(argv[4]);
@@ -94,5 +97,28 @@ namespace DSE {
       ++gen;
     }
   }
+  /**
+     @brief Runs Diploid Single Environment model
+     @param[in] argc Number of command line arguments
+     @param[in] argv Array of command line arguments
+     @return Nothing (but prints results)
+*/
+  void run_model(int argc, char* argv[]){
+    // should update initialiseRNG to snake case for consistency
+    std::mt19937 rng = initialiseRNG();
+    DSE_Model_Parameters params = parse_parameter_values(argc, argv);
+    std::vector<double> genotype_fitnesses = get_fitness_function(params);
+    std::vector<bool> final_A_freqs;
 
+    // will change how I implement running of multiple replicates, but leaving it for post-refactor extension
+    for (int rep = 0; rep < params.fixed.number_replicates; rep++){
+      double allele_A_freq = 1.0 / static_cast<double>(params.shared.population_size * 2); // initial freq is 1/2N
+      run_simulation(allele_A_freq, genotype_fitnesses, params, rng);
+      // note that I also need to update closeToValue() (at the very least, change to snake_case; might also be worth hardcoding the tolerance given that it's now a fixed parameter)
+      closeToValue(allele_A_freq, 0.0, params.fixed.tolerance) ? final_A_freqs.push_back(0) : final_A_freqs.push_back(1);
+    }
+    // will alter output in a later extension (will print to file directly from c++ rather than via the python run script)
+    std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(params.fixed.number_replicates) << std::endl;
+
+  }
 }

@@ -17,7 +17,9 @@ namespace DSE {
   
   void run_simulation(double &allele_A_freq, const std::vector<double> &genotype_fitnesses,
 		      const DSE_Model_Parameters &parameters, std::mt19937 &rng);
-  
+
+  void run_model(int argc, char* argv[]);
+
 }
 
 #endif

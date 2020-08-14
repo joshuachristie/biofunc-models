@@ -18,7 +18,9 @@ namespace HTE {
   
   void run_simulation(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
 		      const HTE_Model_Parameters &parameters, std::mt19937 &rng);
-  
+
+  void run_model(int argc, char* argv[]);
+
 }
 
 #endif
