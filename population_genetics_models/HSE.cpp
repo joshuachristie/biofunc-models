@@ -71,17 +71,17 @@ namespace HSE {
   }
   /**
      @brief Runs one replicate of the simulation
-     @param[in] allele_A_freq Frequency of allele A
      @param[in] haploid_fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
      @param[in] HSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in] HSE_Model_Parameters::Shared_Parameters::number_generations Maximum number of generations for which the simulation will run (for the case in which a trait invades the ancestral population and is not challenged afterwards; for the case in which the fixed trait must withstand invaders, each step runs until an absorbing state is reached).
-     @param[in, out] rng Random number generator
      @param[in] HSE_Model_Parameters::Fixed_Parameters::tolerance Tolerance for comparing equality of doubles
-     @return
+     @param[in, out] rng Random number generator
+     @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
+     @return Nothing (but alters \p final_A_freqs)
 */
-  void run_simulation(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
-		      const HSE_Model_Parameters &parameters, std::mt19937 &rng){
-    // iterate through generations until one allele is fixed or the max number of generations is reached
+  void run_simulation(const std::vector<double> &haploid_fitnesses, const HSE_Model_Parameters &parameters,
+		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
+    double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
     int gen = 0;
     while (gen < parameters.model.number_generations &&
 	   !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
@@ -90,6 +90,8 @@ namespace HSE {
       realised_allele_freqs(allele_A_freq, parameters, rng);
       ++gen;
     }
+    close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ? final_A_freqs.push_back(0) :
+      final_A_freqs.push_back(1);
   }
   /**
      @brief Runs Haploid Single Environment model
@@ -102,12 +104,11 @@ namespace HSE {
     HSE_Model_Parameters params = parse_parameter_values(argc, argv);
     std::vector<double> haploid_fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
+    final_A_freqs.reserve(params.fixed.number_replicates);
     // will change how I implement running of multiple replicates, but leaving it for post-refactor extension
     for (int rep = 0; rep < params.fixed.number_replicates; rep++){
-      double allele_A_freq = 1.0 / static_cast<double>(params.shared.population_size); // initial freq is 1/N
-      run_simulation(allele_A_freq, haploid_fitnesses, params, rng);
+      run_simulation(haploid_fitnesses, params, rng, final_A_freqs);
       // note that I also need to update close_to_value() (at the very least, change to snake_case; might also be worth hardcoding the tolerance given that it's now a fixed parameter)
-      close_to_value(allele_A_freq, 0.0, params.fixed.tolerance) ? final_A_freqs.push_back(0) : final_A_freqs.push_back(1);
     }
     // will alter output in a later extension (will print to file directly from c++ rather than via the python run script)
     std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(params.fixed.number_replicates) << std::endl;
