@@ -12,6 +12,7 @@
 #include "helper_functions.h"
 #include "HSE.h"
 #include "rng.h"
+#include "persistence_probability.h"
 #include <iostream> // will probably need to be deleted once after refactoring and addition of print methods
 
 /**
@@ -48,7 +49,7 @@ namespace HSE {
      @param[in, out] allele_A_freq The frequency of the A allele
      @param[in] haploid_fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
      @return Nothing (but modifies \p allele_A_freq)
-*/
+  */
   void expected_allele_freqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses){
     std::vector<double> expected_allele_freq_raw(2);
     expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[0];
@@ -63,7 +64,7 @@ namespace HSE {
      @param[in] HSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
      @return Nothing (but modifies \p allele_A_freq)
-*/
+  */
   void realised_allele_freqs(double &allele_A_freq, const HSE_Model_Parameters &parameters, std::mt19937 &rng){
     std::binomial_distribution<int> surviving_As(parameters.shared.population_size, allele_A_freq);
     allele_A_freq =
@@ -78,14 +79,14 @@ namespace HSE {
      @param[in, out] rng Random number generator
      @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
      @return Nothing (but alters \p final_A_freqs)
-*/
+  */
   void run_simulation(const std::vector<double> &haploid_fitnesses, const HSE_Model_Parameters &parameters,
 		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
     int gen = 0;
     while (gen < parameters.model.number_generations &&
 	   !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
-					 close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
+	     close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
       expected_allele_freqs(allele_A_freq, haploid_fitnesses);
       realised_allele_freqs(allele_A_freq, parameters, rng);
       ++gen;
@@ -98,21 +99,17 @@ namespace HSE {
      @param[in] argc Number of command line arguments
      @param[in] argv Array of command line arguments
      @return Nothing (but prints results)
-*/
+  */
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
     HSE_Model_Parameters params = parse_parameter_values(argc, argv);
     std::vector<double> haploid_fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
-    // will change how I implement running of multiple replicates, but leaving it for post-refactor extension
-    for (int rep = 0; rep < params.fixed.number_replicates; rep++){
-      run_simulation(haploid_fitnesses, params, rng, final_A_freqs);
-      // note that I also need to update close_to_value() (at the very least, change to snake_case; might also be worth hardcoding the tolerance given that it's now a fixed parameter)
-    }
+    calculate_persistence_probability(params, run_simulation, rng, haploid_fitnesses, final_A_freqs);
     // will alter output in a later extension (will print to file directly from c++ rather than via the python run script)
     std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(params.fixed.number_replicates) << std::endl;
 
   }
 
-}
+} 

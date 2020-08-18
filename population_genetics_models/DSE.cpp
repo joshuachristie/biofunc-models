@@ -12,6 +12,7 @@
 #include "helper_functions.h"
 #include "DSE.h"
 #include "rng.h"
+#include "persistence_probability.h"
 #include <iostream> // will probably need to be deleted once after refactoring and addition of print methods
 
 /**
@@ -19,7 +20,7 @@
 */
 namespace DSE {
 
-    /**
+  /**
      @brief Reads in parameter values from command line into a struct
      @param[in] argc Number of commandline arguments
      @param[in] argv Command line arguments
@@ -33,7 +34,7 @@ namespace DSE {
     const double selection_coefficient_homozygote = atof(argv[4]);
     const double selection_coefficient_heterozygote = atof(argv[5]);
     DSE_Model_Parameters params {{population_size}, {number_generations, selection_coefficient_homozygote,
-						     selection_coefficient_heterozygote}};
+	selection_coefficient_heterozygote}};
     return params;
   }
   /**
@@ -45,7 +46,7 @@ namespace DSE {
   std::vector<double> get_fitness_function(const DSE_Model_Parameters &parameters){
     // diploid_fitnesses[w_AA, w_Aa, w_aa] gives relative fitness of genotypes
     std::vector<double> genotype_fitnesses {1.0 + parameters.model.selection_coefficient_homozygote,
-					    1.0 + parameters.model.selection_coefficient_heterozygote, 1.0};
+      1.0 + parameters.model.selection_coefficient_heterozygote, 1.0};
     return genotype_fitnesses;
   }
   /**
@@ -53,7 +54,7 @@ namespace DSE {
      @param[in, out] allele_A_freq The frequency of the A allele
      @param[in] genotype_fitnesses Vector containing AA, Aa, and aa genotype fitnesses [wA, wAa, wa]
      @return Nothing (but modifies \p allele_A_freq)
-*/
+  */
   void expected_allele_freqs(double &allele_A_freq, const std::vector<double> &genotype_fitnesses){
     std::vector<double> expected_genotype_freq_raw(3);
     expected_genotype_freq_raw[0] = std::pow(allele_A_freq, 2.0) * genotype_fitnesses[0]; // AA
@@ -84,14 +85,14 @@ namespace DSE {
      @param[in, out] rng Random number generator
      @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
      @return Nothing (but alters \p final_A_freqs)
-*/
+  */
   void run_simulation(const std::vector<double> &genotype_fitnesses, const DSE_Model_Parameters &parameters,
 		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
-      double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size * 2); // initial freq is 1/2N
+    double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size * 2); // initial freq is 1/2N
     int gen = 0;
     while (gen < parameters.model.number_generations &&
 	   !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
-					 close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
+	     close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
       expected_allele_freqs(allele_A_freq, genotype_fitnesses);
       realised_allele_freqs(allele_A_freq, parameters, rng);
       ++gen;
@@ -104,19 +105,18 @@ namespace DSE {
      @param[in] argc Number of command line arguments
      @param[in] argv Array of command line arguments
      @return Nothing (but prints results)
-*/
+  */
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
     DSE_Model_Parameters params = parse_parameter_values(argc, argv);
     std::vector<double> genotype_fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
-    // will change how I implement running of multiple replicates, but leaving it for post-refactor extension
-    for (int rep = 0; rep < params.fixed.number_replicates; rep++){
-      run_simulation(genotype_fitnesses, params, rng, final_A_freqs);
-    }
+    calculate_persistence_probability(params, run_simulation, rng, genotype_fitnesses, final_A_freqs);
     // will alter output in a later extension (will print to file directly from c++ rather than via the python run script)
     std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(params.fixed.number_replicates) << std::endl;
 
   }
+
+
 }
