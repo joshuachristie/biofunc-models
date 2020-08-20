@@ -124,6 +124,7 @@ namespace HTE {
     final_A_freqs.reserve(params.fixed.number_replicates);
     double persistence_probability = calculate_persistence_probability(params, run_simulation, rng,
 								       haploid_fitnesses, final_A_freqs);
+    print::print_persistence_probability(argc, argv, persistence_probability);
   }
   
 }

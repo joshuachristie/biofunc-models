@@ -13,7 +13,7 @@
 #include "HTEOE.h"
 #include "rng.h"
 #include "persistence_probability.h"
-#include <numeric>
+#include "print_results.h"
 
 /**
    @brief Namespace for Haploid Two Effects One Environment
@@ -116,6 +116,7 @@ namespace HTEOE {
     final_A_freqs.reserve(params.fixed.number_replicates);
     double persistence_probability = calculate_persistence_probability(params, run_simulation, rng,
 								       haploid_fitnesses, final_A_freqs);
+    print::print_persistence_probability(argc, argv, persistence_probability);
   }
 
 }
