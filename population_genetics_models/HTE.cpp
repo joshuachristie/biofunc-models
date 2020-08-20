@@ -13,7 +13,7 @@
 #include "HTE.h"
 #include "rng.h"
 #include "persistence_probability.h"
-#include <iostream> // will probably need to be deleted once after refactoring and addition of print methods
+#include "print_results.h"
 
 /**
    @brief Namespace for Haploid Two Environments
@@ -61,23 +61,23 @@ namespace HTE {
      @param[in, out] allele_A_freq The frequency of the A allele
      @param[in] haploid_fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
      @return Nothing (but modifies \p allele_A_freq)
-*/
+  */
   void expected_allele_freqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
 			     int env_state){
-  std::vector<double> expected_allele_freq_raw(2);
-  expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[env_state];
-  expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * haploid_fitnesses[2 + env_state];
-  // replace allele_A_freq with normalised expectation
-  allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
-								 expected_allele_freq_raw.end(), 0.0));
-}
+    std::vector<double> expected_allele_freq_raw(2);
+    expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[env_state];
+    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * haploid_fitnesses[2 + env_state];
+    // replace allele_A_freq with normalised expectation
+    allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
+								   expected_allele_freq_raw.end(), 0.0));
+  }
   /**
      @brief Calculates realised frequency of the A allele (by binomial sampling of expectated number of As)
      @param[in, out] allele_A_freq Frequency of allele A
      @param[in] HTE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
      @return Nothing (but modifies \p allele_A_freq)
-*/
+  */
   void realised_allele_freqs(double &allele_A_freq, const HTE_Model_Parameters &parameters, std::mt19937 &rng){
     std::binomial_distribution<int> surviving_As(parameters.shared.population_size, allele_A_freq);
     allele_A_freq =
@@ -93,7 +93,7 @@ namespace HTE {
      @param[in, out] rng Random number generator
      @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
      @return Nothing (but alters \p final_A_freqs)
-*/
+  */
   void run_simulation(const std::vector<double> &haploid_fitnesses, const HTE_Model_Parameters &parameters,
 		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
@@ -101,7 +101,7 @@ namespace HTE {
     int env_state = 0; // env 1 = 0; env 2 = 1
     while (gen < (parameters.model.gen_env_1 + parameters.model.gen_env_2) &&
 	   !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
-					 close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
+	     close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
       expected_allele_freqs(allele_A_freq, haploid_fitnesses, env_state);
       realised_allele_freqs(allele_A_freq, parameters, rng);
       ++gen;
@@ -115,17 +115,15 @@ namespace HTE {
      @param[in] argc Number of command line arguments
      @param[in] argv Array of command line arguments
      @return Nothing (but prints results)
-*/
+  */
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
     HTE_Model_Parameters params = parse_parameter_values(argc, argv);
     std::vector<double> haploid_fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
-    calculate_persistence_probability(params, run_simulation, rng, haploid_fitnesses, final_A_freqs);
-    // will alter output in a later extension (will print to file directly from c++ rather than via the python run script)
-    std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(params.fixed.number_replicates) << std::endl;
-
+    double persistence_probability = calculate_persistence_probability(params, run_simulation, rng,
+								       haploid_fitnesses, final_A_freqs);
   }
   
 }

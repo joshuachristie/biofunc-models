@@ -13,7 +13,7 @@
 #include "DSE.h"
 #include "rng.h"
 #include "persistence_probability.h"
-#include <iostream> // will probably need to be deleted once after refactoring and addition of print methods
+#include "print_results.h"
 
 /**
    @brief Namespace for Diploid Single Environment
@@ -112,10 +112,8 @@ namespace DSE {
     std::vector<double> genotype_fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
-    calculate_persistence_probability(params, run_simulation, rng, genotype_fitnesses, final_A_freqs);
-    // will alter output in a later extension (will print to file directly from c++ rather than via the python run script)
-    std::cout << std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) / static_cast<double>(params.fixed.number_replicates) << std::endl;
-
+    double persistence_probability = calculate_persistence_probability(params, run_simulation, rng,
+								       genotype_fitnesses, final_A_freqs);
   }
 
 
