@@ -30,7 +30,7 @@ void specify_and_run_model(int argc, char* argv[]){
   try {
     map[ argv[1] ](argc, argv); // specify and run model
   }
-  catch (std::bad_function_call){
+  catch (const std::bad_function_call&){
     std::cout << "Bad function call - is the first commandline argument the model identifier (e.g. HSE)?" << std::endl;
   }
   
