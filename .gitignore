@@ -1,4 +1,3 @@
 *~
-*.out
-models/simple_wright_fisher_diploid
-non_git_stuff
+/build/*
+/data/*
