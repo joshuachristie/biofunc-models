@@ -82,13 +82,12 @@ namespace HSE {
 		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
     int gen = 0;
-    while (!(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
-	     close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
+    while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)){
       expected_allele_freqs(allele_A_freq, haploid_fitnesses);
       realised_allele_freqs(allele_A_freq, parameters, rng);
       ++gen;
     }
-    close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ? final_A_freqs.push_back(0) :
+    help::close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ? final_A_freqs.push_back(0) :
       final_A_freqs.push_back(1);
   }
   /**

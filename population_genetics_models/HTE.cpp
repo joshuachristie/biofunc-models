@@ -97,14 +97,13 @@ namespace HTE {
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
     int gen = 0;
     int env_state = 0; // env 1 = 0; env 2 = 1
-    while ( !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
-	     close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance)) ){
+    while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)){
       expected_allele_freqs(allele_A_freq, haploid_fitnesses, env_state);
       realised_allele_freqs(allele_A_freq, parameters, rng);
       ++gen;
       if (gen == parameters.model.gen_env_1 - 1) {env_state = 1;}
     }
-    close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ? final_A_freqs.push_back(0) :
+    help::close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ? final_A_freqs.push_back(0) :
       final_A_freqs.push_back(1);
   }
   /**
