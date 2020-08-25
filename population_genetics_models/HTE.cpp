@@ -27,17 +27,16 @@ namespace HTE {
   */
   HTE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HTE");
-    assert(argc == 9 && "The HTE model must have 8 command line arguments (the first must be 'HTE')");
+    assert(argc == 8 && "The HTE model must have 7 command line arguments (the first must be 'HTE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_A_env_1 = atof(argv[3]);
     const double selection_coefficient_A_env_2 = atof(argv[4]);
     const double selection_coefficient_a_env_1 = atof(argv[5]);
     const double selection_coefficient_a_env_2 = atof(argv[6]);
     const int gen_env_1 = atoi(argv[7]);
-    const int gen_env_2 = atoi(argv[8]);
     HTE_Model_Parameters params {{population_size}, {selection_coefficient_A_env_1,
 	selection_coefficient_A_env_2, selection_coefficient_a_env_1,
-	selection_coefficient_a_env_2, gen_env_1, gen_env_2}};
+	selection_coefficient_a_env_2, gen_env_1}};
     return params;
   }
   /**
@@ -88,7 +87,6 @@ namespace HTE {
      @param[in] haploid_fitnesses Vector containing the fitnesses of the A and a alleles in the two environments [wA_1, wA_2, wa_1, wa_2]
      @param[in] HTE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in] HTE_Model_Parameters::HTE_Specific_Parameters::gen_env_1 Number of generations spent in environment 1
-     @param[in] HTE_Model_Parameters::HTE_Specific_Parameters::gen_env_2 Number of generations spent in environment 2
      @param[in] HTE_Model_Parameters::Fixed_Parameters::tolerance Tolerance for comparing equality of doubles
      @param[in, out] rng Random number generator
      @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
@@ -99,9 +97,8 @@ namespace HTE {
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
     int gen = 0;
     int env_state = 0; // env 1 = 0; env 2 = 1
-    while (gen < (parameters.model.gen_env_1 + parameters.model.gen_env_2) &&
-	   !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
-	     close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
+    while ( !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
+	     close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance)) ){
       expected_allele_freqs(allele_A_freq, haploid_fitnesses, env_state);
       realised_allele_freqs(allele_A_freq, parameters, rng);
       ++gen;

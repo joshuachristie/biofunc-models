@@ -27,15 +27,14 @@ namespace HTEOE {
   */
   HTEOE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HTEOE");
-    assert(argc == 8 && "The HTEOE model must have 7 command line arguments (the first must be 'HTEOE')");
+    assert(argc == 7 && "The HTEOE model must have 6 command line arguments (the first must be 'HTEOE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_A1 = atof(argv[3]);
     const double selection_coefficient_A2 = atof(argv[4]);
     const double selection_coefficient_a1 = atof(argv[5]);
     const double selection_coefficient_a2 = atof(argv[6]);
-    const int number_generations = atoi(argv[7]);
     HTEOE_Model_Parameters params {{population_size}, {selection_coefficient_A1, selection_coefficient_A2,
-	selection_coefficient_a1, selection_coefficient_a2, number_generations}};
+	selection_coefficient_a1, selection_coefficient_a2}};
     return params;
   }
   /**
@@ -82,7 +81,6 @@ namespace HTEOE {
      @brief Runs one replicate of the simulation
      @param[in] haploid_fitnesses Vector containing the fitnesses of the A and a alleles in the two environments [wA_1, wA_2, wa_1, wa_2]
      @param[in] HTEOE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
-     @param[in] HTEOE_Model_Parameters::Shared_Parameters::number_generations Maximum number of generations for which the simulation will run (for the case in which a trait invades the ancestral population and is not challenged afterwards; for the case in which the fixed trait must withstand invaders, each step runs until an absorbing state is reached).
      @param[in, out] rng Random number generator
      @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
      @param[in] HTEOE_Model_Parameters::Fixed_Parameters::tolerance Tolerance for comparing equality of doubles
@@ -92,8 +90,7 @@ namespace HTEOE {
 		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
     int gen = 0;
-    while (gen < parameters.model.number_generations &&
-	   !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
+    while (!(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
 					 close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
       expected_allele_freqs(allele_A_freq, haploid_fitnesses);
       realised_allele_freqs(allele_A_freq, parameters, rng);

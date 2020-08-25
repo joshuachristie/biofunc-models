@@ -27,11 +27,10 @@ namespace HSE {
   */
   HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HSE");
-    assert(argc == 5 && "The HSE model must have 4 command line arguments (the first must be HSE)");
+    assert(argc == 4 && "The HSE model must have 3 command line arguments (the first must be HSE)");
     const int population_size = atoi(argv[2]);
-    const int number_generations = atoi(argv[3]);
-    const double selection_coefficient = atof(argv[4]);
-    HSE_Model_Parameters params {{population_size}, {number_generations, selection_coefficient}};
+    const double selection_coefficient = atof(argv[3]);
+    HSE_Model_Parameters params {{population_size}, {selection_coefficient}};
     return params;
   }
   /**
@@ -74,7 +73,6 @@ namespace HSE {
      @brief Runs one replicate of the simulation
      @param[in] haploid_fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
      @param[in] HSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
-     @param[in] HSE_Model_Parameters::Shared_Parameters::number_generations Maximum number of generations for which the simulation will run (for the case in which a trait invades the ancestral population and is not challenged afterwards; for the case in which the fixed trait must withstand invaders, each step runs until an absorbing state is reached).
      @param[in] HSE_Model_Parameters::Fixed_Parameters::tolerance Tolerance for comparing equality of doubles
      @param[in, out] rng Random number generator
      @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
@@ -84,8 +82,7 @@ namespace HSE {
 		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
     int gen = 0;
-    while (gen < parameters.model.number_generations &&
-	   !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
+    while (!(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
 	     close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
       expected_allele_freqs(allele_A_freq, haploid_fitnesses);
       realised_allele_freqs(allele_A_freq, parameters, rng);

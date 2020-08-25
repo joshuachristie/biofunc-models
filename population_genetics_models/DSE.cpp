@@ -28,12 +28,11 @@ namespace DSE {
   */
   DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "DSE");
-    assert(argc == 6 && "The DSE model must have 5 command line arguments (the first must be 'DSE')");
+    assert(argc == 5 && "The DSE model must have 4 command line arguments (the first must be 'DSE')");
     const int population_size = atoi(argv[2]);
-    const int number_generations = atoi(argv[3]);
-    const double selection_coefficient_homozygote = atof(argv[4]);
-    const double selection_coefficient_heterozygote = atof(argv[5]);
-    DSE_Model_Parameters params {{population_size}, {number_generations, selection_coefficient_homozygote,
+    const double selection_coefficient_homozygote = atof(argv[3]);
+    const double selection_coefficient_heterozygote = atof(argv[4]);
+    DSE_Model_Parameters params {{population_size}, {selection_coefficient_homozygote,
 	selection_coefficient_heterozygote}};
     return params;
   }
@@ -80,7 +79,6 @@ namespace DSE {
      @brief Runs one replicate of the simulation
      @param[in] genotype_fitnesses Vector containing AA, Aa, and aa genotype fitnesses [wA, wAa, wa]
      @param[in] DSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
-     @param[in] DSE_Model_Parameters::Shared_Parameters::number_generations Maximum number of generations for which the simulation will run (for the case in which a trait invades the ancestral population and is not challenged afterwards; for the case in which the fixed trait must withstand invaders, each step runs until an absorbing state is reached).
      @param[in] DSE_Model_Parameters::Fixed_Parameters::tolerance Tolerance for comparing equality of doubles
      @param[in, out] rng Random number generator
      @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
@@ -90,8 +88,7 @@ namespace DSE {
 		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size * 2); // initial freq is 1/2N
     int gen = 0;
-    while (gen < parameters.model.number_generations &&
-	   !(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
+    while (!(close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ||
 	     close_to_value(allele_A_freq, 1.0, parameters.fixed.tolerance))){
       expected_allele_freqs(allele_A_freq, genotype_fitnesses);
       realised_allele_freqs(allele_A_freq, parameters, rng);

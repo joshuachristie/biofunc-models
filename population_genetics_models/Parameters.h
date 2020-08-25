@@ -29,7 +29,6 @@ struct HSE_Model_Parameters {
   Shared_Parameters shared;
   // add struct for HSE-specific parameters
   struct HSE_Specific_Parameters {
-    const int number_generations;
     const double selection_coefficient;
   } model;
   // add struct containing fixed parameter values
@@ -44,7 +43,6 @@ struct DSE_Model_Parameters {
   Shared_Parameters shared;
   // add struct for DSE-specific parameters
   struct DSE_Specific_Parameters {
-    const int number_generations;
     const double selection_coefficient_homozygote;
     const double selection_coefficient_heterozygote;
   } model;
@@ -64,7 +62,6 @@ struct HTE_Model_Parameters {
     const double selection_coefficient_a_env_1;
     const double selection_coefficient_a_env_2;
     const int gen_env_1;
-    const int gen_env_2;
   } model;
   // add struct containing fixed parameter values
   Fixed_Parameters fixed;
@@ -82,7 +79,6 @@ struct HTEOE_Model_Parameters {
     const double selection_coefficient_A2;
     const double selection_coefficient_a1;
     const double selection_coefficient_a2;
-    const int number_generations;
   } model;
   // add struct containing fixed parameter values
   Fixed_Parameters fixed;
