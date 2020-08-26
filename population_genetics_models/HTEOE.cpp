@@ -52,27 +52,22 @@ namespace HTEOE {
     return haploid_fitnesses;
   }
   /**
-     @brief Calculates expected frequency of the A allele after selection
+     @brief Calculates frequency of the A allele after selection
      @param[in, out] allele_A_freq The frequency of the A allele
      @param[in] haploid_fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
-     @return Nothing (but modifies \p allele_A_freq)
-*/
-  void expected_allele_freqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses){
-      std::vector<double> expected_allele_freq_raw(2);
-  expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[0];
-  expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * haploid_fitnesses[1];
-  // replace allele_A_freq with normalised expectation
-  allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
-								 expected_allele_freq_raw.end(), 0.0));
-  }
-  /**
-     @brief Calculates realised frequency of the A allele (by binomial sampling of expectated number of As)
-     @param[in, out] allele_A_freq Frequency of allele A
      @param[in] HTEOE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
      @return Nothing (but modifies \p allele_A_freq)
-*/
-  void realised_allele_freqs(double &allele_A_freq, const HTEOE_Model_Parameters &parameters, std::mt19937 &rng){
+  */
+  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
+			      const HTEOE_Model_Parameters &parameters, std::mt19937 &rng){
+    std::vector<double> expected_allele_freq_raw(2);
+    expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[0];
+    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * haploid_fitnesses[1];
+    // calculate normalised expectation of allele_A_freq
+    allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
+								   expected_allele_freq_raw.end(), 0.0));
+    // sample to get realised allele_A_freq
     std::binomial_distribution<int> surviving_As(parameters.shared.population_size, allele_A_freq);
     allele_A_freq =
       static_cast<double>(surviving_As(rng)) / static_cast<double>(parameters.shared.population_size);
@@ -91,8 +86,7 @@ namespace HTEOE {
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
     int gen = 0;
     while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)){
-      expected_allele_freqs(allele_A_freq, haploid_fitnesses);
-      realised_allele_freqs(allele_A_freq, parameters, rng);
+      calculate_allele_freqs(allele_A_freq, haploid_fitnesses, parameters, rng);
       ++gen;
     }
     help::close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ? final_A_freqs.push_back(0) :

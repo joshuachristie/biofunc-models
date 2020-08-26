@@ -49,28 +49,23 @@ namespace DSE {
     return genotype_fitnesses;
   }
   /**
-     @brief Calculates expected frequency of the A allele after selection
+     @brief Calculates frequency of the A allele after selection and random mating
      @param[in, out] allele_A_freq The frequency of the A allele
      @param[in] genotype_fitnesses Vector containing AA, Aa, and aa genotype fitnesses [wA, wAa, wa]
-     @return Nothing (but modifies \p allele_A_freq)
-  */
-  void expected_allele_freqs(double &allele_A_freq, const std::vector<double> &genotype_fitnesses){
-    std::vector<double> expected_genotype_freq_raw(3);
-    expected_genotype_freq_raw[0] = std::pow(allele_A_freq, 2.0) * genotype_fitnesses[0]; // AA
-    expected_genotype_freq_raw[1] = 2 * allele_A_freq * (1.0 - allele_A_freq) * genotype_fitnesses[1]; // Aa
-    expected_genotype_freq_raw[2] = std::pow((1 - allele_A_freq), 2.0) * genotype_fitnesses[2]; // aa
-    // replace allele_A_freq with normalised expectation
-    allele_A_freq = (expected_genotype_freq_raw[0] + 0.5 * expected_genotype_freq_raw[1]) /		(std::accumulate(expected_genotype_freq_raw.begin(), expected_genotype_freq_raw.end(), 0.0));
-  }
-  /**
-     @brief Calculates realised frequency of the A allele (by binomial sampling of expectated number of As)
-     @param[in, out] allele_A_freq Frequency of allele A
      @param[in] DSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
      @return Nothing (but modifies \p allele_A_freq)
   */
-  void realised_allele_freqs(double &allele_A_freq, const DSE_Model_Parameters &parameters, std::mt19937 &rng){
-    // population_size multiplied by 2 because organisms are diploid
+  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &genotype_fitnesses,
+			      const DSE_Model_Parameters &parameters, std::mt19937 &rng){
+    std::vector<double> expected_genotype_freq_raw(3);
+    expected_genotype_freq_raw[0] = std::pow(allele_A_freq, 2.0) * genotype_fitnesses[0]; // AA
+    expected_genotype_freq_raw[1] = 2 * allele_A_freq * (1.0 - allele_A_freq) * genotype_fitnesses[1]; // Aa
+    expected_genotype_freq_raw[2] = std::pow((1 - allele_A_freq), 2.0) * genotype_fitnesses[2]; // aa
+    // get normalised expectation for allele_A_freq
+    allele_A_freq = (expected_genotype_freq_raw[0] + 0.5 * expected_genotype_freq_raw[1]) /
+      (std::accumulate(expected_genotype_freq_raw.begin(), expected_genotype_freq_raw.end(), 0.0));
+    // sample to get realised outcome for allele_A_freq (diploid, so population_size multiplied by 2)
     std::binomial_distribution<int> surviving_As(parameters.shared.population_size * 2, allele_A_freq);
     allele_A_freq =
       static_cast<double>(surviving_As(rng)) / static_cast<double>(parameters.shared.population_size * 2);
@@ -89,8 +84,7 @@ namespace DSE {
     double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size * 2); // initial freq is 1/2N
     int gen = 0;
     while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)){
-      expected_allele_freqs(allele_A_freq, genotype_fitnesses);
-      realised_allele_freqs(allele_A_freq, parameters, rng);
+      calculate_allele_freqs(allele_A_freq, genotype_fitnesses, parameters, rng);
       ++gen;
     }
     help::close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ? final_A_freqs.push_back(0) :

@@ -56,28 +56,22 @@ namespace HTE {
     return haploid_fitnesses;
   }
   /**
-     @brief Calculates expected frequency of the A allele after selection
+     @brief Calculates frequency of the A allele after selection
      @param[in, out] allele_A_freq The frequency of the A allele
      @param[in] haploid_fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
-     @return Nothing (but modifies \p allele_A_freq)
-  */
-  void expected_allele_freqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
-			     int env_state){
-    std::vector<double> expected_allele_freq_raw(2);
-    expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[env_state];
-    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * haploid_fitnesses[2 + env_state];
-    // replace allele_A_freq with normalised expectation
-    allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
-								   expected_allele_freq_raw.end(), 0.0));
-  }
-  /**
-     @brief Calculates realised frequency of the A allele (by binomial sampling of expectated number of As)
-     @param[in, out] allele_A_freq Frequency of allele A
      @param[in] HTE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
      @return Nothing (but modifies \p allele_A_freq)
   */
-  void realised_allele_freqs(double &allele_A_freq, const HTE_Model_Parameters &parameters, std::mt19937 &rng){
+  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
+			     int env_state, const HTE_Model_Parameters &parameters, std::mt19937 &rng){
+    std::vector<double> expected_allele_freq_raw(2);
+    expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[env_state];
+    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * haploid_fitnesses[2 + env_state];
+    // calculate normalised expectation of allele_A_freq
+    allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
+								   expected_allele_freq_raw.end(), 0.0));
+    // sample to get realised allele_A_freq
     std::binomial_distribution<int> surviving_As(parameters.shared.population_size, allele_A_freq);
     allele_A_freq =
       static_cast<double>(surviving_As(rng)) / static_cast<double>(parameters.shared.population_size);
@@ -98,8 +92,7 @@ namespace HTE {
     int gen = 0;
     int env_state = 0; // env 1 = 0; env 2 = 1
     while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)){
-      expected_allele_freqs(allele_A_freq, haploid_fitnesses, env_state);
-      realised_allele_freqs(allele_A_freq, parameters, rng);
+      calculate_allele_freqs(allele_A_freq, haploid_fitnesses, env_state, parameters, rng);
       ++gen;
       if (gen == parameters.model.gen_env_1 - 1) {env_state = 1;}
     }
