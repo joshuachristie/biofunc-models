@@ -32,8 +32,9 @@ namespace DSE {
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_homozygote = atof(argv[3]);
     const double selection_coefficient_heterozygote = atof(argv[4]);
+    double allele_A_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
     DSE_Model_Parameters params {{population_size}, {selection_coefficient_homozygote,
-	selection_coefficient_heterozygote}};
+	selection_coefficient_heterozygote, allele_A_freq}};
     return params;
   }
   /**

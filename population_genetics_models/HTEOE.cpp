@@ -33,8 +33,9 @@ namespace HTEOE {
     const double selection_coefficient_A2 = atof(argv[4]);
     const double selection_coefficient_a1 = atof(argv[5]);
     const double selection_coefficient_a2 = atof(argv[6]);
+    const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
     HTEOE_Model_Parameters params {{population_size}, {selection_coefficient_A1, selection_coefficient_A2,
-	selection_coefficient_a1, selection_coefficient_a2}};
+	selection_coefficient_a1, selection_coefficient_a2, initial_A_freq}};
     return params;
   }
   /**

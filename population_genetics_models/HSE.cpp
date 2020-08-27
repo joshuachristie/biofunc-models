@@ -30,7 +30,8 @@ namespace HSE {
     assert(argc == 4 && "The HSE model must have 3 command line arguments (the first must be HSE)");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient = atof(argv[3]);
-    HSE_Model_Parameters params {{population_size}, {selection_coefficient}};
+    const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
+    HSE_Model_Parameters params {{population_size}, {selection_coefficient, initial_A_freq}};
     return params;
   }
   /**

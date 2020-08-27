@@ -34,9 +34,10 @@ namespace HTE {
     const double selection_coefficient_a_env_1 = atof(argv[5]);
     const double selection_coefficient_a_env_2 = atof(argv[6]);
     const int gen_env_1 = atoi(argv[7]);
+    const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
     HTE_Model_Parameters params {{population_size}, {selection_coefficient_A_env_1,
 	selection_coefficient_A_env_2, selection_coefficient_a_env_1,
-	selection_coefficient_a_env_2, gen_env_1}};
+	selection_coefficient_a_env_2, gen_env_1, initial_A_freq}};
     return params;
   }
   /**

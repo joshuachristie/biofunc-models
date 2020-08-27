@@ -22,6 +22,7 @@ double calculate_persistence_probability(const P &params, F run_sim, std::mt1993
 					 std::vector<double> &fitnesses, std::vector<bool> &final_A_freqs){
   for (int i = 0; i < params.fixed.number_replicates; i++){
     run_sim(fitnesses, params, rng, final_A_freqs);
+    double allele_A_freq = params.model.initial_A_freq;
   }
   return std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) /
     static_cast<double>(params.fixed.number_replicates);
