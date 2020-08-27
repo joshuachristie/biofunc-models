@@ -28,11 +28,12 @@ namespace HSE {
   */
   HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HSE");
-    assert(argc == 4 && "The HSE model must have 3 command line arguments (the first must be HSE)");
+    assert(argc == 5 && "The HSE model must have 4 command line arguments (the first must be HSE)");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient = atof(argv[3]);
     const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
-    HSE_Model_Parameters params {{population_size}, {selection_coefficient, initial_A_freq}};
+    const int number_reinvasions = atoi(argv[4]);
+    HSE_Model_Parameters params {{population_size}, {selection_coefficient, initial_A_freq, number_reinvasions}};
     return params;
   }
   /**

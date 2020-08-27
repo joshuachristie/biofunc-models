@@ -8,6 +8,7 @@
 #include <random>
 #include <numeric>
 #include "allele_invasion.h"
+#include "helper_functions.h"
 
 /**
    @brief Template function to run replicates and calculate persistence probability for the pop gen models
@@ -19,12 +20,21 @@
    @return Persistence_probability The probability that the trait persists in the population
 */
 template <class P, class F>
-double calculate_persistence_probability(const P &params, std::mt19937 &rng,
-					 const std::vector<double> &fitnesses,
-					 std::vector<bool> &final_A_freqs, F calculate_allele_method){
+double calculate_persistence_probability(const P &params, std::mt19937 &rng, const std::vector<double>
+					 &fitnesses, std::vector<bool> &final_A_freqs,
+					 F calculate_allele_method){
   for (int i = 0; i < params.fixed.number_replicates; i++){
     double allele_A_freq = params.model.initial_A_freq;
-    allele_invasion(fitnesses, params, rng, final_A_freqs, allele_A_freq, calculate_allele_method);
+    // run simulation to see whether allele A invades and either becomes fixed or withstands 1000000 gens
+    allele_invasion(fitnesses, params, rng, allele_A_freq, calculate_allele_method);
+    int reinvasions = 0;
+    // run reinvasion attempts by resident while allele A remains (if number_reinvasions is non-zero)
+    while (help::is_not_extinct(allele_A_freq, params) && reinvasions < params.model.number_reinvasions){
+      allele_A_freq -= params.model.initial_A_freq; // replace single A allele with an a allele
+      allele_invasion(fitnesses, params, rng, allele_A_freq, calculate_allele_method);
+      reinvasions++;
+    }
+    help::is_not_extinct(allele_A_freq, params) ? final_A_freqs.push_back(1) : final_A_freqs.push_back(0);
   }
   return std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) /
     static_cast<double>(params.fixed.number_replicates);

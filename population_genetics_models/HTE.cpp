@@ -28,7 +28,7 @@ namespace HTE {
   */
   HTE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HTE");
-    assert(argc == 8 && "The HTE model must have 7 command line arguments (the first must be 'HTE')");
+    assert(argc == 9 && "The HTE model must have 8 command line arguments (the first must be 'HTE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_A_env_1 = atof(argv[3]);
     const double selection_coefficient_A_env_2 = atof(argv[4]);
@@ -36,9 +36,10 @@ namespace HTE {
     const double selection_coefficient_a_env_2 = atof(argv[6]);
     const int gen_env_1 = atoi(argv[7]);
     const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
+    const int number_reinvasions = atoi(argv[8]);
     HTE_Model_Parameters params {{population_size}, {selection_coefficient_A_env_1,
 	selection_coefficient_A_env_2, selection_coefficient_a_env_1,
-	selection_coefficient_a_env_2, gen_env_1, initial_A_freq}};
+	selection_coefficient_a_env_2, gen_env_1, initial_A_freq, number_reinvasions}};
     return params;
   }
   /**
