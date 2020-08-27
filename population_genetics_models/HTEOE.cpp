@@ -44,18 +44,18 @@ namespace HTEOE {
      @param[in] parameters HTEOE_Model_Parameters::HTEOE_Specific_Parameters::selection_coefficient_A2 - selection coefficient of the A allele's second effect
      @param[in] parameters HTEOE_Model_Parameters::HTEOE_Specific_Parameters::selection_coefficient_a1 - selection coefficient of the a allele's first effect
      @param[in] parameters HTEOE_Model_Parameters::HTEOE_Specific_Parameters::selection_coefficient_a2 - selection coefficient of the a allele's second effect
-     @return haploid_fitnesses A vector of length 2 containing the fitnesses for the A and a alleles [wA, wa]
+     @return fitnesses A vector of length 2 containing the fitnesses for the A and a alleles [wA, wa]
   */
   std::vector<double> get_fitness_function(const HTEOE_Model_Parameters &parameters){
-    std::vector<double> haploid_fitnesses
+    std::vector<double> fitnesses
       {1.0 + parameters.model.selection_coefficient_A1 + parameters.model.selection_coefficient_A2,
-      1.0 + parameters.model.selection_coefficient_a1 + parameters.model.selection_coefficient_a2}; 
-    return haploid_fitnesses;
+       1.0 + parameters.model.selection_coefficient_a1 + parameters.model.selection_coefficient_a2}; 
+    return fitnesses;
   }
   /**
      @brief Calculates frequency of the A allele after selection
      @param[in, out] allele_A_freq The frequency of the A allele
-     @param[in] haploid_fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
+     @param[in] fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
      @param[in] HTEOE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
      @return Nothing (but modifies \p allele_A_freq)
@@ -63,8 +63,8 @@ namespace HTEOE {
   void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
 			      const HTEOE_Model_Parameters &parameters, std::mt19937 &rng){
     std::vector<double> expected_allele_freq_raw(2);
-    expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[0];
-    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * haploid_fitnesses[1];
+    expected_allele_freq_raw[0] = allele_A_freq * fitnesses[0];
+    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * fitnesses[1];
     // calculate normalised expectation of allele_A_freq
     allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
 								   expected_allele_freq_raw.end(), 0.0));
@@ -102,7 +102,7 @@ namespace HTEOE {
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
     HTEOE_Model_Parameters params = parse_parameter_values(argc, argv);
-    std::vector<double> haploid_fitnesses = get_fitness_function(params);
+    std::vector<double> fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
     double persistence_probability = calculate_persistence_probability(params, run_simulation, rng,

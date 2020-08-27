@@ -37,17 +37,17 @@ namespace HSE {
   /**
      @brief Calculates fitness function
      @param[in] parameters HSE_Model_Parameters::HSE_Specific_Parameters::selection_coefficient - selection coefficient of the A allele
-     @return haploid_fitnesses A vector of length 2 containing the fitnesses of the A and a alleles [wA, wa]
+     @return fitnesses A vector of length 2 containing the fitnesses of the A and a alleles [wA, wa]
   */
   std::vector<double> get_fitness_function(const HSE_Model_Parameters &parameters){
-    // haploid_fitnesses[w_A, w_a] gives relative fitness of A allele
-    std::vector<double> haploid_fitnesses {1.0 + parameters.model.selection_coefficient, 1.0};
-    return haploid_fitnesses;
+    // fitnesses[w_A, w_a] gives relative fitness of A allele
+    std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient, 1.0};
+    return fitnesses;
   }
   /**
      @brief Calculates frequency of the A allele after selection
      @param[in, out] allele_A_freq The frequency of the A allele
-     @param[in] haploid_fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
+     @param[in] fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
      @param[in] HSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
      @return Nothing (but modifies \p allele_A_freq)
@@ -55,8 +55,8 @@ namespace HSE {
   void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
 			      const HSE_Model_Parameters &parameters, std::mt19937 &rng){
     std::vector<double> expected_allele_freq_raw(2);
-    expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[0];
-    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * haploid_fitnesses[1];
+    expected_allele_freq_raw[0] = allele_A_freq * fitnesses[0];
+    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * fitnesses[1];
     // get normalised expectation for allele_A_freq
     allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
 								   expected_allele_freq_raw.end(), 0.0));
@@ -94,7 +94,7 @@ namespace HSE {
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
     HSE_Model_Parameters params = parse_parameter_values(argc, argv);
-    std::vector<double> haploid_fitnesses = get_fitness_function(params);
+    std::vector<double> fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
     double persistence_probability = calculate_persistence_probability(params, run_simulation, rng,

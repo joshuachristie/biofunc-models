@@ -12,7 +12,7 @@
    @brief Template function to run replicates and calculate persistence probability for the pop gen models
    @param[in] params Template for HSE_Model_Parameters, DSE_Model_Parameters, HTE_Model_Parameters, or HTEOE_Model_Parameters
    @param[in] run_sim Template for HSE::run_simulation, DSE::run_simulation, HTE::run_simulation or HTEOE::run_simulation
-   @param[in] fitnesses Either \p haploid_fitnesses (HSE, HTE, HTEOE) or \p genotype_fitnesses (DSE)
+   @param[in] fitnesses Vector of allele or genotype fitnesses
    @param[in, out] rng Random number generator
    @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
    @return Persistence_probability The probability that the trait persists in the population
