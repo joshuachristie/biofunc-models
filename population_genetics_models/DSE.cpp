@@ -14,6 +14,7 @@
 #include "rng.h"
 #include "persistence_probability.h"
 #include "print_results.h"
+#include "allele_invasion.h"
 
 /**
    @brief Namespace for Diploid Single Environment
@@ -57,8 +58,8 @@ namespace DSE {
      @param[in, out] rng Random number generator
      @return Nothing (but modifies \p allele_A_freq)
   */
-  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &genotype_fitnesses,
-			      const DSE_Model_Parameters &parameters, std::mt19937 &rng){
+  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &fitnesses,
+			      const DSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
     std::vector<double> expected_genotype_freq_raw(3);
     expected_genotype_freq_raw[0] = std::pow(allele_A_freq, 2.0) * fitnesses[0]; // AA
     expected_genotype_freq_raw[1] = 2 * allele_A_freq * (1.0 - allele_A_freq) * fitnesses[1]; // Aa
@@ -70,26 +71,7 @@ namespace DSE {
     std::binomial_distribution<int> surviving_As(parameters.shared.population_size * 2, allele_A_freq);
     allele_A_freq =
       static_cast<double>(surviving_As(rng)) / static_cast<double>(parameters.shared.population_size * 2);
-  }
-  /**
-     @brief Runs one replicate of the simulation
-     @param[in] genotype_fitnesses Vector containing AA, Aa, and aa genotype fitnesses [wA, wAa, wa]
-     @param[in] DSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
-     @param[in] DSE_Model_Parameters::Fixed_Parameters::tolerance Tolerance for comparing equality of doubles
-     @param[in, out] rng Random number generator
-     @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
-     @return Nothing (but alters \p final_A_freqs)
-  */
-  void run_simulation(const std::vector<double> &genotype_fitnesses, const DSE_Model_Parameters &parameters,
-		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
-    double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size * 2); // initial freq is 1/2N
-    int gen = 0;
-    while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)){
-      calculate_allele_freqs(allele_A_freq, genotype_fitnesses, parameters, rng);
-      ++gen;
-    }
-    help::close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ? final_A_freqs.push_back(0) :
-      final_A_freqs.push_back(1);
+    ++gen;
   }
   /**
      @brief Runs Diploid Single Environment model
@@ -103,10 +85,9 @@ namespace DSE {
     std::vector<double> fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
-    double persistence_probability = calculate_persistence_probability(params, run_simulation, rng,
-								       genotype_fitnesses, final_A_freqs);
+    double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
+								       final_A_freqs, calculate_allele_freqs);
     print::print_persistence_probability(argc, argv, persistence_probability);
   }
-
 
 }

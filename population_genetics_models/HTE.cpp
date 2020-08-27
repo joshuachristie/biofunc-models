@@ -14,6 +14,7 @@
 #include "rng.h"
 #include "persistence_probability.h"
 #include "print_results.h"
+#include "allele_invasion.h"
 
 /**
    @brief Namespace for Haploid Two Environments
@@ -62,13 +63,14 @@ namespace HTE {
      @param[in] fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
      @param[in] HTE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
+     @param[in, out] gen Current generation of the simulation
      @return Nothing (but modifies \p allele_A_freq)
   */
-  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &haploid_fitnesses,
-			     int env_state, const HTE_Model_Parameters &parameters, std::mt19937 &rng){
+  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &fitnesses,
+			      const HTE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
     std::vector<double> expected_allele_freq_raw(2);
-    expected_allele_freq_raw[0] = allele_A_freq * haploid_fitnesses[env_state];
-    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * haploid_fitnesses[2 + env_state];
+    expected_allele_freq_raw[0] = allele_A_freq * fitnesses[gen >= parameters.model.gen_env_1];
+    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * fitnesses[2 + (gen >= parameters.model.gen_env_1)];
     // calculate normalised expectation of allele_A_freq
     allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
 								   expected_allele_freq_raw.end(), 0.0));
@@ -76,29 +78,7 @@ namespace HTE {
     std::binomial_distribution<int> surviving_As(parameters.shared.population_size, allele_A_freq);
     allele_A_freq =
       static_cast<double>(surviving_As(rng)) / static_cast<double>(parameters.shared.population_size);
-  }
-  /**
-     @brief Runs one replicate of the simulation
-     @param[in] haploid_fitnesses Vector containing the fitnesses of the A and a alleles in the two environments [wA_1, wA_2, wa_1, wa_2]
-     @param[in] HTE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
-     @param[in] HTE_Model_Parameters::HTE_Specific_Parameters::gen_env_1 Number of generations spent in environment 1
-     @param[in] HTE_Model_Parameters::Fixed_Parameters::tolerance Tolerance for comparing equality of doubles
-     @param[in, out] rng Random number generator
-     @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
-     @return Nothing (but alters \p final_A_freqs)
-  */
-  void run_simulation(const std::vector<double> &haploid_fitnesses, const HTE_Model_Parameters &parameters,
-		      std::mt19937 &rng, std::vector<bool> &final_A_freqs){
-    double allele_A_freq = 1.0 / static_cast<double>(parameters.shared.population_size); // initial freq is 1/N
-    int gen = 0;
-    int env_state = 0; // env 1 = 0; env 2 = 1
-    while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)){
-      calculate_allele_freqs(allele_A_freq, haploid_fitnesses, env_state, parameters, rng);
-      ++gen;
-      if (gen == parameters.model.gen_env_1 - 1) {env_state = 1;}
-    }
-    help::close_to_value(allele_A_freq, 0.0, parameters.fixed.tolerance) ? final_A_freqs.push_back(0) :
-      final_A_freqs.push_back(1);
+    ++gen;
   }
   /**
      @brief Runs Haploid Two Effects model
@@ -112,8 +92,8 @@ namespace HTE {
     std::vector<double> fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
-    double persistence_probability = calculate_persistence_probability(params, run_simulation, rng,
-								       haploid_fitnesses, final_A_freqs);
+    double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
+								       final_A_freqs, calculate_allele_freqs);
     print::print_persistence_probability(argc, argv, persistence_probability);
   }
   
