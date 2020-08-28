@@ -26,7 +26,7 @@ namespace HTEOE {
      @param[in] argv Command line arguments
      @return params HTEOE_Model_Parameters struct
   */
-  HTEOE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
+  const HTEOE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HTEOE");
     assert(argc == 8 && "The HTEOE model must have 7 command line arguments (the first must be 'HTEOE')");
     const int population_size = atoi(argv[2]);
@@ -36,7 +36,7 @@ namespace HTEOE {
     const double selection_coefficient_a2 = atof(argv[6]);
     const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
     const int number_reinvasions = atoi(argv[7]);
-    HTEOE_Model_Parameters params {{population_size}, {selection_coefficient_A1, selection_coefficient_A2,
+    const HTEOE_Model_Parameters params {{population_size}, {selection_coefficient_A1, selection_coefficient_A2,
 	selection_coefficient_a1, selection_coefficient_a2, initial_A_freq, number_reinvasions}};
     return params;
   }
@@ -48,8 +48,8 @@ namespace HTEOE {
      @param[in] parameters HTEOE_Model_Parameters::HTEOE_Specific_Parameters::selection_coefficient_a2 - selection coefficient of the a allele's second effect
      @return fitnesses A vector of length 2 containing the fitnesses for the A and a alleles [wA, wa]
   */
-  std::vector<double> get_fitness_function(const HTEOE_Model_Parameters &parameters){
-    std::vector<double> fitnesses
+  const std::vector<double> get_fitness_function(const HTEOE_Model_Parameters &parameters){
+    const std::vector<double> fitnesses
       {1.0 + parameters.model.selection_coefficient_A1 + parameters.model.selection_coefficient_A2,
        1.0 + parameters.model.selection_coefficient_a1 + parameters.model.selection_coefficient_a2}; 
     return fitnesses;
@@ -84,12 +84,12 @@ namespace HTEOE {
   */
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
-    HTEOE_Model_Parameters params = parse_parameter_values(argc, argv);
-    std::vector<double> fitnesses = get_fitness_function(params);
+    const HTEOE_Model_Parameters params = parse_parameter_values(argc, argv);
+    const std::vector<double> fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
-    double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
-								       final_A_freqs, calculate_allele_freqs);
+    const double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
+									     final_A_freqs, calculate_allele_freqs);
     print::print_persistence_probability(argc, argv, persistence_probability);
   }
 

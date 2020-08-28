@@ -26,14 +26,14 @@ namespace HSE {
      @param[in] argv Command line arguments
      @return params HSE_Model_Parameters struct
   */
-  HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
+  const HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HSE");
     assert(argc == 5 && "The HSE model must have 4 command line arguments (the first must be HSE)");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient = atof(argv[3]);
     const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
     const int number_reinvasions = atoi(argv[4]);
-    HSE_Model_Parameters params {{population_size}, {selection_coefficient, initial_A_freq, number_reinvasions}};
+    const HSE_Model_Parameters params {{population_size}, {selection_coefficient, initial_A_freq, number_reinvasions}};
     return params;
   }
   /**
@@ -41,9 +41,9 @@ namespace HSE {
      @param[in] parameters HSE_Model_Parameters::HSE_Specific_Parameters::selection_coefficient - selection coefficient of the A allele
      @return fitnesses A vector of length 2 containing the fitnesses of the A and a alleles [wA, wa]
   */
-  std::vector<double> get_fitness_function(const HSE_Model_Parameters &parameters){
+  const std::vector<double> get_fitness_function(const HSE_Model_Parameters &parameters){
     // fitnesses[w_A, w_a] gives relative fitness of A allele
-    std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient, 1.0};
+    const std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient, 1.0};
     return fitnesses;
   }
   /**
@@ -76,12 +76,12 @@ namespace HSE {
   */
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
-    HSE_Model_Parameters params = parse_parameter_values(argc, argv);
-    std::vector<double> fitnesses = get_fitness_function(params);
+    const HSE_Model_Parameters params = parse_parameter_values(argc, argv);
+    const std::vector<double> fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
-    double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
-								       final_A_freqs, calculate_allele_freqs);
+    const double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
+									     final_A_freqs, calculate_allele_freqs);
     print::print_persistence_probability(argc, argv, persistence_probability);
   }
 

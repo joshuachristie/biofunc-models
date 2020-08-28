@@ -26,7 +26,7 @@ namespace HTE {
      @param[in] argv Command line arguments
      @return params HTE_Model_Parameters struct
   */
-  HTE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
+  const HTE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HTE");
     assert(argc == 9 && "The HTE model must have 8 command line arguments (the first must be 'HTE')");
     const int population_size = atoi(argv[2]);
@@ -37,7 +37,7 @@ namespace HTE {
     const int gen_env_1 = atoi(argv[7]);
     const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
     const int number_reinvasions = atoi(argv[8]);
-    HTE_Model_Parameters params {{population_size}, {selection_coefficient_A_env_1,
+    const HTE_Model_Parameters params {{population_size}, {selection_coefficient_A_env_1,
 	selection_coefficient_A_env_2, selection_coefficient_a_env_1,
 	selection_coefficient_a_env_2, gen_env_1, initial_A_freq, number_reinvasions}};
     return params;
@@ -50,9 +50,9 @@ namespace HTE {
      @param[in] parameters HTE_Model_Parameters::HTE_Specific_Parameters::selection_coefficient_a_env_2 - selection coefficient of the a allele in environment 2
      @return fitnesses A vector of length 4 containing the fitnesses of the A and a alleles in environments 1 and 2 [wA_1, wA_2, wa_1, wa_2]
   */
-  std::vector<double> get_fitness_function(const HTE_Model_Parameters &parameters){
+  const std::vector<double> get_fitness_function(const HTE_Model_Parameters &parameters){
     // haploid_fitnesses[w_A_1, w_A_2, w_a_1, w_a_2] gives relative fitness of A/a alleles in envs 1/2
-    std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient_A_env_1,
+    const std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient_A_env_1,
       1.0 + parameters.model.selection_coefficient_A_env_2,
       1.0 + parameters.model.selection_coefficient_a_env_1,
       1.0 + parameters.model.selection_coefficient_a_env_2};
@@ -89,12 +89,12 @@ namespace HTE {
   */
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
-    HTE_Model_Parameters params = parse_parameter_values(argc, argv);
-    std::vector<double> fitnesses = get_fitness_function(params);
+    const HTE_Model_Parameters params = parse_parameter_values(argc, argv);
+    const std::vector<double> fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
     final_A_freqs.reserve(params.fixed.number_replicates);
-    double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
-								       final_A_freqs, calculate_allele_freqs);
+    const double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
+									     final_A_freqs, calculate_allele_freqs);
     print::print_persistence_probability(argc, argv, persistence_probability);
   }
   

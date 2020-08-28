@@ -20,9 +20,9 @@
    @return Persistence_probability The probability that the trait persists in the population
 */
 template <class P, class F>
-double calculate_persistence_probability(const P &params, std::mt19937 &rng, const std::vector<double>
-					 &fitnesses, std::vector<bool> &final_A_freqs,
-					 F calculate_allele_method){
+const double calculate_persistence_probability(const P &params, std::mt19937 &rng, const std::vector<double>
+					       &fitnesses, std::vector<bool> &final_A_freqs,
+					       F calculate_allele_method){
   for (int i = 0; i < params.fixed.number_replicates; i++){
     double allele_A_freq = params.model.initial_A_freq;
     // run simulation to see whether allele A invades and either becomes fixed or withstands 1000000 gens
