@@ -33,6 +33,7 @@ struct HSE_Model_Parameters {
     const double selection_coefficient;
     const double initial_A_freq;
     const int number_reinvasions;
+    const int number_generations_to_output_pp;
   } model;
   // add struct containing fixed parameter values
   Fixed_Parameters fixed;
@@ -50,6 +51,7 @@ struct DSE_Model_Parameters {
     const double selection_coefficient_heterozygote;
     const double initial_A_freq;
     const int number_reinvasions;
+    const int number_generations_to_output_pp;
   } model;
   // add struct containing fixed parameter values
   Fixed_Parameters fixed;
@@ -69,6 +71,7 @@ struct HTE_Model_Parameters {
     const int gen_env_1;
     const double initial_A_freq;
     const int number_reinvasions;
+    const int number_generations_to_output_pp;
   } model;
   // add struct containing fixed parameter values
   Fixed_Parameters fixed;
@@ -88,6 +91,7 @@ struct HTEOE_Model_Parameters {
     const double selection_coefficient_a2;
     const double initial_A_freq;
     const int number_reinvasions;
+    const int number_generations_to_output_pp;
   } model;
   // add struct containing fixed parameter values
   Fixed_Parameters fixed;
