@@ -36,8 +36,8 @@ namespace HSE {
     const int number_reinvasions = atoi(argv[4]);
     const int number_gens_to_output_pp =
       check_parameter_value_compatibility(number_reinvasions, argc, argv, 5);
-    const HSE_Model_Parameters params {{population_size}, {selection_coefficient, initial_A_freq,
-	number_reinvasions, number_gens_to_output_pp}};
+    const HSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
+	number_gens_to_output_pp}, {selection_coefficient}};
     return params;
   }
   /**

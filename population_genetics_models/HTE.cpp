@@ -40,9 +40,9 @@ namespace HTE {
     const int number_reinvasions = atoi(argv[8]);
     const int number_gens_to_output_pp =
       check_parameter_value_compatibility(number_reinvasions, argc, argv, 9);
-    const HTE_Model_Parameters params {{population_size}, {selection_coefficient_A_env_1,
-	selection_coefficient_A_env_2, selection_coefficient_a_env_1, selection_coefficient_a_env_2, gen_env_1,
-	initial_A_freq, number_reinvasions, number_gens_to_output_pp}};
+    const HTE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
+	number_gens_to_output_pp}, {selection_coefficient_A_env_1, selection_coefficient_A_env_2,
+	selection_coefficient_a_env_1, selection_coefficient_a_env_2, gen_env_1}};
     return params;
   }
   /**

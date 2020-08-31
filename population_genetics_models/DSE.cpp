@@ -34,12 +34,12 @@ namespace DSE {
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_homozygote = atof(argv[3]);
     const double selection_coefficient_heterozygote = atof(argv[4]);
-    double allele_A_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
+    double initial_A_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
     const int number_reinvasions = atoi(argv[5]);
     const int number_gens_to_output_pp =
       check_parameter_value_compatibility(number_reinvasions, argc, argv, 6);
-    const DSE_Model_Parameters params {{population_size}, {selection_coefficient_homozygote,
-	selection_coefficient_heterozygote, allele_A_freq, number_reinvasions, number_gens_to_output_pp}};
+    const DSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
+	number_gens_to_output_pp}, {selection_coefficient_homozygote, selection_coefficient_heterozygote}};
     return params;
   }
   /**
