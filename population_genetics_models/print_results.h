@@ -10,9 +10,8 @@
 /** Namespace for print methods*/
 namespace print {
   
-  void print_persistence_probability(int argc, char* argv[], const double allele_A_freq);
+  void print_persistence_probability(int argc, char* argv[], const double persistence_probability);
   bool is_empty(std::ifstream& infile);
-  std::ostringstream create_dir_and_get_filename(int argc, char* argv[]);
 
   /**
      @brief Template method that writes a value to file
@@ -21,16 +20,16 @@ namespace print {
      @return Nothing (but writes \p value_to_write to \p filename)
 */
   template <class T>
-  void write_value_to_file(const T value_to_write, std::ostringstream &filename){
+  void write_value_to_file(const T value_to_write, const std::string &filename){
     // check whether file is empty
-    std::ifstream infile (filename.str());
+    std::ifstream infile (filename);
     if (is_empty(infile)){ // if so, no comma
       infile.close();
-      std::ofstream outfile (filename.str(), std::ofstream::app);
+      std::ofstream outfile (filename, std::ofstream::app);
       outfile << value_to_write;
     } else { // if not empty, add comma before value
       infile.close();
-      std::ofstream outfile (filename.str(), std::ofstream::app);
+      std::ofstream outfile (filename, std::ofstream::app);
       outfile << "," << value_to_write;
     }
   }

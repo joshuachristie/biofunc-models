@@ -3,6 +3,7 @@
 #include <sstream>
 #include "exceptions.h"
 #include "print_results.h"
+#include "io.h"
 
 const int check_parameter_value_compatibility(const int number_reinvasions, int argc, char* argv[],
 					      const int output_pp_index){
@@ -19,16 +20,8 @@ const int check_parameter_value_compatibility(const int number_reinvasions, int 
     }
   }
   catch (const std::exception& e){
-    std::cout << "exception: " << e.what() << "; renamed simulation name is: " << get_simulation_name(argc, argv).str() << std::endl;
+    std::cout << "exception: " << e.what() << "; renamed simulation name is: " << \
+      io::parameter_values_to_string(argc, argv) << std::endl;
   }
   return atoi(argv[output_pp_index]);
-}
-
-std::ostringstream get_simulation_name(int argc, char* argv[]){
-  std::ostringstream simname;
-  for (int i = 1; i < argc - 1; i++){
-    simname << argv[i] << "_";
-  }
-  simname << argv[argc - 1];
-  return simname;
 }
