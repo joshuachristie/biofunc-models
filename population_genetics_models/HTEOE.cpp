@@ -91,7 +91,7 @@ namespace HTEOE {
     const HTEOE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
-    final_A_freqs.reserve(params.fixed.number_replicates);
+    final_A_freqs.reserve(params.fixed.number_replicates * (params.shared.number_gens_to_output_pp + 1));
     const double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
 									     final_A_freqs, calculate_allele_freqs);
     print::print_persistence_probability(argc, argv, persistence_probability);

@@ -16,14 +16,18 @@
    @param[in] parameters.fixed.tolerance Tolerance for comparing equality of doubles
    @param[in, out] rng Random number generator
    @param[in] calculate_allele_method Template for method to calcluate allele frequency (one of HSE::calculate_allele_freqs, HTE::calculate_allele_freqs, DSE::calculate_allele_freqs, or HTEOE::calculate_allele_freqs)
-   @return Nothing (but alters \p allele_A_freq)
+   @param[in, out] final_A_freqs Vector storing frequencies of the A allele
+   @return Nothing (but alters \p allele_A_freq and can alter final_A_freqs depending on parameters.shared.num_gens_to_output_pp)
 */
 template <class P, class F>
 void allele_invasion(const std::vector<double> &fitnesses, const P &parameters, std::mt19937 &rng,
-		     double &allele_A_freq, F calculate_allele_method){
+		     double &allele_A_freq, F calculate_allele_method, std::vector<double> &final_A_freqs){
   int gen = 0;
   while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)){
     calculate_allele_method(allele_A_freq, fitnesses, parameters, rng, gen);
+    if (gen < parameters.shared.num_gens_to_output_pp){
+      help::is_not_extinct(allele_A_freq, params) ? final_A_freqs.push_back(1) : final_A_freqs.push_back(0);
+    }
   }
 }
 
