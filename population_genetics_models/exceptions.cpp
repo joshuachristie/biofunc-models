@@ -1,9 +1,11 @@
 #include <stdexcept>
-#include <iostream>
+#include <istream>
 #include <sstream>
+#include <string>
 #include "exceptions.h"
 #include "print_results.h"
 #include "io.h"
+#include "path_parameters.h"
 
 const int check_parameter_value_compatibility(const int number_reinvasions, int argc, char* argv[],
 					      const int output_pp_index){
@@ -20,8 +22,11 @@ const int check_parameter_value_compatibility(const int number_reinvasions, int 
     }
   }
   catch (const std::exception& e){
-    std::cout << "exception: " << e.what() << "; renamed simulation name is: " << \
-      io::parameter_values_to_string(argc, argv) << std::endl;
+    const std::string error_file_path =
+      io::create_dir_and_get_file_path(argc, argv, paths::error_file_directory, "_error.txt");
+    std::ofstream error_file(error_file_path, std::ostream::app);
+    error_file << "exception: " << e.what() << "; renamed simulation name is: " << \
+      io::parameter_values_to_string(argc, argv) << "\n";
   }
   return atoi(argv[output_pp_index]);
 }

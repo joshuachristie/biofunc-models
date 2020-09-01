@@ -46,5 +46,12 @@ namespace io {
     return filename.str();
   }
 
-
+  /**
+*/
+  const std::string create_dir_and_get_file_path(int argc, char* argv[], const std::string_view &parent_dir,
+						 const std::string &extension, const std::string &dir){
+    const std::string dir_path = create_dir(parent_dir, dir);
+    const std::string file_path = get_file_path(argc, argv, dir_path, extension);
+    return file_path;
+  }
 }

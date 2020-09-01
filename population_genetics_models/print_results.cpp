@@ -8,7 +8,7 @@
 #include <string>
 #include "print_results.h"
 #include "io.h"
-#include "file_parameters.h"
+#include "path_parameters.h"
 
 namespace print {
   /**
@@ -18,8 +18,8 @@ namespace print {
      @param[in] persistence_probability Probability that the allele persists in population
   */
   void print_persistence_probability(int argc, char* argv[], const double persistence_probability){
-    const std::string dir_path = io::create_dir(file::data_directory, argv[1]);
-    const std::string file_path = io::get_file_path(argc, argv, dir_path, ".csv");
+    const std::string file_path =
+      io::create_dir_and_get_file_path(argc, argv, paths::persistence_data_directory, ".csv", argv[1]);
     write_value_to_file(persistence_probability, file_path);
   }
   /**
