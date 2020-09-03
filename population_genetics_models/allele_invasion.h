@@ -21,14 +21,16 @@
 */
 template <class P, class F>
 void allele_invasion(const std::vector<double> &fitnesses, const P &parameters, std::mt19937 &rng,
-		     double &allele_A_freq, F calculate_allele_method, std::vector<double> &final_A_freqs){
-  int gen = 0;
-  while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)){
+		     double &allele_A_freq, F calculate_allele_method, std::vector<bool> &final_A_freqs){
+  int gen = -1;
+  while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters) ||
+	 gen < parameters.shared.number_gens_to_output_pp){
     calculate_allele_method(allele_A_freq, fitnesses, parameters, rng, gen);
-    if (gen < parameters.shared.num_gens_to_output_pp){
-      help::is_not_extinct(allele_A_freq, params) ? final_A_freqs.push_back(1) : final_A_freqs.push_back(0);
+    if (gen < parameters.shared.number_gens_to_output_pp){
+      help::record_A_allele_freq(allele_A_freq, parameters, final_A_freqs);
     }
   }
+  help::record_A_allele_freq(allele_A_freq, parameters, final_A_freqs); // approximation as t->inf
 }
 
 #endif
