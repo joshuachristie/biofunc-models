@@ -11,17 +11,41 @@
 #include "path_parameters.h"
 
 namespace print {
+  
   /**
-     @brief Prints persistence probability to file
-     @param[in] argc Number of command line arguments
-     @param[in] argv Array of command line arguments
-     @param[in] persistence_probability Probability that the allele persists in population
+     @brief Method (overloaded) that writes a double to file
+     @param[in] value_to_write The template-type value to write to file
+     @param[in] filename Name of file to write to
+     @return Nothing (but writes \p value_to_write to \p filename)
   */
-  void print_persistence_probability(int argc, char* argv[], const double persistence_probability){
-    const std::string file_path =
-      io::create_dir_and_get_file_path(argc, argv, paths::persistence_data_directory, ".csv", argv[1]);
-    write_value_to_file(persistence_probability, file_path);
+  void write_to_file(const double value_to_write, const std::string &filename){
+    // check whether file is empty
+    std::ifstream infile (filename);
+    if (is_empty(infile)){ // if so, no comma
+      infile.close();
+      std::ofstream outfile (filename, std::ofstream::app);
+      outfile << value_to_write;
+    } else { // if not empty, add comma before value
+      infile.close();
+      std::ofstream outfile (filename, std::ofstream::app);
+      outfile << "," << value_to_write;
+    }
   }
+  /**
+     @brief Method (overloaded) that writes a std::vector<double> to file (excluding its last value)
+     @param[in] value_to_write The template-type value to write to file
+     @param[in] filename Name of file to write to
+     @return Nothing (but writes \p value_to_write to \p filename)
+  */
+  void write_to_file(const std::vector<double> &vector_to_write, const std::string &filename){
+    std::ofstream outfile (filename, std::ofstream::app);
+    outfile << vector_to_write[0];
+    for (std::size_t i = 1; i < vector_to_write.size() - 1; i++){
+      outfile << "," << vector_to_write[i];
+    }
+    outfile << "\n";
+  }
+  
   /**
      @brief Checks whether file is empty
      @param[in] infile File to check

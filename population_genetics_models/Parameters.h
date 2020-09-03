@@ -15,7 +15,7 @@ struct Shared_Parameters {
   const int population_size;
   const double initial_A_freq;
   const int number_reinvasions;
-  const int number_generations_to_output_pp;
+  const int number_gens_to_output_pp;
 };
 /**
    @brief Struct containing constant parameter values (fixed for all models)
