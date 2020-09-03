@@ -2,23 +2,50 @@
    @file print_results.cpp
    @brief Methods to print model results to output files
 */
-#include <filesystem>
+
 #include <sstream>
 #include <fstream>
 #include <string>
 #include "print_results.h"
+#include "io.h"
+#include "path_parameters.h"
 
 namespace print {
+  
   /**
-     @brief Prints persistence probability to file
-     @param[in] argc Number of command line arguments
-     @param[in] argv Array of command line arguments
-     @param[in] persistence_probability Probability that the allele persists in population
+     @brief Method (overloaded) that writes a double to file
+     @param[in] value_to_write The template-type value to write to file
+     @param[in] filename Name of file to write to
+     @return Nothing (but writes \p value_to_write to \p filename)
   */
-  void print_persistence_probability(int argc, char* argv[], const double persistence_probability){
-    std::ostringstream filename = create_dir_and_get_filename(argc, argv);
-    write_value_to_file(persistence_probability, filename);
+  void write_to_file(const double value_to_write, const std::string &filename){
+    // check whether file is empty
+    std::ifstream infile (filename);
+    if (is_empty(infile)){ // if so, no comma
+      infile.close();
+      std::ofstream outfile (filename, std::ofstream::app);
+      outfile << value_to_write;
+    } else { // if not empty, add comma before value
+      infile.close();
+      std::ofstream outfile (filename, std::ofstream::app);
+      outfile << "," << value_to_write;
+    }
   }
+  /**
+     @brief Method (overloaded) that writes a std::vector<double> to file (excluding its last value)
+     @param[in] value_to_write The template-type value to write to file
+     @param[in] filename Name of file to write to
+     @return Nothing (but writes \p value_to_write to \p filename)
+  */
+  void write_to_file(const std::vector<double> &vector_to_write, const std::string &filename){
+    std::ofstream outfile (filename, std::ofstream::app);
+    outfile << vector_to_write[0];
+    for (std::size_t i = 1; i < vector_to_write.size() - 1; i++){
+      outfile << "," << vector_to_write[i];
+    }
+    outfile << "\n";
+  }
+  
   /**
      @brief Checks whether file is empty
      @param[in] infile File to check
@@ -27,24 +54,5 @@ namespace print {
   bool is_empty(std::ifstream& infile){
     return infile.peek() == std::ifstream::traits_type::eof();
   }
-  /**
-     @brief Creates directory for results and returns filename
-     @param[in] argc Number of command line arguments
-     @param[in] argv Array of command line arguments
-     @return filename \p std::ostringstream with path to csv file
-*/
-  std::ostringstream create_dir_and_get_filename(int argc, char* argv[]){
-    std::string parent_directory = "../data/";
-    std::ostringstream dir_path;
-    dir_path << parent_directory << argv[1] << "/";
-    std::filesystem::create_directories(dir_path.str());
-    // generate filename for csv
-    std::ostringstream filename (dir_path.str(), std::ios_base::ate);
-    for (int i = 2; i < argc - 1; i++){
-      filename << argv[i] << "_";
-    }
-    filename << argv[argc -1] << ".csv";
-    return filename;
-  }
-
+  
 }

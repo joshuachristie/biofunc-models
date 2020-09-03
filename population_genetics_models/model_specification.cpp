@@ -4,12 +4,14 @@
 */
 
 #include <functional>
-#include <iostream>
+#include <fstream>
 #include "model_specification.h"
 #include "HSE.h"
 #include "HTE.h"
 #include "DSE.h"
 #include "HTEOE.h"
+#include "io.h"
+#include "path_parameters.h"
 
 /**
    @brief Constructs a \p std::map so that models can be called via a \p std::string argument
@@ -30,8 +32,11 @@ void specify_and_run_model(int argc, char* argv[]){
   try {
     map[ argv[1] ](argc, argv); // specify and run model
   }
-  catch (const std::bad_function_call&){
-    std::cout << "Bad function call - is the first commandline argument the model identifier (e.g. HSE)?" << std::endl;
+  catch (const std::bad_function_call &e){
+    const std::string error_file_path =
+      io::create_dir_and_get_file_path(argc, argv, paths::error_file_directory, "_error.txt");
+    std::ofstream error_file(error_file_path, std::ofstream::app);
+    error_file << "exception: " << e.what() << " - is the first cmdline argument the model identifier (e.g. HSE)?" << "\n";
   }
   
 }

@@ -15,6 +15,7 @@
 #include "persistence_probability.h"
 #include "print_results.h"
 #include "allele_invasion.h"
+#include "exceptions.h"
 
 /**
    @brief Namespace for Diploid Single Environment
@@ -27,16 +28,18 @@ namespace DSE {
      @param[in] argv Command line arguments
      @return params DSE_Model_Parameters struct
   */
-  DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
+  const DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "DSE");
-    assert(argc == 6 && "The DSE model must have 5 command line arguments (the first must be 'DSE')");
+    assert(argc == 7 && "The DSE model must have 6 command line arguments (the first must be 'DSE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_homozygote = atof(argv[3]);
     const double selection_coefficient_heterozygote = atof(argv[4]);
-    double allele_A_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
+    double initial_A_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
     const int number_reinvasions = atoi(argv[5]);
-    DSE_Model_Parameters params {{population_size}, {selection_coefficient_homozygote,
-	selection_coefficient_heterozygote, allele_A_freq, number_reinvasions}};
+    const int number_gens_to_output_pp =
+      check_parameter_value_compatibility(number_reinvasions, argc, argv, 6);
+    const DSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
+	number_gens_to_output_pp}, {selection_coefficient_homozygote, selection_coefficient_heterozygote}};
     return params;
   }
   /**
@@ -45,9 +48,9 @@ namespace DSE {
      @param[in] parameters DSE_Model_Parameters::DSE_Specific_Parameters::selection_coefficient_heterozygte - selection coefficient of the Aa genotype
      @return fitnesses A vector of length 3 containing the fitnesses of the AA, Aa, and aa genotypes [wAA, WAa, Waa]
   */
-  std::vector<double> get_fitness_function(const DSE_Model_Parameters &parameters){
+  const std::vector<double> get_fitness_function(const DSE_Model_Parameters &parameters){
     // diploid_fitnesses[w_AA, w_Aa, w_aa] gives relative fitness of genotypes
-    std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient_homozygote,
+    const std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient_homozygote,
       1.0 + parameters.model.selection_coefficient_heterozygote, 1.0};
     return fitnesses;
   }
@@ -82,13 +85,12 @@ namespace DSE {
   */
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
-    DSE_Model_Parameters params = parse_parameter_values(argc, argv);
-    std::vector<double> fitnesses = get_fitness_function(params);
+    const  DSE_Model_Parameters params = parse_parameter_values(argc, argv);
+    const std::vector<double> fitnesses = get_fitness_function(params);
     std::vector<bool> final_A_freqs;
-    final_A_freqs.reserve(params.fixed.number_replicates);
-    double persistence_probability = calculate_persistence_probability(params, rng, fitnesses,
-								       final_A_freqs, calculate_allele_freqs);
-    print::print_persistence_probability(argc, argv, persistence_probability);
+    final_A_freqs.reserve(params.fixed.number_replicates * (params.shared.number_gens_to_output_pp + 1));
+    calculate_persistence_probability(params, rng, fitnesses, final_A_freqs, calculate_allele_freqs);
+    print::print_results(argc, argv, params, final_A_freqs);
   }
 
 }
