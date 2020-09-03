@@ -27,10 +27,10 @@ void allele_invasion(const std::vector<double> &fitnesses, const P &parameters, 
 	 gen < parameters.shared.number_gens_to_output_pp){
     calculate_allele_method(allele_A_freq, fitnesses, parameters, rng, gen);
     if (gen < parameters.shared.number_gens_to_output_pp){
-      help::record_A_allele_freq(allele_A_freq, parameters, final_A_freqs);
+      help::record_A_allele_presence(allele_A_freq, parameters, final_A_freqs);
     }
   }
-  help::record_A_allele_freq(allele_A_freq, parameters, final_A_freqs); // approximation as t->inf
+  help::record_A_allele_presence(allele_A_freq, parameters, final_A_freqs); // approximation as t->inf
 }
 
 #endif
