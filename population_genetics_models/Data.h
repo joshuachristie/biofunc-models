@@ -20,7 +20,8 @@ private:
 public:
   void append_persistence_by_gen(bool);
   void print_persistence_by_gen();
-  /** constructor */
+  /** constructors */
+  DataPersistenceMultipleGens() = default;
   DataPersistenceMultipleGens(int reserve_length_mg) { _persistence_by_gen.reserve(reserve_length_mg); }
 };
 
@@ -30,7 +31,8 @@ private:
 public:
   void append_allele_A_freq_by_gen(double);
   void print_allele_A_freq_by_gen();
-  /** constructor */
+  /** constructors */
+  DataAlleleFreq(int reserve_length_af) { _allele_A_freq_by_gen.reserve(reserve_length_af); }
   DataAlleleFreq(int reserve_length_mg, int reserve_length_af) :
     DataPersistenceMultipleGens {reserve_length_mg} { _allele_A_freq_by_gen.reserve(reserve_length_af); }
 };
