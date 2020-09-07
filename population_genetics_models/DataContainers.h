@@ -60,13 +60,19 @@ template <class T, int number_replicates>
 class DataContainer : public DataContainer_Base_Infinite_Approx<T> {};
 
 template <int number_replicates>
-class DataContainer <DataPersistenceInfinite, number_replicates> : public
-DataContainer_Base_Infinite_Approx<DataPersistenceInfinite> {
+class DataContainer <DataPersistenceInfinite, number_replicates> :
+  public DataContainer_Base_Infinite_Approx<DataPersistenceInfinite> {
+  
 public:
-
   DataContainer(){
     for (int i = 0; i < number_replicates; i++){
       this->_simulation_data.push_back(DataPersistenceInfinite());
+    }
+  }
+  // construct DataPersistenceInfinite._persistence with value
+  DataContainer(const bool persistence_prob){
+    for (int i = 0; i < number_replicates; i++){
+      this->_simulation_data.push_back(DataPersistenceInfinite(persistence_prob));
     }
   }
 
@@ -75,8 +81,8 @@ public:
 template <int number_replicates>
 class DataContainer <DataPersistenceByGen, number_replicates> :
   public DataContainer_Base_Persistence_By_Gen<DataPersistenceByGen, number_replicates> {
+  
 public:
-
   DataContainer(int reserve_length_mg){
     for (int i = 0; i < number_replicates; i++){
       this->_simulation_data.push_back(DataPersistenceByGen(reserve_length_mg));
@@ -87,9 +93,10 @@ public:
 
 template <int number_replicates>
 class DataContainer <DataAlleleFreqAndPBG, number_replicates> :
-  public DataContainer_Base_Persistence_By_Gen<DataAlleleFreqAndPBG, number_replicates>, public DataContainer_Base_Allele_A_Freq<DataAlleleFreqAndPBG> {
-public:
+  public DataContainer_Base_Persistence_By_Gen<DataAlleleFreqAndPBG, number_replicates>,
+  public DataContainer_Base_Allele_A_Freq<DataAlleleFreqAndPBG> {
   
+public:
   DataContainer(int reserve_length_mg, int reserve_length_af){
     for (int i = 0; i < number_replicates; i++){
       this->_simulation_data.push_back(DataAlleleFreqAndPBG(reserve_length_mg, reserve_length_af));
@@ -100,9 +107,10 @@ public:
 
 template <int number_replicates>
 class DataContainer <DataAlleleFreq, number_replicates> :
-  public virtual DataContainer_Base_Infinite_Approx<DataAlleleFreq>, public DataContainer_Base_Allele_A_Freq<DataAlleleFreq> {
-public:
+  public virtual DataContainer_Base_Infinite_Approx<DataAlleleFreq>,
+  public DataContainer_Base_Allele_A_Freq<DataAlleleFreq> {
   
+public:
   DataContainer(int reserve_length_af){
     for (int i = 0; i < number_replicates; i++){
       this->_simulation_data.push_back(DataAlleleFreq(reserve_length_af));
