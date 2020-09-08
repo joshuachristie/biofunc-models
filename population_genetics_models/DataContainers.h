@@ -46,8 +46,8 @@ public:
 template <class T>
 class DataContainer_Base_Allele_A_Freq : public virtual  DataContainer_Base_Infinite_Approx<T> {
 public:
-  const double get_allele_A_freq(const int replicate, const int gen){
-    return this->_simulation_data[replicate]._allele_A_freq_by_gen[gen];
+  const std::vector<double> get_allele_A_freqs(const int replicate){
+    return this->_simulation_data[replicate]._allele_A_freq_by_gen;
   }
   
   void append_allele_A_freq(const int replicate, const double allele_A_freq){
