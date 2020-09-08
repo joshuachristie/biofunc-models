@@ -30,7 +30,7 @@ namespace DSE {
   */
   const DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "DSE");
-    assert(argc == 7 && "The DSE model must have 6 command line arguments (the first must be 'DSE')");
+    assert(argc == 8 && "The DSE model must have 7 command line arguments (the first must be 'DSE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_homozygote = atof(argv[3]);
     const double selection_coefficient_heterozygote = atof(argv[4]);
@@ -38,8 +38,10 @@ namespace DSE {
     const int number_reinvasions = atoi(argv[5]);
     const int number_gens_to_output_pp =
       check_parameter_value_compatibility(number_reinvasions, argc, argv, 6);
+    const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[7]));
     const DSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
-	number_gens_to_output_pp}, {selection_coefficient_homozygote, selection_coefficient_heterozygote}};
+	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient_homozygote,
+					 selection_coefficient_heterozygote}};
     return params;
   }
   /**

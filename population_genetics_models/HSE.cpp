@@ -29,15 +29,16 @@ namespace HSE {
   */
   const HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HSE");
-    assert(argc == 6 && "The HSE model must have 5 command line arguments (the first must be HSE)");
+    assert(argc == 7 && "The HSE model must have 6 command line arguments (the first must be HSE)");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient = atof(argv[3]);
     const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
     const int number_reinvasions = atoi(argv[4]);
     const int number_gens_to_output_pp =
       check_parameter_value_compatibility(number_reinvasions, argc, argv, 5);
+    const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[6]));
     const HSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
-	number_gens_to_output_pp}, {selection_coefficient}};
+	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient}};
     return params;
   }
   /**
