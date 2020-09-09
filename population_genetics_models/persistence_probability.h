@@ -9,6 +9,8 @@
 #include <numeric>
 #include "allele_invasion.h"
 #include "helper_functions.h"
+#include "DataContainers.h"
+#include "fixed_parameters.h"
 
 /**
    @brief Template function to run replicates and calculate persistence probability for the pop gen models
@@ -19,19 +21,21 @@
    @param[in] calculate_allele_method Template for method to calcluate allele frequency (one of HSE::calculate_allele_freqs, HTE::calculate_allele_freqs, DSE::calculate_allele_freqs, or HTEOE::calculate_allele_freqs)
    @return Nothing (but modifies \p final_A_freqs via call to allele_invasion())
 */
-template <class P, class F>
+
+template <class P, class F, class D>
 void calculate_persistence_probability(const P &params, std::mt19937 &rng, const std::vector<double>
-				       &fitnesses, std::vector<bool> &final_A_freqs,
-				       F calculate_allele_method){
+				       &fitnesses, F calculate_allele_freqs_function,
+				       DataContainer<D, fixed_parameters::number_replicates> &data){
+
   for (int i = 0; i < params.fixed.number_replicates; i++){
     double allele_A_freq = params.shared.initial_A_freq;
     // run simulation to see whether allele A invades and either becomes fixed or withstands 1000000 gens
-    allele_invasion(fitnesses, params, rng, allele_A_freq, calculate_allele_method, final_A_freqs);
+    allele_invasion(fitnesses, params, rng, allele_A_freq, calculate_allele_freqs_function, data, i);
     int reinvasions = 0;
     // run reinvasion attempts by resident while allele A remains (if number_reinvasions is non-zero)
     while (help::is_not_extinct(allele_A_freq, params) && reinvasions < params.shared.number_reinvasions){
       allele_A_freq -= params.shared.initial_A_freq; // replace single A allele with an a allele
-      allele_invasion(fitnesses, params, rng, allele_A_freq, calculate_allele_method, final_A_freqs);
+      allele_invasion(fitnesses, params, rng, allele_A_freq, calculate_allele_freqs_function, data, i);
       reinvasions++;
     }
   }

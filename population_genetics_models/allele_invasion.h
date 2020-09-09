@@ -19,18 +19,19 @@
    @param[in, out] final_A_freqs Vector storing frequencies of the A allele
    @return Nothing (but alters \p allele_A_freq and can alter final_A_freqs depending on parameters.shared.num_gens_to_output_pp)
 */
-template <class P, class F>
+template <class P, class F, class D>
 void allele_invasion(const std::vector<double> &fitnesses, const P &parameters, std::mt19937 &rng,
-		     double &allele_A_freq, F calculate_allele_method, std::vector<bool> &final_A_freqs){
+		     double &allele_A_freq, F calculate_allele_freqs_function, D &data, const int replicate){
   int gen = -1;
   while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters) ||
 	 gen < parameters.shared.number_gens_to_output_pp){
-    calculate_allele_method(allele_A_freq, fitnesses, parameters, rng, gen);
+    calculate_allele_freqs_function(allele_A_freq, fitnesses, parameters, rng, gen);
     if (gen < parameters.shared.number_gens_to_output_pp){
-      help::record_A_allele_presence(allele_A_freq, parameters, final_A_freqs);
+      // help::record_A_allele_presence_by_gen(allele_A_freq, parameters, replicate, data);
     }
   }
-  help::record_A_allele_presence(allele_A_freq, parameters, final_A_freqs); // approximation as t->inf
+  help::record_A_allele_presence_infinite(allele_A_freq, parameters, replicate, data);
+
 }
 
 #endif
