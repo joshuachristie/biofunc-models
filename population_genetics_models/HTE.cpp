@@ -16,6 +16,7 @@
 #include "print_results.h"
 #include "allele_invasion.h"
 #include "exceptions.h"
+#include "DataContainers.h"
 
 /**
    @brief Namespace for Haploid Two Environments
@@ -96,10 +97,10 @@ namespace HTE {
     std::mt19937 rng = initialise_rng();
     const HTE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
-    std::vector<bool> final_A_freqs;
-    final_A_freqs.reserve(params.fixed.number_replicates * (params.shared.number_gens_to_output_pp + 1));
-    calculate_persistence_probability(params, rng, fitnesses, final_A_freqs, calculate_allele_freqs);
-    print::print_results(argc, argv, params, final_A_freqs);
+
+    DataContainer<DataPersistenceInfinite, fixed_parameters::number_replicates> data;
+    calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
+    print::print_results(argc, argv, data);
   }
   
 }
