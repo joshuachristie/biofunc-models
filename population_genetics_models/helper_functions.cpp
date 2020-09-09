@@ -18,9 +18,9 @@ namespace help {
   */
   bool close_to_value(const double allele_freq, const double value, const double tolerance){
     if (std::abs(allele_freq - value) < tolerance){
-      return 1;
+      return true;
     } else {
-      return 0;
+      return false;
     }
   }
 
