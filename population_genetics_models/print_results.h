@@ -13,10 +13,12 @@
 #include <numeric>
 #include "path_parameters.h"
 #include "io.h"
+#include "DataContainers.h"
+#include "fixed_parameters.h"
 
 /** Namespace for print methods*/
 namespace print {
-  
+
   bool is_empty(std::ifstream& infile);
   void write_to_file(const double value_to_write, const std::string &filename);
   void write_to_file(const std::vector<double> &vector_to_write, const std::string &filename);
@@ -35,10 +37,11 @@ namespace print {
     write_to_file(persistence_prob, file_path);
   }
 
-  void print_results(int argc, char* argv[], const DataContainer<DataPersistenceInfinite, number_replicates> &data);
-  void print_results(int argc, char* argv[], const DataContainer<DataPersistenceByGen, number_replicates> &data);
-  void print_results(int argc, char* argv[], const DataContainer<DataAlleleFreqAndPGB, number_replicates> &data);
-  void print_results(int argc, char* argv[], const DataContainer<DataAlleleFreq, number_replicates> &data);
+  template<class T>
+  void print_results(int argc, char* argv[], DataContainer<T, fixed_parameters::number_replicates> &data){
+    const double persistence_probability = data.get_persistence_infinite_approx();
+    print_persistence_probability(argc, argv, persistence_probability, paths::persistence_infinite_data_dir);
+  }
 
 }
 
