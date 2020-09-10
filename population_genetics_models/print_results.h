@@ -14,8 +14,7 @@
 #include <cassert>
 #include "path_parameters.h"
 #include "io.h"
-#include "DataContainers.h"
-#include "fixed_parameters.h"
+#include "DataContainer.h"
 
 /** Namespace for print methods*/
 namespace print {

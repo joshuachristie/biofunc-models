@@ -5,10 +5,8 @@
 #define HELPER_FUNCTIONS_H
 
 #include <vector>
+#include "DataContainer.h"
 
-#include "DataContainers.h"
-#include "fixed_parameters.h"
-#include "Data.h"
 namespace help {
 
   bool close_to_value(const double allele_freq, const double value, const double tolerance);

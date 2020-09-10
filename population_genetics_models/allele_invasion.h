@@ -8,7 +8,7 @@
 #include <random>
 #include <vector>
 #include "helper_functions.h"
-#include "DataContainers.h"
+#include "DataContainer.h"
 /**
    @brief Runs a single invasion attempt of an allele
    @param[in] fitnesses Vector containing fitnesses

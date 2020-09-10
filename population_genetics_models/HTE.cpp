@@ -15,7 +15,7 @@
 #include "persistence_probability.h"
 #include "print_results.h"
 #include "allele_invasion.h"
-#include "DataContainers.h"
+#include "DataContainer.h"
 
 /**
    @brief Namespace for Haploid Two Environments

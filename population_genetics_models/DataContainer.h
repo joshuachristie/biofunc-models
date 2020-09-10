@@ -1,5 +1,5 @@
-#ifndef DATA_CONTAINERS_H
-#define DATA_CONTAINERS_H
+#ifndef DATA_CONTAINER_H
+#define DATA_CONTAINER_H
 
 #include <vector>
 #include "Data.h"

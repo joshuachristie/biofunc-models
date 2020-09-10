@@ -9,7 +9,7 @@
 #include <numeric>
 #include "allele_invasion.h"
 #include "helper_functions.h"
-#include "DataContainers.h"
+#include "DataContainer.h"
 #include "fixed_parameters.h"
 
 /**
