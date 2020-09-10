@@ -7,7 +7,7 @@ namespace fixed_parameters {
   inline constexpr int number_replicates = 100;
   inline constexpr int max_generations_per_sim = 1000000;
   inline constexpr std::size_t factor_to_expand_vector_memory = 10;
-
+  inline constexpr int reserve_memory_allele_freq = 20;
 }
 
 #endif

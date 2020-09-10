@@ -25,6 +25,7 @@ struct Fixed_Parameters {
   inline static const double tolerance = fixed_parameters::tolerance;
   inline static const int number_replicates = fixed_parameters::number_replicates;
   inline static const int max_generations_per_sim = fixed_parameters::max_generations_per_sim;
+  inline static const int reserve_memory_allele_freq = fixed_parameters::reserve_memory_allele_freq;
 };
 /**
    @brief Struct for parameters of the Haploid Single Environment model
