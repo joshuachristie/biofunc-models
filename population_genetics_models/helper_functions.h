@@ -6,6 +6,9 @@
 
 #include <vector>
 
+#include "DataContainers.h"
+#include "fixed_parameters.h"
+#include "Data.h"
 namespace help {
 
   bool close_to_value(const double allele_freq, const double value, const double tolerance);
@@ -41,12 +44,21 @@ namespace help {
      @param[in, out] final_A_freqs Vector to store A allele frequencies in
      @return Nothing (but modifies \p final_A_freqs)
   */
-  template<class T>
-  void record_A_allele_presence(const double allele_A_freq, const T &parameters,
-				std::vector<bool> &final_A_freqs){
-    is_not_extinct(allele_A_freq, parameters) ? final_A_freqs.push_back(1) : final_A_freqs.push_back(0);
+
+  template<class P>
+  void record_A_allele_presence_infinite(const double allele_A_freq, const P &parameters, const int replicate,
+					 DataContainer &data){
+    is_not_extinct(allele_A_freq, parameters) ? data.set_persistence_outcome_infinite(replicate, true) :
+      data.set_persistence_outcome_infinite(replicate, false);
+  }
+
+  template<class P>
+  void record_A_allele_presence_by_gen(const double allele_A_freq, const P &parameters, const int replicate,
+				       DataContainer &data){
+    is_not_extinct(allele_A_freq, parameters) ? data.append_persistence(replicate, true) :
+      data.append_persistence(replicate, false);
   }
   
+  void record_A_allele_freq(const double allele_A_freq, const int replicate, DataContainer &data);
 }
-
 #endif 
