@@ -18,6 +18,8 @@
 #include "exceptions.h"
 #include "DataContainers.h"
 
+
+#include <iostream>
 /**
    @brief Namespace for Haploid Single Environment
 */
@@ -81,13 +83,15 @@ namespace HSE {
      @return Nothing (but prints results)
   */
   void run_model(int argc, char* argv[]){
+
     std::mt19937 rng = initialise_rng();
     const HSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
 
-    DataContainer<DataPersistenceInfinite, fixed_parameters::number_replicates> data;
+    // need to add reserve_length_af to shared parameters
+    DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp, 100);
     calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
-    print::print_results(argc, argv, data);
+    print::print_results(argc, argv, data, params);
 
   }
 

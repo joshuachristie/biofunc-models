@@ -17,15 +17,13 @@
    @param[in] params Template for HSE_Model_Parameters, DSE_Model_Parameters, HTE_Model_Parameters, or HTEOE_Model_Parameters
    @param[in] fitnesses Vector of allele or genotype fitnesses
    @param[in, out] rng Random number generator
-   @param[in, out] final_A_freqs Vector of bools storing whether allele A persists (true/false) at census
-   @param[in] calculate_allele_method Template for method to calcluate allele frequency (one of HSE::calculate_allele_freqs, HTE::calculate_allele_freqs, DSE::calculate_allele_freqs, or HTEOE::calculate_allele_freqs)
-   @return Nothing (but modifies \p final_A_freqs via call to allele_invasion())
+   @param[in] calculate_allele_freqs_function Template for method to calcluate allele frequency (one of HSE::calculate_allele_freqs, HTE::calculate_allele_freqs, DSE::calculate_allele_freqs, or HTEOE::calculate_allele_freqs)
+   @param[in, out] data DataContainer class object
+   @return Nothing (but modifies \p data)
 */
-
-template <class P, class F, class D>
+template <class P, class F>
 void calculate_persistence_probability(const P &params, std::mt19937 &rng, const std::vector<double>
-				       &fitnesses, F calculate_allele_freqs_function,
-				       DataContainer<D, fixed_parameters::number_replicates> &data){
+				       &fitnesses, F calculate_allele_freqs_function, DataContainer &data){
 
   for (int i = 0; i < params.fixed.number_replicates; i++){
     double allele_A_freq = params.shared.initial_A_freq;

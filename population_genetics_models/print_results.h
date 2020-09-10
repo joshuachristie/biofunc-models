@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <cstdio>
 #include <numeric>
+#include <cassert>
 #include "path_parameters.h"
 #include "io.h"
 #include "DataContainers.h"
@@ -30,17 +31,32 @@ namespace print {
      @param[in] persistence_prob Probability that the allele persists in population (\p double)
   */
   template<class T>
-  void print_persistence_probability(int argc, char* argv[], const T persistence_prob,
-				     const std::string_view &path){
+  void print_object(int argc, char* argv[], const T object, const std::string_view &path){
     const std::string file_path =
       io::create_dir_and_get_file_path(argc, argv, path, ".csv", argv[1]);
-    write_to_file(persistence_prob, file_path);
+    write_to_file(object, file_path);
   }
-
-  template<class T>
-  void print_results(int argc, char* argv[], DataContainer<T, fixed_parameters::number_replicates> &data){
+  
+  template<class P>
+  void print_results(int argc, char* argv[], DataContainer &data, P &parameters){
     const double persistence_probability = data.get_persistence_infinite_approx();
-    print_persistence_probability(argc, argv, persistence_probability, paths::persistence_infinite_data_dir);
+    print_object(argc, argv, persistence_probability, paths::persistence_infinite_data_dir);
+    if (parameters.shared.number_gens_to_output_pp != 0){
+      assert(!data._simulation_data[0]._persistence_by_gen.empty());
+      const std::vector<double> persistence_prob_by_gen = data.get_persistence_by_gen();
+      print_object(argc, argv, persistence_prob_by_gen, paths::persistence_finite_data_dir);
+    } else {
+      assert(data._simulation_data[0]._persistence_by_gen.empty());
+    }
+    if (parameters.shared.print_allele_A_raw_data){
+      assert(!data._simulation_data[0]._allele_A_freq_by_gen.empty());
+      for (int i = 0; i < parameters.fixed.number_replicates; i++){
+	const std::vector<double> allele_A_freqs = data.get_allele_A_freqs(i);
+	print_object(argc, argv, allele_A_freqs, paths::allele_A_data_dir);
+      }
+    } else {
+      assert(data._simulation_data[0]._allele_A_freq_by_gen.empty());
+    }
   }
 
 }
