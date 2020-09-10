@@ -1,14 +1,7 @@
-/**
-   @file helper_functions.cpp
-   @brief Collection of miscellaneous functions
-*/
 #include <cmath>
-#include "helper_functions.h"
+#include "persistence_status.h"
 
-/**
-   @brief Namespace for helper functions
-*/
-namespace help {
+namespace persist_status {
   /**
      @brief Compare for approximate equality of doubles
      @param[in] allele_freq Allele frequency
@@ -18,9 +11,9 @@ namespace help {
   */
   bool close_to_value(const double allele_freq, const double value, const double tolerance){
     if (std::abs(allele_freq - value) < tolerance){
-      return 1;
+      return true;
     } else {
-      return 0;
+      return false;
     }
   }
 

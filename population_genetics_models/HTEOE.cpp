@@ -9,13 +9,12 @@
 #include <numeric>
 #include <random>
 #include "Parameters.h"
-#include "helper_functions.h"
 #include "HTEOE.h"
 #include "rng.h"
 #include "persistence_probability.h"
 #include "print_results.h"
 #include "allele_invasion.h"
-#include "exceptions.h"
+#include "DataContainer.h"
 
 /**
    @brief Namespace for Haploid Two Effects One Environment
@@ -29,7 +28,7 @@ namespace HTEOE {
   */
   const HTEOE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HTEOE");
-    assert(argc == 9 && "The HTEOE model must have 8 command line arguments (the first must be 'HTEOE')");
+    assert(argc == 10 && "The HTEOE model must have 9 command line arguments (the first must be 'HTEOE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_A1 = atof(argv[3]);
     const double selection_coefficient_A2 = atof(argv[4]);
@@ -37,11 +36,11 @@ namespace HTEOE {
     const double selection_coefficient_a2 = atof(argv[6]);
     const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
     const int number_reinvasions = atoi(argv[7]);
-    const int number_gens_to_output_pp =
-      check_parameter_value_compatibility(number_reinvasions, argc, argv, 8);
+    const int number_gens_to_output_pp = atoi(argv[8]);
+    const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[9]));
     const HTEOE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
-	number_gens_to_output_pp}, {selection_coefficient_A1, selection_coefficient_A2,
-	selection_coefficient_a1, selection_coefficient_a2}};
+	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient_A1, selection_coefficient_A2,
+					   selection_coefficient_a1, selection_coefficient_a2}};
     return params;
   }
   /**
@@ -90,10 +89,10 @@ namespace HTEOE {
     std::mt19937 rng = initialise_rng();
     const HTEOE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
-    std::vector<bool> final_A_freqs;
-    final_A_freqs.reserve(params.fixed.number_replicates * (params.shared.number_gens_to_output_pp + 1));
-    calculate_persistence_probability(params, rng, fitnesses, final_A_freqs, calculate_allele_freqs);
-    print::print_results(argc, argv, params, final_A_freqs);
+    DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp,
+		       params.fixed.reserve_memory_allele_freq);
+    calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
+    print::print_results(argc, argv, data, params);
   }
 
 }

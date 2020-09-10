@@ -9,13 +9,12 @@
 #include <numeric>
 #include <random>
 #include "Parameters.h"
-#include "helper_functions.h"
 #include "DSE.h"
 #include "rng.h"
 #include "persistence_probability.h"
 #include "print_results.h"
 #include "allele_invasion.h"
-#include "exceptions.h"
+#include "DataContainer.h"
 
 /**
    @brief Namespace for Diploid Single Environment
@@ -30,16 +29,17 @@ namespace DSE {
   */
   const DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "DSE");
-    assert(argc == 7 && "The DSE model must have 6 command line arguments (the first must be 'DSE')");
+    assert(argc == 8 && "The DSE model must have 7 command line arguments (the first must be 'DSE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_homozygote = atof(argv[3]);
     const double selection_coefficient_heterozygote = atof(argv[4]);
     double initial_A_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
     const int number_reinvasions = atoi(argv[5]);
-    const int number_gens_to_output_pp =
-      check_parameter_value_compatibility(number_reinvasions, argc, argv, 6);
+    const int number_gens_to_output_pp = atoi(argv[6]);
+    const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[7]));
     const DSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
-	number_gens_to_output_pp}, {selection_coefficient_homozygote, selection_coefficient_heterozygote}};
+	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient_homozygote,
+					 selection_coefficient_heterozygote}};
     return params;
   }
   /**
@@ -85,12 +85,12 @@ namespace DSE {
   */
   void run_model(int argc, char* argv[]){
     std::mt19937 rng = initialise_rng();
-    const  DSE_Model_Parameters params = parse_parameter_values(argc, argv);
+    const DSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
-    std::vector<bool> final_A_freqs;
-    final_A_freqs.reserve(params.fixed.number_replicates * (params.shared.number_gens_to_output_pp + 1));
-    calculate_persistence_probability(params, rng, fitnesses, final_A_freqs, calculate_allele_freqs);
-    print::print_results(argc, argv, params, final_A_freqs);
+    DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp,
+		       params.fixed.reserve_memory_allele_freq);
+    calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
+    print::print_results(argc, argv, data, params);
   }
 
 }

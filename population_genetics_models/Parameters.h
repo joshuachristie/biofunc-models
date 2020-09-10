@@ -16,6 +16,7 @@ struct Shared_Parameters {
   const double initial_A_freq;
   const int number_reinvasions;
   const int number_gens_to_output_pp;
+  const bool print_allele_A_raw_data;
 };
 /**
    @brief Struct containing constant parameter values (fixed for all models)
@@ -24,6 +25,7 @@ struct Fixed_Parameters {
   inline static const double tolerance = fixed_parameters::tolerance;
   inline static const int number_replicates = fixed_parameters::number_replicates;
   inline static const int max_generations_per_sim = fixed_parameters::max_generations_per_sim;
+  inline static const int reserve_memory_allele_freq = fixed_parameters::reserve_memory_allele_freq;
 };
 /**
    @brief Struct for parameters of the Haploid Single Environment model

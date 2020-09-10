@@ -11,12 +11,14 @@
 #include <stdexcept>
 #include <cstdio>
 #include <numeric>
+#include <cassert>
 #include "path_parameters.h"
 #include "io.h"
+#include "DataContainer.h"
 
 /** Namespace for print methods*/
 namespace print {
-  
+
   bool is_empty(std::ifstream& infile);
   void write_to_file(const double value_to_write, const std::string &filename);
   void write_to_file(const std::vector<double> &vector_to_write, const std::string &filename);
@@ -28,59 +30,31 @@ namespace print {
      @param[in] persistence_prob Probability that the allele persists in population (\p double)
   */
   template<class T>
-  void print_persistence_probability(int argc, char* argv[], const T persistence_prob,
-				     const std::string_view &path){
+  void print_object(int argc, char* argv[], const T object, const std::string_view &path){
     const std::string file_path =
       io::create_dir_and_get_file_path(argc, argv, path, ".csv", argv[1]);
-    write_to_file(persistence_prob, file_path);
+    write_to_file(object, file_path);
   }
-
+  
   template<class P>
-  const std::vector<double> process_persistence_probability_finite(const P &parameters,
-								   const std::vector<bool> &final_A_freqs){
-    std::vector<double> persistence_probability(parameters.shared.number_gens_to_output_pp + 1, 0.0);
-    for (int i = 0; i < parameters.fixed.number_replicates; i++){
-      for (int j = 0; j < (parameters.shared.number_gens_to_output_pp + 1); j++){
-	persistence_probability[j] +=
-	  (static_cast<double>(final_A_freqs[j + i * (parameters.shared.number_gens_to_output_pp + 1)])
-	   / static_cast<double>(parameters.fixed.number_replicates));
-      }
+  void print_results(int argc, char* argv[], DataContainer &data, P &parameters){
+    const double persistence_probability = data.get_persistence_infinite_approx();
+    print_object(argc, argv, persistence_probability, paths::persistence_infinite_data_dir);
+    if (parameters.shared.number_gens_to_output_pp != 0){
+      assert(!data._simulation_data[0]._persistence_by_gen.empty());
+      const std::vector<double> persistence_prob_by_gen = data.get_persistence_by_gen();
+      print_object(argc, argv, persistence_prob_by_gen, paths::persistence_finite_data_dir);
+    } else {
+      assert(data._simulation_data[0]._persistence_by_gen.empty());
     }
-    return persistence_probability;
-  }
-  
-  template<class P>
-  const double process_persistence_probability_infinite(const P &parameters,
-							const std::vector<bool> &final_A_freqs){
-    return std::accumulate(final_A_freqs.begin(), final_A_freqs.end(), 0.0) /
-      static_cast<double>(parameters.fixed.number_replicates);
-  }
-  
-  template<class P>
-  void print_results(int argc, char* argv[], const P &parameters, const std::vector<bool> &final_A_freqs){
-    if (final_A_freqs.size() == static_cast<std::size_t>(parameters.fixed.number_replicates)){
-
-      const double persistence_probability = process_persistence_probability_infinite(parameters, final_A_freqs);
-
-      print_persistence_probability(argc, argv, persistence_probability, paths::persistence_infinite_data_dir);
-    } else if (final_A_freqs.size() > static_cast<std::size_t>(parameters.fixed.number_replicates)) {
-
-      const std::vector<double> persistence_probability = process_persistence_probability_finite(parameters, final_A_freqs);
-
-      print_persistence_probability(argc, argv, persistence_probability, paths::persistence_finite_data_dir);
-      print_persistence_probability(argc, argv, persistence_probability[persistence_probability.size() - 1],
-				    paths::persistence_infinite_data_dir);
-    } else { // should never execute; if it does then there's a major error
-      try {
-	throw std::runtime_error("final_A_freqs.size() < paramters.fixed.number_replicates...exiting program");
-      } catch (const std::exception &e){
-	const std::string error_file_path =
-	  io::create_dir_and_get_file_path(argc, argv, paths::error_file_directory, "_error.txt");
-	std::ofstream error_file(error_file_path, std::ostream::app);
-	error_file << "exception: " << e.what() << "\n";
-	exit(EXIT_FAILURE);
+    if (parameters.shared.print_allele_A_raw_data){
+      assert(!data._simulation_data[0]._allele_A_freq_by_gen.empty());
+      for (int i = 0; i < parameters.fixed.number_replicates; i++){
+	const std::vector<double> allele_A_freqs = data.get_allele_A_freqs(i);
+	print_object(argc, argv, allele_A_freqs, paths::allele_A_data_dir);
       }
-      
+    } else {
+      assert(data._simulation_data[0]._allele_A_freq_by_gen.empty());
     }
   }
 
