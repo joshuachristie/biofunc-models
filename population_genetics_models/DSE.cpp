@@ -15,7 +15,6 @@
 #include "persistence_probability.h"
 #include "print_results.h"
 #include "allele_invasion.h"
-#include "exceptions.h"
 #include "DataContainers.h"
 
 /**
@@ -37,8 +36,7 @@ namespace DSE {
     const double selection_coefficient_heterozygote = atof(argv[4]);
     double initial_A_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
     const int number_reinvasions = atoi(argv[5]);
-    const int number_gens_to_output_pp =
-      check_parameter_value_compatibility(number_reinvasions, argc, argv, 6);
+    const int number_gens_to_output_pp = atoi(argv[6]);
     const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[7]));
     const DSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
 	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient_homozygote,

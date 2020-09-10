@@ -15,7 +15,6 @@
 #include "persistence_probability.h"
 #include "print_results.h"
 #include "allele_invasion.h"
-#include "exceptions.h"
 #include "DataContainers.h"
 
 /**
@@ -38,8 +37,7 @@ namespace HTEOE {
     const double selection_coefficient_a2 = atof(argv[6]);
     const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
     const int number_reinvasions = atoi(argv[7]);
-    const int number_gens_to_output_pp =
-      check_parameter_value_compatibility(number_reinvasions, argc, argv, 8);
+    const int number_gens_to_output_pp = atoi(argv[8]);
     const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[9]));
     const HTEOE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
 	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient_A1, selection_coefficient_A2,
