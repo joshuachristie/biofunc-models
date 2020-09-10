@@ -22,10 +22,9 @@
    @return Nothing (but modifies \p final_A_freqs via call to allele_invasion())
 */
 
-template <class P, class F, class D>
+template <class P, class F>
 void calculate_persistence_probability(const P &params, std::mt19937 &rng, const std::vector<double>
-				       &fitnesses, F calculate_allele_freqs_function,
-				       DataContainer<D, fixed_parameters::number_replicates> &data){
+				       &fitnesses, F calculate_allele_freqs_function, DataContainer &data){
 
   for (int i = 0; i < params.fixed.number_replicates; i++){
     double allele_A_freq = params.shared.initial_A_freq;

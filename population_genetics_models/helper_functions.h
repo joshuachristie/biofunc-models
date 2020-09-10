@@ -45,16 +45,16 @@ namespace help {
      @return Nothing (but modifies \p final_A_freqs)
   */
 
-  template<class T, class D>
-  void record_A_allele_presence_infinite(const double allele_A_freq, const T &parameters, const int replicate,
-					 DataContainer<D, fixed_parameters::number_replicates> &data){
+  template<class P>
+  void record_A_allele_presence_infinite(const double allele_A_freq, const P &parameters, const int replicate,
+					 DataContainer &data){
     is_not_extinct(allele_A_freq, parameters) ? data.set_persistence_outcome_infinite(replicate, true) :
       data.set_persistence_outcome_infinite(replicate, false);
   }
 
-  template<class T, class D>
-  void record_A_allele_presence_by_gen(const double allele_A_freq, const T &parameters, const int replicate,
-				DataContainer<D, fixed_parameters::number_replicates> &data){
+  template<class P>
+  void record_A_allele_presence_by_gen(const double allele_A_freq, const P &parameters, const int replicate,
+				DataContainer &data){
     is_not_extinct(allele_A_freq, parameters) ? data.append_persistence(replicate, true) :
       data.append_persistence(replicate, false);
   }

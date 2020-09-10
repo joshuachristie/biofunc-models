@@ -10,7 +10,7 @@
 #include "io.h"
 #include "path_parameters.h"
 #include "DataContainers.h"
-k
+
 namespace print {
   
   /**
@@ -54,6 +54,11 @@ namespace print {
   */
   bool is_empty(std::ifstream& infile){
     return infile.peek() == std::ifstream::traits_type::eof();
+  }
+
+  void print_results(int argc, char* argv[], DataContainer &data){
+    const double persistence_probability = data.get_persistence_infinite_approx();
+    print_persistence_probability(argc, argv, persistence_probability, paths::persistence_infinite_data_dir);
   }
 
   // void print_results(int argc, char* argv[], data_containers &data){

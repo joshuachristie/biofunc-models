@@ -37,11 +37,7 @@ namespace print {
     write_to_file(persistence_prob, file_path);
   }
 
-  template<class T>
-  void print_results(int argc, char* argv[], DataContainer<T, fixed_parameters::number_replicates> &data){
-    const double persistence_probability = data.get_persistence_infinite_approx();
-    print_persistence_probability(argc, argv, persistence_probability, paths::persistence_infinite_data_dir);
-  }
+  void print_results(int argc, char* argv[], DataContainer &data);
 
 }
 
