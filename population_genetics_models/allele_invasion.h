@@ -7,7 +7,8 @@
 
 #include <random>
 #include <vector>
-#include "helper_functions.h"
+#include "record_data.h"
+#include "persistence_status.h"
 #include "DataContainer.h"
 /**
    @brief Runs a single invasion attempt of an allele
@@ -28,24 +29,21 @@ void allele_invasion(const std::vector<double> &fitnesses, const P &parameters, 
   int gen = -1;
   bool extinct = false; // for formatting printing allele A raw data
   // run simulation until allele A is fixed or extinct and number gens > number_gens_to_output_pp
-  while (help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters) ||
+  while (persist_status::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters) ||
 	 gen < parameters.shared.number_gens_to_output_pp){
     
     calculate_allele_freqs_function(allele_A_freq, fitnesses, parameters, rng, gen);
     
     if (gen < parameters.shared.number_gens_to_output_pp && reinvasions == -1){
-      help::record_A_allele_presence_by_gen(allele_A_freq, parameters, replicate, data);
+      record::A_allele_presence_by_gen(allele_A_freq, parameters, replicate, data);
     }
     
     if ((parameters.shared.print_allele_A_raw_data && reinvasions == -1 && !extinct)) {
-      help::record_A_allele_freq(allele_A_freq, replicate, data);
+      record::A_allele_freq(allele_A_freq, replicate, data);
     }
-    
-    if (!help::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters)) {extinct = true; }
-    
+    if (!persist_status::is_not_extinct(allele_A_freq, parameters)) { extinct = true; }
   }
-  
-  help::record_A_allele_presence_infinite(allele_A_freq, parameters, replicate, data);
+  record::A_allele_presence_infinite(allele_A_freq, parameters, replicate, data);
 }
 
 #endif

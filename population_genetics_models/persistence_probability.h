@@ -8,9 +8,8 @@
 #include <random>
 #include <numeric>
 #include "allele_invasion.h"
-#include "helper_functions.h"
+#include "persistence_status.h"
 #include "DataContainer.h"
-#include "fixed_parameters.h"
 
 /**
    @brief Template function to run replicates and calculate persistence probability for the pop gen models
@@ -31,7 +30,7 @@ void calculate_persistence_probability(const P &params, std::mt19937 &rng, const
     // run simulation to see whether allele A invades and either becomes fixed or withstands 1000000 gens
     allele_invasion(fitnesses, params, rng, allele_A_freq, calculate_allele_freqs_function, data, i, reinvasions);
     // run reinvasion attempts by resident while allele A remains (if number_reinvasions is non-zero)
-    while (help::is_not_extinct(allele_A_freq, params) && reinvasions < params.shared.number_reinvasions - 1){
+    while (persist_status::is_not_extinct(allele_A_freq, params) && reinvasions < params.shared.number_reinvasions - 1){
       reinvasions++;
       allele_A_freq -= params.shared.initial_A_freq; // replace single A allele with an a allele
       allele_invasion(fitnesses, params, rng, allele_A_freq, calculate_allele_freqs_function, data, i, reinvasions);
