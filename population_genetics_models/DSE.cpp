@@ -9,7 +9,6 @@
 #include <numeric>
 #include <random>
 #include "Parameters.h"
-#include "helper_functions.h"
 #include "DSE.h"
 #include "rng.h"
 #include "persistence_probability.h"
