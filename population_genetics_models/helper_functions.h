@@ -54,12 +54,11 @@ namespace help {
 
   template<class P>
   void record_A_allele_presence_by_gen(const double allele_A_freq, const P &parameters, const int replicate,
-				DataContainer &data){
+				       DataContainer &data){
     is_not_extinct(allele_A_freq, parameters) ? data.append_persistence(replicate, true) :
       data.append_persistence(replicate, false);
   }
-
   
+  void record_A_allele_freq(const double allele_A_freq, const int replicate, DataContainer &data);
 }
-
 #endif 
