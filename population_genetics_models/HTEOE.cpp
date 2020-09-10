@@ -96,7 +96,7 @@ namespace HTEOE {
     // need to add reserve_length_af to shared parameters
     DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp, 100);
     calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
-    print::print_results(argc, argv, data);
+    print::print_results(argc, argv, data, params);
   }
 
 }

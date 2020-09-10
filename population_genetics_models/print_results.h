@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <cstdio>
 #include <numeric>
+#include <cassert>
 #include "path_parameters.h"
 #include "io.h"
 #include "DataContainers.h"
@@ -36,8 +37,30 @@ namespace print {
       io::create_dir_and_get_file_path(argc, argv, path, ".csv", argv[1]);
     write_to_file(persistence_prob, file_path);
   }
+  
+  template<class P>
+  void print_results(int argc, char* argv[], DataContainer &data, P &parameters){
+    const double persistence_probability = data.get_persistence_infinite_approx();
+    print_persistence_probability(argc, argv, persistence_probability, paths::persistence_infinite_data_dir);
+    if (parameters.shared.number_gens_to_output_pp != 0){
+      
+      assert(!data._simulation_data[0]._persistence_by_gen.empty());
+      const std::vector<double> persistence_prob_by_gen = data.get_persistence_by_gen();
+      print_persistence_probability(argc, argv, persistence_prob_by_gen, paths::persistence_finite_data_dir);
+      
+    }
+    if (parameters.shared.print_allele_A_raw_data){
+      
+      assert(!data._simulation_data[0]._allele_A_freq_by_gen.empty());
+      for (int i = 0; i < parameters.fixed.number_replicates; i++){
+	const std::vector<double> allele_A_freqs = data.get_allele_A_freqs(i);
+	print_persistence_probability(argc, argv, allele_A_freqs, paths::allele_A_data_dir);
+      }
 
-  void print_results(int argc, char* argv[], DataContainer &data);
+    }
+  }
+
+  // void print_results(int argc, char* argv[], DataContainer &data);
 
 }
 
