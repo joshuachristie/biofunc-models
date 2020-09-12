@@ -1,0 +1,40 @@
+\hypertarget{HSE_8cpp}{}\doxysection{/home/joshua/projects/metric/population\+\_\+genetics\+\_\+models/\+H\+SE.cpp File Reference}
+\label{HSE_8cpp}\index{/home/joshua/projects/metric/population\_genetics\_models/HSE.cpp@{/home/joshua/projects/metric/population\_genetics\_models/HSE.cpp}}
+
+
+Contains functions to run the Haploid Single Environment model @detail This model explores biological function in the simplest case\+: a single trait with a single effect. The set-\/up is a Wright-\/\+Fisher haploid model\+: one locus, two alleles, (and implicitly a single environment). For this model, there is no need to apportion the function metric between components using partial information decomposition because there is a simple mapping between trait -\/$>$ selection\+\_\+coefficient -\/$>$ persistence\+\_\+probability (i.\+e. function is wholly attributable to the trait\textquotesingle{}s selection coefficient).  
+
+
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+{\ttfamily \#include $<$random$>$}\newline
+{\ttfamily \#include \char`\"{}Parameters.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}H\+S\+E.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rng.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}persistence\+\_\+probability.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}print\+\_\+results.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}allele\+\_\+invasion.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Data\+Container.\+h\char`\"{}}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceHSE}{H\+SE}}
+\begin{DoxyCompactList}\small\item\em Namespace for Haploid Single Environment. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{structHSE__Model__Parameters}{H\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} \mbox{\hyperlink{namespaceHSE_a755d104b2ad62c5a7690dcecedd563c7}{H\+S\+E\+::parse\+\_\+parameter\+\_\+values}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Reads in parameter values from command line into a struct. \end{DoxyCompactList}\item 
+const std\+::vector$<$ double $>$ \mbox{\hyperlink{namespaceHSE_a2f9476b007dbd9eaaa76b984b30ab853}{H\+S\+E\+::get\+\_\+fitness\+\_\+function}} (const \mbox{\hyperlink{structHSE__Model__Parameters}{H\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} \&parameters)
+\begin{DoxyCompactList}\small\item\em Calculates fitness function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceHSE_ae5e4ece692711a23bdefb0e3fa5ef120}{H\+S\+E\+::calculate\+\_\+allele\+\_\+freqs}} (double \&allele\+\_\+\+A\+\_\+freq, const std\+::vector$<$ double $>$ \&fitnesses, const \mbox{\hyperlink{structHSE__Model__Parameters}{H\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} \&parameters, std\+::mt19937 \&rng, int \&gen)
+\begin{DoxyCompactList}\small\item\em Calculates frequency of the A allele after selection. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceHSE_a831ec5a591c67898c8f0eed7adcc3af0}{H\+S\+E\+::run\+\_\+model}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Runs Haploid Single Environment model. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains functions to run the Haploid Single Environment model @detail This model explores biological function in the simplest case\+: a single trait with a single effect. The set-\/up is a Wright-\/\+Fisher haploid model\+: one locus, two alleles, (and implicitly a single environment). For this model, there is no need to apportion the function metric between components using partial information decomposition because there is a simple mapping between trait -\/$>$ selection\+\_\+coefficient -\/$>$ persistence\+\_\+probability (i.\+e. function is wholly attributable to the trait\textquotesingle{}s selection coefficient). 
+

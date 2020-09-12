@@ -1,0 +1,100 @@
+\hypertarget{namespaceprint}{}\doxysection{print Namespace Reference}
+\label{namespaceprint}\index{print@{print}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespaceprint_a7dc35eb58f5cb7993468733a16ed4dae}{write\+\_\+to\+\_\+file}} (const double value\+\_\+to\+\_\+write, const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Method (overloaded) that writes a double to file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceprint_a191a90810dbba2ece245eb1494cf596f}{write\+\_\+to\+\_\+file}} (const std\+::vector$<$ double $>$ \&vector\+\_\+to\+\_\+write, const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Method (overloaded) that writes a std\+::vector$<$double$>$ to file. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceprint_ae663314e597757c2d81595e9e27371d2}{is\+\_\+empty}} (std\+::ifstream \&infile)
+\begin{DoxyCompactList}\small\item\em Checks whether file is empty. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T $>$ }\\void \mbox{\hyperlink{namespaceprint_a54fc48d98ba1c4a8d6b5ae1d08082aeb}{print\+\_\+object}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, const T object, const std\+::string\+\_\+view \&path)
+\begin{DoxyCompactList}\small\item\em Prints persistence probability (approximation as time -\/$>$ infinity) to file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespaceprint_a71f94961900f0784f83f610e1f59bf87}\label{namespaceprint_a71f94961900f0784f83f610e1f59bf87}} 
+{\footnotesize template$<$class P $>$ }\\void {\bfseries print\+\_\+results} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{classDataContainer}{Data\+Container}} \&data, P \&parameters)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Namespace for print methods 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceprint_ae663314e597757c2d81595e9e27371d2}\label{namespaceprint_ae663314e597757c2d81595e9e27371d2}} 
+\index{print@{print}!is\_empty@{is\_empty}}
+\index{is\_empty@{is\_empty}!print@{print}}
+\doxysubsubsection{\texorpdfstring{is\_empty()}{is\_empty()}}
+{\footnotesize\ttfamily bool print\+::is\+\_\+empty (\begin{DoxyParamCaption}\item[{std\+::ifstream \&}]{infile }\end{DoxyParamCaption})}
+
+
+
+Checks whether file is empty. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em infile} & File to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if file is empty; false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceprint_a54fc48d98ba1c4a8d6b5ae1d08082aeb}\label{namespaceprint_a54fc48d98ba1c4a8d6b5ae1d08082aeb}} 
+\index{print@{print}!print\_object@{print\_object}}
+\index{print\_object@{print\_object}!print@{print}}
+\doxysubsubsection{\texorpdfstring{print\_object()}{print\_object()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void print\+::print\+\_\+object (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]},  }\item[{const T}]{object,  }\item[{const std\+::string\+\_\+view \&}]{path }\end{DoxyParamCaption})}
+
+
+
+Prints persistence probability (approximation as time -\/$>$ infinity) to file. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em argc} & Number of command line arguments \\
+\hline
+\mbox{\texttt{ in}}  & {\em argv} & Array of command line arguments \\
+\hline
+\mbox{\texttt{ in}}  & {\em persistence\+\_\+prob} & Probability that the allele persists in population ({\ttfamily double}) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespaceprint_a7dc35eb58f5cb7993468733a16ed4dae}\label{namespaceprint_a7dc35eb58f5cb7993468733a16ed4dae}} 
+\index{print@{print}!write\_to\_file@{write\_to\_file}}
+\index{write\_to\_file@{write\_to\_file}!print@{print}}
+\doxysubsubsection{\texorpdfstring{write\_to\_file()}{write\_to\_file()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void print\+::write\+\_\+to\+\_\+file (\begin{DoxyParamCaption}\item[{const double}]{value\+\_\+to\+\_\+write,  }\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+
+
+Method (overloaded) that writes a double to file. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em value\+\_\+to\+\_\+write} & Value to write to file \\
+\hline
+\mbox{\texttt{ in}}  & {\em filename} & Name of file to write to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Nothing (but writes {\ttfamily value\+\_\+to\+\_\+write} to {\ttfamily filename}) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceprint_a191a90810dbba2ece245eb1494cf596f}\label{namespaceprint_a191a90810dbba2ece245eb1494cf596f}} 
+\index{print@{print}!write\_to\_file@{write\_to\_file}}
+\index{write\_to\_file@{write\_to\_file}!print@{print}}
+\doxysubsubsection{\texorpdfstring{write\_to\_file()}{write\_to\_file()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void print\+::write\+\_\+to\+\_\+file (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{vector\+\_\+to\+\_\+write,  }\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption})}
+
+
+
+Method (overloaded) that writes a std\+::vector$<$double$>$ to file. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em vector\+\_\+to\+\_\+write} & Vector to write to file \\
+\hline
+\mbox{\texttt{ in}}  & {\em filename} & Name of file to write to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Nothing (but writes {\ttfamily vector\+\_\+to\+\_\+write} to {\ttfamily filename}) 
+\end{DoxyReturn}

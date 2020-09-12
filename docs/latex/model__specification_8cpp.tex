@@ -1,0 +1,45 @@
+\hypertarget{model__specification_8cpp}{}\doxysection{/home/joshua/projects/metric/population\+\_\+genetics\+\_\+models/model\+\_\+specification.cpp File Reference}
+\label{model__specification_8cpp}\index{/home/joshua/projects/metric/population\_genetics\_models/model\_specification.cpp@{/home/joshua/projects/metric/population\_genetics\_models/model\_specification.cpp}}
+
+
+Contains methods to specify and run one of the possible population genetics models.  
+
+
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include \char`\"{}model\+\_\+specification.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}H\+S\+E.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}H\+T\+E.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}D\+S\+E.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}H\+T\+E\+O\+E.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}io.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}path\+\_\+parameters.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+model\+\_\+map \mbox{\hyperlink{model__specification_8cpp_a4ed353b80293defe69ab639415451081}{get\+\_\+model\+\_\+map}} ()
+\begin{DoxyCompactList}\small\item\em Constructs a {\ttfamily std\+::map} so that models can be called via a {\ttfamily std\+::string} argument. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{model__specification_8cpp_a0871aa4aaf2c4fe3b397a80e3999c560}\label{model__specification_8cpp_a0871aa4aaf2c4fe3b397a80e3999c560}} 
+void {\bfseries specify\+\_\+and\+\_\+run\+\_\+model} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains methods to specify and run one of the possible population genetics models. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{model__specification_8cpp_a4ed353b80293defe69ab639415451081}\label{model__specification_8cpp_a4ed353b80293defe69ab639415451081}} 
+\index{model\_specification.cpp@{model\_specification.cpp}!get\_model\_map@{get\_model\_map}}
+\index{get\_model\_map@{get\_model\_map}!model\_specification.cpp@{model\_specification.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_model\_map()}{get\_model\_map()}}
+{\footnotesize\ttfamily model\+\_\+map get\+\_\+model\+\_\+map (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Constructs a {\ttfamily std\+::map} so that models can be called via a {\ttfamily std\+::string} argument. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily std\+::map} with a {\ttfamily std\+::string} as \char`\"{}key\char`\"{} and a function that runs the model as \char`\"{}value\char`\"{} 
+\end{DoxyReturn}

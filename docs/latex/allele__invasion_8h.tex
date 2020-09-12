@@ -1,0 +1,48 @@
+\hypertarget{allele__invasion_8h}{}\doxysection{/home/joshua/projects/metric/population\+\_\+genetics\+\_\+models/allele\+\_\+invasion.h File Reference}
+\label{allele__invasion_8h}\index{/home/joshua/projects/metric/population\_genetics\_models/allele\_invasion.h@{/home/joshua/projects/metric/population\_genetics\_models/allele\_invasion.h}}
+{\ttfamily \#include $<$random$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include \char`\"{}record\+\_\+data.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}persistence\+\_\+status.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Data\+Container.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class P , class F $>$ }\\void \mbox{\hyperlink{allele__invasion_8h_ad8e4679201ef5c3608f50fc1b838f87c}{allele\+\_\+invasion}} (const std\+::vector$<$ double $>$ \&fitnesses, const P \&parameters, std\+::mt19937 \&rng, double \&allele\+\_\+\+A\+\_\+freq, F calculate\+\_\+allele\+\_\+freqs\+\_\+function, \mbox{\hyperlink{classDataContainer}{Data\+Container}} \&data, const int replicate, const int reinvasions)
+\begin{DoxyCompactList}\small\item\em Runs a single invasion attempt of an allele. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{allele__invasion_8h_ad8e4679201ef5c3608f50fc1b838f87c}\label{allele__invasion_8h_ad8e4679201ef5c3608f50fc1b838f87c}} 
+\index{allele\_invasion.h@{allele\_invasion.h}!allele\_invasion@{allele\_invasion}}
+\index{allele\_invasion@{allele\_invasion}!allele\_invasion.h@{allele\_invasion.h}}
+\doxysubsubsection{\texorpdfstring{allele\_invasion()}{allele\_invasion()}}
+{\footnotesize\ttfamily template$<$class P , class F $>$ \\
+void allele\+\_\+invasion (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{fitnesses,  }\item[{const P \&}]{parameters,  }\item[{std\+::mt19937 \&}]{rng,  }\item[{double \&}]{allele\+\_\+\+A\+\_\+freq,  }\item[{F}]{calculate\+\_\+allele\+\_\+freqs\+\_\+function,  }\item[{\mbox{\hyperlink{classDataContainer}{Data\+Container}} \&}]{data,  }\item[{const int}]{replicate,  }\item[{const int}]{reinvasions }\end{DoxyParamCaption})}
+
+
+
+Runs a single invasion attempt of an allele. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em fitnesses} & Vector containing fitnesses \\
+\hline
+\mbox{\texttt{ in}}  & {\em parameters.\+shared.\+population\+\_\+size} & Number of individuals in the population \\
+\hline
+\mbox{\texttt{ in}}  & {\em parameters.\+fixed.\+tolerance} & Tolerance for comparing equality of doubles \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em rng} & Random number generator \\
+\hline
+\mbox{\texttt{ in}}  & {\em calculate\+\_\+allele\+\_\+freqs\+\_\+function} & Template for method to calcluate allele frequency (one of \mbox{\hyperlink{namespaceHSE_ae5e4ece692711a23bdefb0e3fa5ef120}{H\+S\+E\+::calculate\+\_\+allele\+\_\+freqs}}, \mbox{\hyperlink{namespaceHTE_a04a6a27af747e17118c4756d4081a7d0}{H\+T\+E\+::calculate\+\_\+allele\+\_\+freqs}}, \mbox{\hyperlink{namespaceDSE_a6fc9a9827b3c6dba9e33035533866bf3}{D\+S\+E\+::calculate\+\_\+allele\+\_\+freqs}}, or \mbox{\hyperlink{namespaceHTEOE_a898ae2f2483297de24fa7802feb3c9b3}{H\+T\+E\+O\+E\+::calculate\+\_\+allele\+\_\+freqs}}) \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em data} & \mbox{\hyperlink{classDataContainer}{Data\+Container}} class object \\
+\hline
+\mbox{\texttt{ in}}  & {\em replicate} & Simulation number (for indexing into {\ttfamily data}) \\
+\hline
+\mbox{\texttt{ in}}  & {\em reinvasions} & Equals -\/1 when the invasion is the initial one (i.\+e. trait invading resident) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Nothing (but alters {\ttfamily allele\+\_\+\+A\+\_\+freq} and can alter final\+\_\+\+A\+\_\+freqs depending on parameters.\+shared.\+num\+\_\+gens\+\_\+to\+\_\+output\+\_\+pp) 
+\end{DoxyReturn}

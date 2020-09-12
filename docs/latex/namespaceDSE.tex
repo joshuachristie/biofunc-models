@@ -1,0 +1,108 @@
+\hypertarget{namespaceDSE}{}\doxysection{D\+SE Namespace Reference}
+\label{namespaceDSE}\index{DSE@{DSE}}
+
+
+Namespace for Diploid Single Environment.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{structDSE__Model__Parameters}{D\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} \mbox{\hyperlink{namespaceDSE_acd3ff9e8194a169b1a78f6ba9740aa6c}{parse\+\_\+parameter\+\_\+values}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Reads in parameter values from command line into a struct. \end{DoxyCompactList}\item 
+const std\+::vector$<$ double $>$ \mbox{\hyperlink{namespaceDSE_ad5cea6f450699bacb3fad51cc86345ce}{get\+\_\+fitness\+\_\+function}} (const \mbox{\hyperlink{structDSE__Model__Parameters}{D\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} \&parameters)
+\begin{DoxyCompactList}\small\item\em Calculates fitness function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceDSE_a6fc9a9827b3c6dba9e33035533866bf3}{calculate\+\_\+allele\+\_\+freqs}} (double \&allele\+\_\+\+A\+\_\+freq, const std\+::vector$<$ double $>$ \&fitnesses, const \mbox{\hyperlink{structDSE__Model__Parameters}{D\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} \&parameters, std\+::mt19937 \&rng, int \&gen)
+\begin{DoxyCompactList}\small\item\em Calculates frequency of the A allele after selection and random mating. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceDSE_ae03e43b11e918694ae4a3c244b65c381}{run\+\_\+model}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Runs Diploid Single Environment model. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Namespace for Diploid Single Environment. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceDSE_a6fc9a9827b3c6dba9e33035533866bf3}\label{namespaceDSE_a6fc9a9827b3c6dba9e33035533866bf3}} 
+\index{DSE@{DSE}!calculate\_allele\_freqs@{calculate\_allele\_freqs}}
+\index{calculate\_allele\_freqs@{calculate\_allele\_freqs}!DSE@{DSE}}
+\doxysubsubsection{\texorpdfstring{calculate\_allele\_freqs()}{calculate\_allele\_freqs()}}
+{\footnotesize\ttfamily void D\+S\+E\+::calculate\+\_\+allele\+\_\+freqs (\begin{DoxyParamCaption}\item[{double \&}]{allele\+\_\+\+A\+\_\+freq,  }\item[{const std\+::vector$<$ double $>$ \&}]{fitnesses,  }\item[{const \mbox{\hyperlink{structDSE__Model__Parameters}{D\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} \&}]{parameters,  }\item[{std\+::mt19937 \&}]{rng,  }\item[{int \&}]{gen }\end{DoxyParamCaption})}
+
+
+
+Calculates frequency of the A allele after selection and random mating. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em allele\+\_\+\+A\+\_\+freq} & The frequency of the A allele \\
+\hline
+\mbox{\texttt{ in}}  & {\em fitnesses} & Vector containing AA, Aa, and aa genotype fitnesses \mbox{[}wA, w\+Aa, wa\mbox{]} \\
+\hline
+\mbox{\texttt{ in}}  & {\em D\+S\+E\+\_\+\+Model\+\_\+\+Parameters\+::\+Shared\+\_\+\+Parameters\+::population\+\_\+size} & Number of individuals in the population \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em rng} & Random number generator \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Nothing (but modifies {\ttfamily allele\+\_\+\+A\+\_\+freq}) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceDSE_ad5cea6f450699bacb3fad51cc86345ce}\label{namespaceDSE_ad5cea6f450699bacb3fad51cc86345ce}} 
+\index{DSE@{DSE}!get\_fitness\_function@{get\_fitness\_function}}
+\index{get\_fitness\_function@{get\_fitness\_function}!DSE@{DSE}}
+\doxysubsubsection{\texorpdfstring{get\_fitness\_function()}{get\_fitness\_function()}}
+{\footnotesize\ttfamily const std\+::vector$<$ double $>$ D\+S\+E\+::get\+\_\+fitness\+\_\+function (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structDSE__Model__Parameters}{D\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} \&}]{parameters }\end{DoxyParamCaption})}
+
+
+
+Calculates fitness function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em parameters} & \mbox{\hyperlink{structDSE__Model__Parameters_1_1DSE__Specific__Parameters_a9c5f235e650858bb9c123370311d0d6b}{D\+S\+E\+\_\+\+Model\+\_\+\+Parameters\+::\+D\+S\+E\+\_\+\+Specific\+\_\+\+Parameters\+::selection\+\_\+coefficient\+\_\+homozygote}} -\/ selection coefficient of the AA genotype \\
+\hline
+\mbox{\texttt{ in}}  & {\em parameters} & D\+S\+E\+\_\+\+Model\+\_\+\+Parameters\+::\+D\+S\+E\+\_\+\+Specific\+\_\+\+Parameters\+::selection\+\_\+coefficient\+\_\+heterozygte -\/ selection coefficient of the Aa genotype \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+fitnesses A vector of length 3 containing the fitnesses of the AA, Aa, and aa genotypes \mbox{[}w\+AA, W\+Aa, Waa\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceDSE_acd3ff9e8194a169b1a78f6ba9740aa6c}\label{namespaceDSE_acd3ff9e8194a169b1a78f6ba9740aa6c}} 
+\index{DSE@{DSE}!parse\_parameter\_values@{parse\_parameter\_values}}
+\index{parse\_parameter\_values@{parse\_parameter\_values}!DSE@{DSE}}
+\doxysubsubsection{\texorpdfstring{parse\_parameter\_values()}{parse\_parameter\_values()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structDSE__Model__Parameters}{D\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} D\+S\+E\+::parse\+\_\+parameter\+\_\+values (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Reads in parameter values from command line into a struct. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em argc} & Number of commandline arguments \\
+\hline
+\mbox{\texttt{ in}}  & {\em argv} & Command line arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+params \mbox{\hyperlink{structDSE__Model__Parameters}{D\+S\+E\+\_\+\+Model\+\_\+\+Parameters}} struct 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceDSE_ae03e43b11e918694ae4a3c244b65c381}\label{namespaceDSE_ae03e43b11e918694ae4a3c244b65c381}} 
+\index{DSE@{DSE}!run\_model@{run\_model}}
+\index{run\_model@{run\_model}!DSE@{DSE}}
+\doxysubsubsection{\texorpdfstring{run\_model()}{run\_model()}}
+{\footnotesize\ttfamily void D\+S\+E\+::run\+\_\+model (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Runs Diploid Single Environment model. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em argc} & Number of command line arguments \\
+\hline
+\mbox{\texttt{ in}}  & {\em argv} & Array of command line arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Nothing (but prints results) 
+\end{DoxyReturn}

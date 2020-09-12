@@ -1,0 +1,32 @@
+\hypertarget{print__results_8h}{}\doxysection{/home/joshua/projects/metric/population\+\_\+genetics\+\_\+models/print\+\_\+results.h File Reference}
+\label{print__results_8h}\index{/home/joshua/projects/metric/population\_genetics\_models/print\_results.h@{/home/joshua/projects/metric/population\_genetics\_models/print\_results.h}}
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$cstdio$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include \char`\"{}path\+\_\+parameters.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}io.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Data\+Container.\+h\char`\"{}}\newline
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceprint}{print}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespaceprint_ae663314e597757c2d81595e9e27371d2}{print\+::is\+\_\+empty}} (std\+::ifstream \&infile)
+\begin{DoxyCompactList}\small\item\em Checks whether file is empty. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceprint_a7dc35eb58f5cb7993468733a16ed4dae}{print\+::write\+\_\+to\+\_\+file}} (const double value\+\_\+to\+\_\+write, const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Method (overloaded) that writes a double to file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceprint_a191a90810dbba2ece245eb1494cf596f}{print\+::write\+\_\+to\+\_\+file}} (const std\+::vector$<$ double $>$ \&vector\+\_\+to\+\_\+write, const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Method (overloaded) that writes a std\+::vector$<$double$>$ to file. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T $>$ }\\void \mbox{\hyperlink{namespaceprint_a54fc48d98ba1c4a8d6b5ae1d08082aeb}{print\+::print\+\_\+object}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, const T object, const std\+::string\+\_\+view \&path)
+\begin{DoxyCompactList}\small\item\em Prints persistence probability (approximation as time -\/$>$ infinity) to file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespaceprint_a71f94961900f0784f83f610e1f59bf87}\label{namespaceprint_a71f94961900f0784f83f610e1f59bf87}} 
+{\footnotesize template$<$class P $>$ }\\void {\bfseries print\+::print\+\_\+results} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{classDataContainer}{Data\+Container}} \&data, P \&parameters)
+\end{DoxyCompactItemize}

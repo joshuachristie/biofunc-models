@@ -1,0 +1,83 @@
+\hypertarget{persistence__status_8h}{}\doxysection{/home/joshua/projects/metric/population\+\_\+genetics\+\_\+models/persistence\+\_\+status.h File Reference}
+\label{persistence__status_8h}\index{/home/joshua/projects/metric/population\_genetics\_models/persistence\_status.h@{/home/joshua/projects/metric/population\_genetics\_models/persistence\_status.h}}
+{\ttfamily \#include $<$vector$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries persist\+\_\+status\+::close\+\_\+to\+\_\+value} (const double allele\+\_\+freq, const double value, const double tolerance)
+\begin{DoxyCompactList}\small\item\em Compare for approximate equality of doubles. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T $>$ }\\bool \mbox{\hyperlink{persistence__status_8h_a6ebe1e0e95327f1ea32432a5c0864f41}{persist\+\_\+status\+::is\+\_\+neither\+\_\+fixed\+\_\+nor\+\_\+extinct}} (const double gen, const double value, const T \&params)
+\begin{DoxyCompactList}\small\item\em Checks whether 0 $<$ {\ttfamily value} $<$ 1. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T $>$ }\\bool \mbox{\hyperlink{persistence__status_8h_af84355e89743c7610a90df29b7b15e97}{persist\+\_\+status\+::is\+\_\+not\+\_\+extinct}} (const double value, const T \&params)
+\begin{DoxyCompactList}\small\item\em Checks whether {\ttfamily value} $>$ 0. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{persistence__status_8cpp_a812bce3e21c28afd7b31ab70e6711330}\label{persistence__status_8cpp_a812bce3e21c28afd7b31ab70e6711330}} 
+\index{persistence\_status.h@{persistence\_status.h}!close\_to\_value@{close\_to\_value}}
+\index{close\_to\_value@{close\_to\_value}!persistence\_status.h@{persistence\_status.h}}
+\doxysubsubsection{\texorpdfstring{close\_to\_value()}{close\_to\_value()}}
+{\footnotesize\ttfamily bool persist\+\_\+status\+::close\+\_\+to\+\_\+value (\begin{DoxyParamCaption}\item[{const double}]{allele\+\_\+freq,  }\item[{const double}]{value,  }\item[{const double}]{tolerance }\end{DoxyParamCaption})}
+
+
+
+Compare for approximate equality of doubles. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em allele\+\_\+freq} & Allele frequency \\
+\hline
+\mbox{\texttt{ in}}  & {\em value} & Value to compare {\ttfamily allele\+\_\+freq} against \\
+\hline
+\mbox{\texttt{ in}}  & {\em tolerance} & A double that determines how closely {\ttfamily allele\+\_\+freq} and {\ttfamily value} must be \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the absolute difference between {\ttfamily allele\+\_\+freq} and {\ttfamily value} is less than {\ttfamily tolerance}; false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{persistence__status_8h_a6ebe1e0e95327f1ea32432a5c0864f41}\label{persistence__status_8h_a6ebe1e0e95327f1ea32432a5c0864f41}} 
+\index{persistence\_status.h@{persistence\_status.h}!is\_neither\_fixed\_nor\_extinct@{is\_neither\_fixed\_nor\_extinct}}
+\index{is\_neither\_fixed\_nor\_extinct@{is\_neither\_fixed\_nor\_extinct}!persistence\_status.h@{persistence\_status.h}}
+\doxysubsubsection{\texorpdfstring{is\_neither\_fixed\_nor\_extinct()}{is\_neither\_fixed\_nor\_extinct()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool persist\+\_\+status\+::is\+\_\+neither\+\_\+fixed\+\_\+nor\+\_\+extinct (\begin{DoxyParamCaption}\item[{const double}]{gen,  }\item[{const double}]{value,  }\item[{const T \&}]{params }\end{DoxyParamCaption})}
+
+
+
+Checks whether 0 $<$ {\ttfamily value} $<$ 1. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em gen} & Current generation of simulation \\
+\hline
+\mbox{\texttt{ in}}  & {\em value} & Allele frequency \\
+\hline
+\mbox{\texttt{ in}}  & {\em params.\+fixed.\+max\+\_\+generations\+\_\+per\+\_\+sim} & Maximum number of generations for which a sim can run (approximation to time -\/$>$ infinity) \\
+\hline
+\mbox{\texttt{ in}}  & {\em params.\+fixed.\+tolerance} & Tolerance for comparison of doubles \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if allele A is neither fixed nor extinct (nor has exceeded params.\+fixed.\+max\+\_\+generations\+\_\+per\+\_\+sim); false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{persistence__status_8h_af84355e89743c7610a90df29b7b15e97}\label{persistence__status_8h_af84355e89743c7610a90df29b7b15e97}} 
+\index{persistence\_status.h@{persistence\_status.h}!is\_not\_extinct@{is\_not\_extinct}}
+\index{is\_not\_extinct@{is\_not\_extinct}!persistence\_status.h@{persistence\_status.h}}
+\doxysubsubsection{\texorpdfstring{is\_not\_extinct()}{is\_not\_extinct()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool persist\+\_\+status\+::is\+\_\+not\+\_\+extinct (\begin{DoxyParamCaption}\item[{const double}]{value,  }\item[{const T \&}]{params }\end{DoxyParamCaption})}
+
+
+
+Checks whether {\ttfamily value} $>$ 0. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em value} & Allele frequency \\
+\hline
+\mbox{\texttt{ in}}  & {\em params.\+fixed.\+tolerance} & Tolerance for comparison of doubles \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if {\ttfamily value} is $>$ 0; false otherwise 
+\end{DoxyReturn}
