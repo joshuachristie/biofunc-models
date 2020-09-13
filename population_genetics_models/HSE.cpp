@@ -1,11 +1,5 @@
 /**
    @file HSE.cpp
-   @brief Contains functions to run the Haploid Single Environment model
-   @detail This model explores biological function in the simplest case: a single trait with a single effect.
-The set-up is a Wright-Fisher haploid model: one locus, two alleles, (and implicitly a single environment).
-For this model, there is no need to apportion the function metric between components using partial information
- decomposition because there is a simple mapping between trait -> selection_coefficient ->
- persistence_probability (i.e. function is wholly attributable to the trait's selection coefficient).
 */
 
 #include <cassert>
@@ -21,22 +15,14 @@ For this model, there is no need to apportion the function metric between compon
 #include "allele_invasion.h"
 #include "DataContainer.h"
 
-/**
-   @brief Namespace for Haploid Single Environment
-*/
 namespace HSE {
-  /**
-     @brief Reads in parameter values from command line into a struct
-     @param[in] argc Number of commandline arguments
-     @param[in] argv Command line arguments
-     @return params HSE_Model_Parameters struct
-  */
+  
   const HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HSE");
     assert(argc == 7 && "The HSE model must have 6 command line arguments (the first must be HSE)");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient = atof(argv[3]);
-    const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
+    const double initial_A_freq = 1.0 / static_cast<double>(population_size);
     const int number_reinvasions = atoi(argv[4]);
     const int number_gens_to_output_pp = atoi(argv[5]);
     const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[6]));
@@ -45,22 +31,16 @@ namespace HSE {
     return params;
   }
   /**
-     @brief Calculates fitness function
-     @param[in] parameters HSE_Model_Parameters::HSE_Specific_Parameters::selection_coefficient - selection coefficient of the A allele
-     @return fitnesses A vector of length 2 containing the fitnesses of the A and a alleles [wA, wa]
+     @details Calculates and returns a 1-by-2 vector of allele fitnesses [w_A, w_a].
   */
   const std::vector<double> get_fitness_function(const HSE_Model_Parameters &parameters){
-    // fitnesses[w_A, w_a] gives relative fitness of A allele
     const std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient, 1.0};
     return fitnesses;
   }
   /**
-     @brief Calculates frequency of the A allele after selection
-     @param[in, out] allele_A_freq The frequency of the A allele
-     @param[in] fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
-     @param[in] HSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
-     @param[in, out] rng Random number generator
-     @return Nothing (but modifies \p allele_A_freq)
+     @details The function first calculates the expected (deterministic) allele frequency due to selection.
+     It then uses this expectation as the probability for a (random) binomial sampling process to get a new
+     \p allele_A_freq. It also increments the current \p gen.
   */
   void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &fitnesses,
 			      const HSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
@@ -77,10 +57,9 @@ namespace HSE {
     ++gen;
   }
   /**
-     @brief Runs Haploid Single Environment model
-     @param[in] argc Number of command line arguments
-     @param[in] argv Array of command line arguments
-     @return Nothing (but prints results)
+     @details Calls initialise_rng(), HSE::parse_parameter_values(), HSE::get_fitness_function(), sets up
+     a DataContainer object, calls calculate_persistence_probability(), and finally calls
+     print::print_results().
   */
   void run_model(int argc, char* argv[]){
 
