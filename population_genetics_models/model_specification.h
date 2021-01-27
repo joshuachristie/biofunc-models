@@ -1,3 +1,8 @@
+/**
+   @file model_specification.h
+   @brief Contains methods to specify and run one of the possible population genetics models
+*/
+
 #ifndef MODEL_SPEC_H
 #define MODEL_SPEC_H
 

@@ -6,9 +6,13 @@
 
 #include <vector>
 
+/**
+   @brief Namespace for functions that determine whether a trait persists
+**/
 namespace persist_status {
 
   bool close_to_value(const double allele_freq, const double value, const double tolerance);
+  
   /**
      @brief Checks whether 0 < \p value < 1
      @param[in] gen Current generation of simulation

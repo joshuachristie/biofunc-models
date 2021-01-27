@@ -1,7 +1,3 @@
-/**
-   @file HSE.cpp
-*/
-
 #include <cassert>
 #include <string>
 #include <vector>

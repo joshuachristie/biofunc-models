@@ -1,5 +1,6 @@
 /**
    @file print_results.h
+   @brief Methods to print model results to output files
 */
 #ifndef PRINT_RESULTS_H
 #define PRINT_RESULTS_H
@@ -35,7 +36,7 @@ namespace print {
       io::create_dir_and_get_file_path(argc, argv, path, ".csv", argv[1]);
     write_to_file(object, file_path);
   }
-  
+
   template<class P>
   void print_results(int argc, char* argv[], DataContainer &data, P &parameters){
     const double persistence_probability = data.get_persistence_infinite_approx();

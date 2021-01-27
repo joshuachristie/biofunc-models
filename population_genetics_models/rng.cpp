@@ -1,7 +1,3 @@
-/**
-   @file rng.cpp
-   @brief Provides \p initialise_rng
-*/
 #include <random>
 #include <chrono>
 #include "rng.h"

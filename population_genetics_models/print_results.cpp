@@ -1,8 +1,3 @@
-/**
-   @file print_results.cpp
-   @brief Methods to print model results to output files
-*/
-
 #include <sstream>
 #include <fstream>
 #include <string>

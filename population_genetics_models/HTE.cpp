@@ -1,35 +1,3 @@
-/**
-   @file HTE.cpp
-   @brief Contains functions to run the Haploid Two Environments model
-   @detail This model explores biological function in the context of a trait that experiences two different
-   environments and has a separate fitness in each environment.
-   The set-up is a Wright-Fisher haploid model: one locus with two alleles; one environment with two types
-   At any given time, there is one environment. The environment can change during the simulation however.
-   Let's say that the resident population has trait (allele) a which is invaded by our allele of interest, A
-   Each allele (A/a) has two components to its fitness: fitness in env 1 and env 2.
-   Trait/allele a is the resident trait and in environment 1 its fitness is 1 + selection_coefficient_a_env_1
-   while in environment 2 its fitness is 1 + selection_coefficient_a_env_2.
-   Trait/allele A is our trait of interest and in environment 1 its fitness is 1 + selection_coefficient_A_env_1
-   while in environment 2 its fitness is 1 + selection_coefficient_A_env_2.
-   For PID purposes, I will fix the fitness of trait a (and thus also fix selection_coefficient_a_env_1 and
-   selection_coefficient_a_env_2).
-   The two "sources" are thus selection_coefficient_A_env_1 and selection_coefficient_A_env_2.
-   PID is used to apportion trait A's function between selection_coefficient_A_env_1 and
-   selection_coefficient_A_env_2 (and to their redundant/synergistic effects).
-
-   It requires specification of a particular selection regime (i.e. environment at each generation).
-   For simplicity, I only consider a selection regime in which environment 1 exists for gen_env_1 generations,
-   which is followed by environment 2 existing for the remaining generations (until fixation or loss).
-   One interpretation of this model is the evolved for/maintained by distinction (where evolved for is env 1
-   and maintained by is env 2)
-   
-   Note that here PID is not strictly necessary in order to calculate the overall function of trait/allele A
-   (since both sources are ultimately derived from trait/allele A), but it is necessary in order to apportion
-   the function of trait/allele A between its effects.
-   If a trait evolves in environment 1 but is maintained due to its effects in environment 2, we might want to
-   quantify the function of the trait's effect in environment 1 separately from its effect in environment 2
-*/
-
 #include <cassert>
 #include <string>
 #include <vector>
@@ -43,9 +11,6 @@
 #include "allele_invasion.h"
 #include "DataContainer.h"
 
-/**
-   @brief Namespace for Haploid Two Environments
-*/
 namespace HTE {
   /**
      @brief Reads in parameter values from command line into a struct
