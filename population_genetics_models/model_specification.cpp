@@ -1,8 +1,3 @@
-/**
-   @file model_specification.cpp
-   @brief Contains methods to specify and run one of the possible population genetics models
-*/
-
 #include <functional>
 #include <fstream>
 #include "model_specification.h"
@@ -27,6 +22,12 @@ model_map get_model_map(){
   return map;
 }
 
+/**
+   @brief Specifies and runs one of the four models (HSE, DSE, HTE, HTEOE)
+   @param[in] argc Number of command line arguments
+   @param[in] argv Array of command line arguments
+   @return Nothing (but runs a specified model and combination of parameter values)
+**/
 void specify_and_run_model(int argc, char* argv[]){
   model_map map = get_model_map(); // hashmap/dict of available models
   try {

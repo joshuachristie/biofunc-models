@@ -36,7 +36,7 @@ namespace io {
      @param[in] argc Number of command line arguments
      @param[in] argv Array of command line arguments
      @param[in] dir_path String containing path to directory
-     @param[in] extension File extension (e.g. ".csv" or ".txt")
+     @param[in] extension String containing file extension (e.g. ".csv" or ".txt")
      @return filename \p String with path to file
 */
   const std::string get_file_path(int argc, char* argv[], const std::string &dir_path,
@@ -47,6 +47,13 @@ namespace io {
   }
 
   /**
+     @brief Creates directory and returns path to file
+     @param[in] argc Number of command line arguments
+     @param[in] argv Array of command line arguments
+     @param[in] parent_dir String containing path to parent directory
+     @param[in] extension String containing file extension (e.g. ".csv" or ".txt")
+     @param[in] dir String containing directory name
+     @return file_path \p String with path to file
 */
   const std::string create_dir_and_get_file_path(int argc, char* argv[], const std::string_view &parent_dir,
 						 const std::string &extension, const std::string &dir){

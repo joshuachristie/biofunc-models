@@ -14,9 +14,6 @@
    @brief Namespace for Haploid Single Environment
    @details This model explores biological function in the simplest case: a single trait with a single effect.
    The set-up is a Wright-Fisher haploid model: one locus, two alleles, (and implicitly a single environment).
-   For this model, there is no need to apportion the function metric between components using partial
-   information decomposition because there is a simple mapping between trait -> selection_coefficient ->
-   persistence_probability (i.e. function is wholly attributable to the trait's selection coefficient).
 */
 namespace HSE {
   /**
