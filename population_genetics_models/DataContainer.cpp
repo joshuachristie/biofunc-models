@@ -27,10 +27,10 @@ const void DataContainer::append_persistence(const int replicate, const bool per
   _simulation_data[replicate].append_persistence_by_gen(persistence);
 }
 
-const std::vector<double> DataContainer::get_allele_A_freqs(const int replicate){
-  return _simulation_data[replicate]._allele_A_freq_by_gen;
+const std::vector<double> DataContainer::get_trait_freqs(const int replicate){
+  return _simulation_data[replicate]._trait_freq_by_gen;
 }
   
-void DataContainer::append_allele_A_freq(const int replicate, const double allele_A_freq){
-  _simulation_data[replicate].append_allele_A_freq_by_gen(allele_A_freq);
+void DataContainer::append_trait_freq(const int replicate, const double allele_A_freq){
+  _simulation_data[replicate].append_trait_freq_by_gen(allele_A_freq);
 }

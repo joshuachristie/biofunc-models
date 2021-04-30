@@ -27,12 +27,12 @@ namespace HTE {
     const double selection_coefficient_a_env_1 = atof(argv[5]);
     const double selection_coefficient_a_env_2 = atof(argv[6]);
     const int gen_env_1 = atoi(argv[7]);
-    const double initial_A_freq = 1.0 / static_cast<double>(population_size); // 1/N
+    const double initial_trait_freq = 1.0 / static_cast<double>(population_size); // 1/N
     const int number_reinvasions = atoi(argv[8]);
     const int number_gens_to_output_pp = atoi(argv[9]);
-    const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[10]));
-    const HTE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
-	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient_A_env_1,
+    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[10]));
+    const HTE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions,
+	number_gens_to_output_pp, print_trait_raw_data}, {selection_coefficient_A_env_1,
 					 selection_coefficient_A_env_2, selection_coefficient_a_env_1,
 					 selection_coefficient_a_env_2, gen_env_1}};
     return params;
@@ -87,7 +87,7 @@ namespace HTE {
     const HTE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
     DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp,
-		       params.fixed.reserve_memory_allele_freq);
+		       params.fixed.reserve_memory_trait_freq);
     calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
     print::print_results(argc, argv, data, params);
   }

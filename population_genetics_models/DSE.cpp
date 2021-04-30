@@ -25,12 +25,12 @@ namespace DSE {
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_homozygote = atof(argv[3]);
     const double selection_coefficient_heterozygote = atof(argv[4]);
-    double initial_A_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
+    double initial_trait_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
     const int number_reinvasions = atoi(argv[5]);
     const int number_gens_to_output_pp = atoi(argv[6]);
-    const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[7]));
-    const DSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
-	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient_homozygote,
+    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[7]));
+    const DSE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions,
+	number_gens_to_output_pp, print_trait_raw_data}, {selection_coefficient_homozygote,
 					 selection_coefficient_heterozygote}};
     return params;
   }
@@ -80,7 +80,7 @@ namespace DSE {
     const DSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
     DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp,
-		       params.fixed.reserve_memory_allele_freq);
+		       params.fixed.reserve_memory_trait_freq);
     calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
     print::print_results(argc, argv, data, params);
   }

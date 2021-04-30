@@ -28,7 +28,7 @@ namespace print {
      @brief Prints persistence probability (approximation as time -> infinity) to file
      @param[in] argc Number of command line arguments
      @param[in] argv Array of command line arguments
-     @param[in] persistence_prob Probability that the allele persists in population (\p double)
+     @param[in] persistence_prob Probability that the trait persists in population (\p double)
   */
   template<class T>
   void print_object(int argc, char* argv[], const T object, const std::string_view &path){
@@ -48,14 +48,14 @@ namespace print {
     } else {
       assert(data._simulation_data[0]._persistence_by_gen.empty());
     }
-    if (parameters.shared.print_allele_A_raw_data){
-      assert(!data._simulation_data[0]._allele_A_freq_by_gen.empty());
+    if (parameters.shared.print_trait_raw_data){
+      assert(!data._simulation_data[0]._trait_freq_by_gen.empty());
       for (int i = 0; i < parameters.fixed.number_replicates; i++){
-	const std::vector<double> allele_A_freqs = data.get_allele_A_freqs(i);
-	print_object(argc, argv, allele_A_freqs, paths::allele_A_data_dir);
+	const std::vector<double> trait_freqs = data.get_trait_freqs(i);
+	print_object(argc, argv, trait_freqs, paths::trait_data_dir);
       }
     } else {
-      assert(data._simulation_data[0]._allele_A_freq_by_gen.empty());
+      assert(data._simulation_data[0]._trait_freq_by_gen.empty());
     }
   }
 

@@ -12,12 +12,12 @@
    @brief Struct containing shared parameters (i.e. parameters utilised by all of the population genetics models)
 */
 struct Shared_Parameters {
-  const int population_size; /**< Number of alleles in the population */
-  const double initial_A_freq; /**< Initial frequency of allele A  */
-  const int number_reinvasions; /**< Number of reinvasion attempts that allele A faces */
+  const int population_size; /**< Number of individuals in the population */
+  const double initial_trait_freq; /**< Initial frequency of the trait  */
+  const int number_reinvasions; /**< Number of reinvasion attempts that the trait faces */
   /** Sets the number of generations for which to calculate and print time-dependent persistence_probability */
   const int number_gens_to_output_pp;
-  const bool print_allele_A_raw_data; /**< If true, will print raw allele data for each gen and replicate */
+  const bool print_trait_raw_data; /**< If true, will print raw trait data for each gen and replicate */
 };
 /**
    @brief Struct containing constant parameter values (fixed for all models)
@@ -28,8 +28,8 @@ struct Fixed_Parameters {
   inline static const int number_replicates = fixed_parameters::number_replicates;
   /** Max number of generations to run a replicate (prevents a stable polymorphism causing an infinite loop) */
   inline static const int max_generations_per_sim = fixed_parameters::max_generations_per_sim;
-  /** Memory allocation for Data::_allele_A_freq_by_gen */
-  inline static const int reserve_memory_allele_freq = fixed_parameters::reserve_memory_allele_freq;
+  /** Memory allocation for Data::_trait_freq_by_gen */
+  inline static const int reserve_memory_trait_freq = fixed_parameters::reserve_memory_trait_freq;
 };
 /**
    @brief Struct for parameters of the Haploid Single Environment model

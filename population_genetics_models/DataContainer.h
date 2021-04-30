@@ -12,8 +12,8 @@ public:
   void set_persistence_outcome_infinite(const int replicate, const bool outcome);
   const std::vector<double> get_persistence_by_gen();
   const void append_persistence(const int replicate, const bool persistence);
-  const std::vector<double> get_allele_A_freqs(const int replicate);
-  void append_allele_A_freq(const int replicate, const double allele_A_freq);
+  const std::vector<double> get_trait_freqs(const int replicate);
+  void append_trait_freq(const int replicate, const double allele_A_freq);
 
   DataContainer(int number_replicates, int number_gens_to_record_pp, int reserve_length_af){
     for (int i = 0; i < number_replicates; i++){

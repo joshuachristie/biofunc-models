@@ -27,23 +27,23 @@ void allele_invasion(const std::vector<double> &fitnesses, const P &parameters, 
 		     double &allele_A_freq, F calculate_allele_freqs_function, DataContainer &data,
 		     const int replicate, const int reinvasions){
   int gen = -1;
-  bool extinct = false; // for formatting printing allele A raw data
-  // run simulation until allele A is fixed or extinct and number gens > number_gens_to_output_pp
+  bool extinct = false; // for formatting printing trait raw data
+  // run simulation until the trait is fixed or extinct and number gens > number_gens_to_output_pp
   while (persist_status::is_neither_fixed_nor_extinct(gen, allele_A_freq, parameters) ||
 	 gen < parameters.shared.number_gens_to_output_pp){
     
     calculate_allele_freqs_function(allele_A_freq, fitnesses, parameters, rng, gen);
     
     if (gen < parameters.shared.number_gens_to_output_pp && reinvasions == -1){
-      record::A_allele_presence_by_gen(allele_A_freq, parameters, replicate, data);
+      record::trait_presence_by_gen(allele_A_freq, parameters, replicate, data);
     }
     
-    if ((parameters.shared.print_allele_A_raw_data && reinvasions == -1 && !extinct)) {
-      record::A_allele_freq(allele_A_freq, replicate, data);
+    if ((parameters.shared.print_trait_raw_data && reinvasions == -1 && !extinct)) {
+      record::trait_freq(allele_A_freq, replicate, data);
     }
     if (!persist_status::is_not_extinct(allele_A_freq, parameters)) { extinct = true; }
   }
-  record::A_allele_presence_infinite(allele_A_freq, parameters, replicate, data);
+  record::trait_presence_infinite(allele_A_freq, parameters, replicate, data);
 }
 
 #endif
