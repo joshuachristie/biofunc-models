@@ -6,6 +6,7 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
+#include <vector>
 #include "fixed_parameters.h"
 
 /**
@@ -18,6 +19,8 @@ struct Shared_Parameters {
   /** Sets the number of generations for which to calculate and print time-dependent persistence_probability */
   const int number_gens_to_output_pp;
   const bool print_trait_raw_data; /**< If true, will print raw trait data for each gen and replicate */
+  /** First element is index of trait in \p trait_freq; second element is number of traits to track */
+  const std::vector<int> trait_info;
 };
 /**
    @brief Struct containing constant parameter values (fixed for all models)
