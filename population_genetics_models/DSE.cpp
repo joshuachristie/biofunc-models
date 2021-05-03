@@ -58,21 +58,15 @@ namespace DSE {
   */
   void calculate_allele_freqs(std::vector<double> &trait_freq, const std::vector<double> &fitnesses,
 			      const DSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
-    // double allele_A_freq = trait_freq[0] + 0.5 * trait_freq[1];
-    // std::vector<double> expected_genotype_freq(3);
-    // expected_genotype_freq[0] = std::pow(allele_A_freq, 2.0) * fitnesses[0]; // AA
-    // expected_genotype_freq[1] = 2 * allele_A_freq * (1.0 - allele_A_freq) * fitnesses[1]; // Aa
-    // expected_genotype_freq[2] = std::pow((1 - allele_A_freq), 2.0) * fitnesses[2]; // aa
-
+    double allele_A_freq = trait_freq[0] + 0.5 * trait_freq[1];
+    std::vector<double> expected_genotype_freq(3);
+    expected_genotype_freq[0] = std::pow(allele_A_freq, 2.0) * fitnesses[0]; // AA
+    expected_genotype_freq[1] = 2 * allele_A_freq * (1.0 - allele_A_freq) * fitnesses[1]; // Aa
+    expected_genotype_freq[2] = std::pow((1 - allele_A_freq), 2.0) * fitnesses[2]; // aa
     // multinomial sample to get realised outcome for trait_freq (discrete_distribution normalises probs)
-
-    // std::discrete_distribution<int> multinom {expected_genotype_freq.begin(), expected_genotype_freq.end()};
-      // trait_freq[0] * fitnesses[0],
-      // trait_freq[1] * fitnesses[1],
-      // (1 - trait_freq[0] - trait_freq[1]) * fitnesses[2] };
-    // sample surviving (individuals with) traits
-
-    std::vector<int> surviving_traits(3, 0);
+    std::discrete_distribution<int> multinom {expected_genotype_freq.begin(), expected_genotype_freq.end()};
+    //sample surviving (individuals with) traits
+    std::vector<int> surviving_traits(3);
     for (int i = 0; i < parameters.shared.population_size; i++){
       ++surviving_traits[ multinom(rng) ];
     }
