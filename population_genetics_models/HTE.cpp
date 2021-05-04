@@ -8,7 +8,7 @@
 #include "rng.h"
 #include "persistence_probability.h"
 #include "print_results.h"
-#include "allele_invasion.h"
+#include "trait_invasion.h"
 #include "DataContainer.h"
 
 namespace HTE {
@@ -63,8 +63,8 @@ namespace HTE {
      @param[in, out] gen The current generation
      @return Nothing (but modifies \p trait_freq and increments \p gen)
   */
-  void calculate_allele_freqs(std::vector<double> &trait_freq, const std::vector<double> &fitnesses,
-			      const HTE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
+  void calculate_trait_freqs(std::vector<double> &trait_freq, const std::vector<double> &fitnesses,
+			     const HTE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
     std::vector<double> expected_allele_freq_raw(2);
     expected_allele_freq_raw[0] = trait_freq[0] * fitnesses[gen >= parameters.model.gen_env_1];
     expected_allele_freq_raw[1] = (1.0 - trait_freq[0]) * fitnesses[2 + (gen >= parameters.model.gen_env_1)];
@@ -89,7 +89,7 @@ namespace HTE {
     const std::vector<double> fitnesses = get_fitness_function(params);
     DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp,
 		       params.fixed.reserve_memory_trait_freq);
-    calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
+    calculate_persistence_probability(params, rng, fitnesses, calculate_trait_freqs, data);
     print::print_results(argc, argv, data, params);
   }
   
