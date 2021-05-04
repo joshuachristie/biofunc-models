@@ -1,9 +1,9 @@
 #include <cmath>
 #include <cassert>
 #include <vector>
-#include "persistence_status.h"
+#include "conditional_existence_status.h"
 
-namespace persist_status {
+namespace conditional_existence_status {
   /**
      @brief Compare for approximate equality of doubles
      @param[in] trait_freq Trait frequency

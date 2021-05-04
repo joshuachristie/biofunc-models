@@ -1,16 +1,16 @@
 /**
-   @file persistence_status.h
+   @file conditional_existence_status.h
 */
-#ifndef PERSIST_STATUS_H
-#define PERSIST_STATUS_H
+#ifndef CONDITIONAL_EXISTENCE_STATUS_H
+#define CONDITIONAL_EXISTENCE_STATUS_H
 
 #include <vector>
 #include <numeric>
 
 /**
-   @brief Namespace for functions that determine whether a trait persists
+   @brief Namespace for functions that determine whether a trait persists in the population
 **/
-namespace persist_status {
+namespace conditional_existence_status {
 
   bool close_to_value(const double trait_freq, const double value, const double tolerance);
   double get_allele_A_freq(const std::vector<double> &trait_freq);
@@ -66,10 +66,10 @@ namespace persist_status {
     return gen >= params.fixed.max_generations_per_sim;
   }
   /**
-     @brief Checks whether to output persistence probability by generation
+     @brief Checks whether to output conditional existence probability by generation
      @param[in] gen Current generation of simulation
-     @param[in] params.shared.number_gens_to_output_pp Number of generations to output persistency probability by generation
-     @return True if simulation should output persistence probability for this generation; false otherwise
+     @param[in] params.shared.number_gens_to_output_pp Number of generations to output conditional existence probability by generation
+     @return True if simulation should output conditional existence probability for this gen; false otherwise
   */
   template<class T>
   bool output_pp_by_gen(const double gen, const T &params){

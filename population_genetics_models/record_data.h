@@ -2,7 +2,7 @@
 #define RECORD_DATA_H
 
 #include "DataContainer.h"
-#include "persistence_status.h"
+#include "conditional_existence_status.h"
 #include "fixed_parameters.h"
 
 namespace record {
@@ -23,20 +23,20 @@ namespace record {
   template<class P>
   void trait_presence_infinite(const std::vector<double> &trait_freq, const P &parameters, const int replicate,
 			       DataContainer &data){
-    if (persist_status::trait_extinct(trait_freq, parameters)){
-      data.set_persistence_outcome_infinite(replicate, false);
+    if (conditional_existence_status::trait_extinct(trait_freq, parameters)){
+      data.set_conditional_existence_outcome_infinite(replicate, false);
     } else { // trait is either fixed or exists at a non-zero proportion
-      data.set_persistence_outcome_infinite(replicate, true);
+      data.set_conditional_existence_outcome_infinite(replicate, true);
     }
   }
 
   template<class P>
   void trait_presence_by_gen(const std::vector<double> &trait_freq, const P &parameters, const int replicate,
 			     DataContainer &data){
-    if (persist_status::trait_extinct(trait_freq, parameters)){
-      data.append_persistence(replicate, false);
+    if (conditional_existence_status::trait_extinct(trait_freq, parameters)){
+      data.append_conditional_existence(replicate, false);
     } else { // trait is either fixed or exists at a non-zero proportion
-      data.append_persistence(replicate, true);
+      data.append_conditional_existence(replicate, true);
     }
   }
   

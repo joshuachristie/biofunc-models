@@ -25,10 +25,10 @@ namespace print {
   void write_to_file(const std::vector<double> &vector_to_write, const std::string &filename);
 
   /**
-     @brief Prints persistence probability (approximation as time -> infinity) to file
+     @brief Prints conditional existence probability (approximation as time -> infinity) to file
      @param[in] argc Number of command line arguments
      @param[in] argv Array of command line arguments
-     @param[in] persistence_prob Probability that the trait persists in population (\p double)
+     @param[in] conditional_existence_prob Probability that the trait persists in population (\p double)
   */
   template<class T>
   void print_object(int argc, char* argv[], const T object, const std::string_view &path){
@@ -39,14 +39,16 @@ namespace print {
 
   template<class P>
   void print_results(int argc, char* argv[], DataContainer &data, P &parameters){
-    const double persistence_probability = data.get_persistence_infinite_approx();
-    print_object(argc, argv, persistence_probability, paths::persistence_infinite_data_dir);
+    const double conditional_existence_probability = data.get_conditional_existence_infinite_approx();
+    print_object(argc, argv, conditional_existence_probability,
+		 paths::conditional_existence_infinite_data_dir);
     if (parameters.shared.number_gens_to_output_pp != 0){
-      assert(!data._simulation_data[0]._persistence_by_gen.empty());
-      const std::vector<double> persistence_prob_by_gen = data.get_persistence_by_gen();
-      print_object(argc, argv, persistence_prob_by_gen, paths::persistence_finite_data_dir);
+      assert(!data._simulation_data[0]._conditional_existence_by_gen.empty());
+      const std::vector<double> conditional_existence_prob_by_gen = data.get_conditional_existence_by_gen();
+      print_object(argc, argv, conditional_existence_prob_by_gen,
+		   paths::conditional_existence_finite_data_dir);
     } else {
-      assert(data._simulation_data[0]._persistence_by_gen.empty());
+      assert(data._simulation_data[0]._conditional_existence_by_gen.empty());
     }
     if (parameters.shared.print_trait_raw_data){
       assert(!data._simulation_data[0]._trait_freq_by_gen.empty());

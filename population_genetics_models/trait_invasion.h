@@ -8,7 +8,7 @@
 #include <random>
 #include <vector>
 #include "record_data.h"
-#include "persistence_status.h"
+#include "conditional_existence_status.h"
 #include "DataContainer.h"
 /**
    @brief Runs a single invasion attempt of a trait
@@ -34,10 +34,10 @@ void trait_invasion(const std::vector<double> &fitnesses, const P &parameters, s
     
     calculate_trait_freqs(trait_freq, fitnesses, parameters, rng, gen);
 
-    allele_A_extinct = persist_status::allele_A_extinct(trait_freq, parameters);
-    allele_A_fixed = persist_status::allele_A_fixed(trait_freq, parameters);
-    reached_max_gen = persist_status::reached_max_gen(gen, parameters);
-    output_pp_by_gen = persist_status::output_pp_by_gen(gen, parameters);
+    allele_A_extinct = conditional_existence_status::allele_A_extinct(trait_freq, parameters);
+    allele_A_fixed = conditional_existence_status::allele_A_fixed(trait_freq, parameters);
+    reached_max_gen = conditional_existence_status::reached_max_gen(gen, parameters);
+    output_pp_by_gen = conditional_existence_status::output_pp_by_gen(gen, parameters);
     
     if (output_pp_by_gen && reinvasions == -1){
       record::trait_presence_by_gen(trait_freq, parameters, replicate, data);
