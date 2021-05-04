@@ -30,15 +30,15 @@ namespace HSE {
   */
   const std::vector<double> get_fitness_function(const HSE_Model_Parameters &parameters);
   /**
-     @brief Calculates frequency of the A allele after selection
-     @param[in, out] allele_A_freq The frequency of the A allele
+     @brief Calculates frequency of the trait after selection
+     @param[in, out] trait_freq The frequency of the trait (allele A)
      @param[in] fitnesses A vector containing the fitnesses of the A and a alleles [wA, wa]
      @param[in] HSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
      @param[in, out] gen Current generation
-     @return Nothing (but modifies \p allele_A_freq and \p gen)
+     @return Nothing (but modifies \p trait_freq and \p gen)
   */
-  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &fitnesses,
+  void calculate_allele_freqs(std::vector<double> &trait_freq, const std::vector<double> &fitnesses,
 			      const HSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen);
   /**
      @brief Runs Haploid Single Environment model

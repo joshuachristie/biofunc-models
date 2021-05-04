@@ -6,9 +6,9 @@
 #include "Parameters.h"
 #include "DSE.h"
 #include "rng.h"
-#include "persistence_probability.h"
+#include "conditional_existence_probability.h"
 #include "print_results.h"
-#include "allele_invasion.h"
+#include "trait_invasion.h"
 #include "DataContainer.h"
 
 namespace DSE {
@@ -21,16 +21,17 @@ namespace DSE {
   */
   const DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "DSE");
-    assert(argc == 8 && "The DSE model must have 7 command line arguments (the first must be 'DSE')");
+    assert(argc == 9 && "The DSE model must have 8 command line arguments (the first must be 'DSE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_homozygote = atof(argv[3]);
     const double selection_coefficient_heterozygote = atof(argv[4]);
-    double initial_A_freq = 1.0 / static_cast<double>(population_size * 2); // 1/2N
+    double initial_trait_freq = 1.0 / static_cast<double>(population_size);
     const int number_reinvasions = atoi(argv[5]);
     const int number_gens_to_output_pp = atoi(argv[6]);
-    const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[7]));
-    const DSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
-	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient_homozygote,
+    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[7]));
+    const std::vector<int> trait_info {atoi(argv[8]), 2};
+    const DSE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions,
+	number_gens_to_output_pp, print_trait_raw_data, trait_info}, {selection_coefficient_homozygote,
 					 selection_coefficient_heterozygote}};
     return params;
   }
@@ -47,28 +48,34 @@ namespace DSE {
     return fitnesses;
   }
   /**
-     @brief Calculates frequency of the A allele after selection and random mating
-     @param[in, out] allele_A_freq The frequency of the A allele
-     @param[in] fitnesses Vector containing AA, Aa, and aa genotype fitnesses [wA, wAa, wa]
+     @brief Calculates frequency of the trait after selection and random mating
+     @param[in, out] trait_freq The frequency of the trait
+     @param[in] fitnesses Vector containing AA, Aa, and aa genotype fitnesses [wAA, wAa, waa]
      @param[in] DSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
-     @return Nothing (but modifies \p allele_A_freq)
+     @param[in, out] gen The current generation
+     @return Nothing (but modifies \p trait_freq and increments \p gen)
   */
-  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &fitnesses,
-			      const DSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
-    std::vector<double> expected_genotype_freq_raw(3);
-    expected_genotype_freq_raw[0] = std::pow(allele_A_freq, 2.0) * fitnesses[0]; // AA
-    expected_genotype_freq_raw[1] = 2 * allele_A_freq * (1.0 - allele_A_freq) * fitnesses[1]; // Aa
-    expected_genotype_freq_raw[2] = std::pow((1 - allele_A_freq), 2.0) * fitnesses[2]; // aa
-    // get normalised expectation for allele_A_freq
-    allele_A_freq = (expected_genotype_freq_raw[0] + 0.5 * expected_genotype_freq_raw[1]) /
-      (std::accumulate(expected_genotype_freq_raw.begin(), expected_genotype_freq_raw.end(), 0.0));
-    // sample to get realised outcome for allele_A_freq (diploid, so population_size multiplied by 2)
-    std::binomial_distribution<int> surviving_As(parameters.shared.population_size * 2, allele_A_freq);
-    allele_A_freq =
-      static_cast<double>(surviving_As(rng)) / static_cast<double>(parameters.shared.population_size * 2);
+  void calculate_trait_freqs(std::vector<double> &trait_freq, const std::vector<double> &fitnesses,
+			     const DSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
+    double allele_A_freq = trait_freq[0] + 0.5 * trait_freq[1];
+    std::vector<double> expected_genotype_freq(3);
+    expected_genotype_freq[0] = std::pow(allele_A_freq, 2.0) * fitnesses[0]; // AA
+    expected_genotype_freq[1] = 2 * allele_A_freq * (1.0 - allele_A_freq) * fitnesses[1]; // Aa
+    expected_genotype_freq[2] = std::pow((1 - allele_A_freq), 2.0) * fitnesses[2]; // aa
+    // multinomial sample to get realised outcome for trait_freq (discrete_distribution normalises probs)
+    std::discrete_distribution<int> multinom {expected_genotype_freq.begin(), expected_genotype_freq.end()};
+    // sample surviving (individuals with) traits
+    std::vector<int> surviving_traits(3);
+    for (int i = 0; i < parameters.shared.population_size; i++){
+      ++surviving_traits[ multinom(rng) ];
+    }
+    // convert counts into proportions for individuals with traits AA and Aa
+    trait_freq[0] = static_cast<double>(surviving_traits[0]) / parameters.shared.population_size;
+    trait_freq[1] = static_cast<double>(surviving_traits[1]) / parameters.shared.population_size;
     ++gen;
   }
+
   /**
      @brief Runs Diploid Single Environment model
      @param[in] argc Number of command line arguments
@@ -80,8 +87,8 @@ namespace DSE {
     const DSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
     DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp,
-		       params.fixed.reserve_memory_allele_freq);
-    calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
+		       params.fixed.reserve_memory_trait_freq);
+    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs, data);
     print::print_results(argc, argv, data, params);
   }
 

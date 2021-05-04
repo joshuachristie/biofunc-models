@@ -6,9 +6,9 @@
 #include "Parameters.h"
 #include "HSE.h"
 #include "rng.h"
-#include "persistence_probability.h"
+#include "conditional_existence_probability.h"
 #include "print_results.h"
-#include "allele_invasion.h"
+#include "trait_invasion.h"
 #include "DataContainer.h"
 
 namespace HSE {
@@ -18,12 +18,13 @@ namespace HSE {
     assert(argc == 7 && "The HSE model must have 6 command line arguments (the first must be HSE)");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient = atof(argv[3]);
-    const double initial_A_freq = 1.0 / static_cast<double>(population_size);
+    const double initial_trait_frequency = 1.0 / static_cast<double>(population_size);
     const int number_reinvasions = atoi(argv[4]);
     const int number_gens_to_output_pp = atoi(argv[5]);
-    const bool print_allele_A_raw_data = static_cast<bool>(atoi(argv[6]));
-    const HSE_Model_Parameters params {{population_size, initial_A_freq, number_reinvasions,
-	number_gens_to_output_pp, print_allele_A_raw_data}, {selection_coefficient}};
+    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[6]));
+    const std::vector<int> trait_info {0, 1};
+    const HSE_Model_Parameters params {{population_size, initial_trait_frequency, number_reinvasions,
+	number_gens_to_output_pp, print_trait_raw_data, trait_info}, {selection_coefficient}};
     return params;
   }
   /**
@@ -36,25 +37,25 @@ namespace HSE {
   /**
      @details The function first calculates the expected (deterministic) allele frequency due to selection.
      It then uses this expectation as the probability for a (random) binomial sampling process to get a new
-     \p allele_A_freq. It also increments the current \p gen.
+     \p trait_freq. It also increments the current \p gen.
   */
-  void calculate_allele_freqs(double &allele_A_freq, const std::vector<double> &fitnesses,
-			      const HSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
+  void calculate_trait_freqs(std::vector<double> &trait_freq, const std::vector<double> &fitnesses,
+			     const HSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
     std::vector<double> expected_allele_freq_raw(2);
-    expected_allele_freq_raw[0] = allele_A_freq * fitnesses[0];
-    expected_allele_freq_raw[1] = (1.0 - allele_A_freq) * fitnesses[1];
-    // get normalised expectation for allele_A_freq
-    allele_A_freq = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
-								   expected_allele_freq_raw.end(), 0.0));
-    // sample to get realised outcome for allele_A_freq
-    std::binomial_distribution<int> surviving_As(parameters.shared.population_size, allele_A_freq);
-    allele_A_freq =
+    expected_allele_freq_raw[0] = trait_freq[0] * fitnesses[0];
+    expected_allele_freq_raw[1] = (1.0 - trait_freq[0]) * fitnesses[1];
+    // get normalised expectation for trait_freq
+    double expectation = expected_allele_freq_raw[0] / (std::accumulate(expected_allele_freq_raw.begin(),
+									expected_allele_freq_raw.end(), 0.0));
+    // sample to get realised outcome for trait_freq
+    std::binomial_distribution<int> surviving_As(parameters.shared.population_size, expectation);
+    trait_freq[0] =
       static_cast<double>(surviving_As(rng)) / static_cast<double>(parameters.shared.population_size);
     ++gen;
   }
   /**
      @details Calls initialise_rng(), HSE::parse_parameter_values(), HSE::get_fitness_function(), sets up
-     a DataContainer object, calls calculate_persistence_probability(), and finally calls
+     a DataContainer object, calls calculate_conditional_existence_probability(), and finally calls
      print::print_results().
   */
   void run_model(int argc, char* argv[]){
@@ -63,8 +64,8 @@ namespace HSE {
     const HSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
     DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp,
-		       params.fixed.reserve_memory_allele_freq);
-    calculate_persistence_probability(params, rng, fitnesses, calculate_allele_freqs, data);
+		       params.fixed.reserve_memory_trait_freq);
+    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs, data);
     print::print_results(argc, argv, data, params);
   }
 
