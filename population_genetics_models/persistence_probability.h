@@ -31,8 +31,8 @@ void calculate_persistence_probability(const P &params, std::mt19937 &rng, const
     // run simulation to see whether trait invades and either becomes fixed or withstands 1000000 gens
     allele_invasion(fitnesses, params, rng, trait_freq, calculate_allele_freqs_function, data, i, reinvasions);
     // run reinvasion attempts by resident while allele A remains (if number_reinvasions is non-zero)
-    while (persist_status::is_not_extinct(trait_freq[params.shared.trait_info[0]], params) &&
-	   reinvasions < params.shared.number_reinvasions - 1){
+    while (!persist_status::trait_extinct(trait_freq, params) && reinvasions < params.shared.number_reinvasions - 1){
+
       reinvasions++;
       // replace single individual carrying trait of interest with single individual carrying resident trait
       trait_freq[ params.shared.trait_info[0] ] -= params.shared.initial_trait_freq;

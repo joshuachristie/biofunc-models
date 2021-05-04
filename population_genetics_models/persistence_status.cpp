@@ -1,4 +1,6 @@
 #include <cmath>
+#include <cassert>
+#include <vector>
 #include "persistence_status.h"
 
 namespace persist_status {
@@ -16,5 +18,24 @@ namespace persist_status {
       return false;
     }
   }
-
+  /**
+     @brief Gets the frequency of the A allele (for the haploid and diploid models)
+     @param[in] trait_freq Trait frequency vector (A allele freq for haploid; AA and Aa freqs for diploid)
+     @return Frequency of the A allele
+  */
+  double get_allele_A_freq(const std::vector<double> &trait_freq){
+    double allele_A_frequency;
+    if (trait_freq.size() == 1){ // haploid
+      allele_A_frequency = trait_freq[0];
+    } else if (trait_freq.size() == 2){ // diploid
+      allele_A_frequency = trait_freq[0] + 0.5 * trait_freq[1];
+    } else {
+      allele_A_frequency = -1; // supress compiler warning
+      assert(trait_freq.size() != 0 && "trait_freq.size() = 0, should be 1 (haploid) or 2 (diploid)");
+      assert(trait_freq.size() > 2 && "trait_freq.size() > 2, should be 1 (haploid) or 2 (diploid)");
+      exit(EXIT_FAILURE); // should never trigger but serious problem if program got through the two asserts
+    }
+    return allele_A_frequency;
+  }
+  
 }

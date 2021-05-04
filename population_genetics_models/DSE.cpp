@@ -65,7 +65,7 @@ namespace DSE {
     expected_genotype_freq[2] = std::pow((1 - allele_A_freq), 2.0) * fitnesses[2]; // aa
     // multinomial sample to get realised outcome for trait_freq (discrete_distribution normalises probs)
     std::discrete_distribution<int> multinom {expected_genotype_freq.begin(), expected_genotype_freq.end()};
-    //sample surviving (individuals with) traits
+    // sample surviving (individuals with) traits
     std::vector<int> surviving_traits(3);
     for (int i = 0; i < parameters.shared.population_size; i++){
       ++surviving_traits[ multinom(rng) ];
