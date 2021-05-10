@@ -7,9 +7,7 @@
 #include "DSE.h"
 #include "rng.h"
 #include "conditional_existence_probability.h"
-#include "print_results.h"
 #include "trait_invasion.h"
-#include "DataContainer.h"
 
 namespace DSE {
 
@@ -86,10 +84,8 @@ namespace DSE {
     std::mt19937 rng = initialise_rng();
     const DSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
-    DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp,
-		       params.fixed.reserve_memory_trait_freq);
-    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs, data);
-    print::print_results(argc, argv, data, params);
+
+    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs);
   }
 
 }

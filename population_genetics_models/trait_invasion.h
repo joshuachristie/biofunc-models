@@ -7,9 +7,8 @@
 
 #include <random>
 #include <vector>
-#include "record_data.h"
 #include "conditional_existence_status.h"
-#include "DataContainer.h"
+
 /**
    @brief Runs a single invasion attempt of a trait
    @param[in] fitnesses Vector containing fitnesses
@@ -17,17 +16,15 @@
    @param[in] parameters.fixed.tolerance Tolerance for comparing equality of doubles
    @param[in, out] rng Random number generator
    @param[in] calculate_trait_freqs Template for method to calcluate traitfrequency (one of HSE::calculate_trait_freqs, HTE::calculate_trait_freqs, DSE::calculate_trait_freqs, or HTEOE::calculate_trait_freqs)
-   @param[in, out] data DataContainer class object
    @param[in] replicate Simulation number (for indexing into \p data)
    @param[in] reinvasions Equals -1 when the invasion is the initial one (i.e. trait invading resident)
    @return Nothing (but alters \p trait_freq)
 */
 template <class P, class F>
 void trait_invasion(const std::vector<double> &fitnesses, const P &parameters, std::mt19937 &rng,
-		    std::vector<double> &trait_freq, F calculate_trait_freqs,
-		    DataContainer &data, const int replicate, const int reinvasions){
+		    std::vector<double> &trait_freq, F calculate_trait_freqs, const int replicate,
+		    const int reinvasions){
   int gen = -1;
-  bool extinct = false; // for formatting printing trait raw data
 
   bool allele_A_extinct, allele_A_fixed, reached_max_gen, output_pp_by_gen;
   do {
@@ -39,22 +36,11 @@ void trait_invasion(const std::vector<double> &fitnesses, const P &parameters, s
     reached_max_gen = conditional_existence_status::reached_max_gen(gen, parameters);
     output_pp_by_gen = conditional_existence_status::output_pp_by_gen(gen, parameters);
     
-    if (output_pp_by_gen && reinvasions == -1){
-      record::trait_presence_by_gen(trait_freq, parameters, replicate, data);
-    }
-    
-    if ((parameters.shared.print_trait_raw_data && reinvasions == -1 && !extinct)) {
-      record::trait_freq(trait_freq, parameters, replicate, data);
-    }
-    
-    if (allele_A_extinct) {
-      extinct = true;
-    }
-
   }
   while ( (!allele_A_extinct && !allele_A_fixed && !reached_max_gen) || output_pp_by_gen );
   
-  record::trait_presence_infinite(trait_freq, parameters, replicate, data);
+  // record conditional existence
+  
 }
 
 #endif
