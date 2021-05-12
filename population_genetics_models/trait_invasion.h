@@ -9,6 +9,7 @@
 #include <vector>
 #include "conditional_existence_status.h"
 #include "include/example.pb.h"
+#include "record_data.h"
 
 /**
    @brief Runs a single invasion attempt of a trait
@@ -22,8 +23,7 @@
 */
 template <class P, class F>
 void trait_invasion(const std::vector<double> &fitnesses, const P &parameters, std::mt19937 &rng,
-		    std::vector<double> &trait_freq, F calculate_trait_freqs, data::Int64List* gen_extinct,
-		    int &gen){
+		    std::vector<double> &trait_freq, F calculate_trait_freqs, int &gen){
   bool allele_A_extinct, allele_A_fixed, reached_max_gen;
   do {
     calculate_trait_freqs(trait_freq, fitnesses, parameters, rng, gen);
@@ -34,4 +34,22 @@ void trait_invasion(const std::vector<double> &fitnesses, const P &parameters, s
   }
   while ( !allele_A_extinct && !allele_A_fixed && !reached_max_gen );
 }
+// overloaded method for LSTM scenario
+template <class P, class F>
+void trait_invasion(const std::vector<double> &fitnesses, const P &parameters, std::mt19937 &rng,
+		    std::vector<double> &trait_freq, F calculate_trait_freqs, int &gen,
+		    data::FloatList* raw_trait_freq){
+  bool allele_A_extinct, allele_A_fixed, reached_max_gen;
+  record::raw_trait_freq(raw_trait_freq, trait_freq); // record initial freqs
+  do {
+    calculate_trait_freqs(trait_freq, fitnesses, parameters, rng, gen);
+    record::raw_trait_freq(raw_trait_freq, trait_freq);
+    
+    allele_A_extinct = conditional_existence_status::allele_A_extinct(trait_freq, parameters);
+    allele_A_fixed = conditional_existence_status::allele_A_fixed(trait_freq, parameters);
+    reached_max_gen = conditional_existence_status::reached_max_gen(gen, parameters);
+  }
+  while ( !allele_A_extinct && !allele_A_fixed && !reached_max_gen );
+}
+
 #endif
