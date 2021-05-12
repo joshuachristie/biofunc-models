@@ -12,7 +12,6 @@
 #include "trait_freq.h"
 #include "include/example.pb.h"
 #include "record_data.h"
-#include "include/example.pb.h"
 
 /**
    @brief Template function to run replicates and calculate conditional existence probability for the pop gen models

@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <vector>
 #include "include/example.pb.h"
 #include "conditional_existence_probability.h"
 

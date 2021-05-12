@@ -8,6 +8,7 @@
 #include "rng.h"
 #include "conditional_existence_probability.h"
 #include "trait_invasion.h"
+#include "run_scenario.h"
 
 namespace HTEOE {
 
@@ -18,8 +19,8 @@ namespace HTEOE {
      @return params HTEOE_Model_Parameters struct
   */
   const HTEOE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
-    assert(std::string(argv[1]) == "HTEOE");
-    assert(argc == 9 && "The HTEOE model must have 8 command line arguments (the first must be 'HTEOE')");
+    assert(std::string(argv[1]).compare("HTEOE") == 0);
+    assert(argc == 8 && "The HTEOE model must have 7 command line arguments (the first must be 'HTEOE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_A1 = atof(argv[3]);
     const double selection_coefficient_A2 = atof(argv[4]);
@@ -27,10 +28,9 @@ namespace HTEOE {
     const double selection_coefficient_a2 = atof(argv[6]);
     const double initial_trait_freq = 1.0 / static_cast<double>(population_size);
     const int number_reinvasions = atoi(argv[7]);
-    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[8]));
     const std::vector<int> trait_info {0, 1};
-    const HTEOE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions,
-	print_trait_raw_data, trait_info}, {selection_coefficient_A1, selection_coefficient_A2,
+    const HTEOE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions, trait_info},
+					 {selection_coefficient_A1, selection_coefficient_A2,
 					  selection_coefficient_a1, selection_coefficient_a2}};
     return params;
   }
@@ -81,8 +81,7 @@ namespace HTEOE {
     std::mt19937 rng = initialise_rng();
     const HTEOE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
-
-    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs);
+    run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs);
   }
 
 }

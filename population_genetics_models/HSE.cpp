@@ -13,16 +13,17 @@
 namespace HSE {
   
   const HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
-    assert(std::string(argv[1]) == "HSE");
+    assert(std::string(argv[1]).compare("HSE") == 0);
     assert(argc == 6 && "The HSE model must have 5 command line arguments (the first must be HSE)");
-    const int population_size = atoi(argv[2]);
-    const double selection_coefficient = atof(argv[3]);
+    assert((std::string(argv[2]).compare("LSTM") == 0 || std::string(argv[2]).compare("QEF") == 0) &&
+	   "Incorrect model specification: specify whether the model type is LSTM or QEF in the second arg");
+    const int population_size = atoi(argv[3]);
+    const double selection_coefficient = atof(argv[4]);
     const double initial_trait_frequency = 1.0 / static_cast<double>(population_size);
-    const int number_reinvasions = atoi(argv[4]);
-    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[5]));
+    const int number_reinvasions = atoi(argv[5]);
     const std::vector<int> trait_info {0, 1};
     const HSE_Model_Parameters params {{population_size, initial_trait_frequency, number_reinvasions,
-	print_trait_raw_data, trait_info}, {selection_coefficient}};
+	trait_info}, {selection_coefficient}};
     return params;
   }
   /**
@@ -61,7 +62,12 @@ namespace HSE {
     const HSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
 
-    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs);
+    if (std::string(argv[2]).compare("QEF") == 0){
+      run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs);
+    } else if (std::string(argv[2]).compare("LSTM") == 0){
+      run_scenario::LSTM(params, rng, fitnesses, calculate_trait_freqs);
+    }
+    
   }
 
 }

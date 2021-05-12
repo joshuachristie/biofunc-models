@@ -8,6 +8,7 @@
 #include "rng.h"
 #include "conditional_existence_probability.h"
 #include "trait_invasion.h"
+#include "run_scenario.h"
 
 namespace DSE {
 
@@ -18,17 +19,18 @@ namespace DSE {
      @return params DSE_Model_Parameters struct
   */
   const DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
-    assert(std::string(argv[1]) == "DSE");
+    assert(std::string(argv[1]).compare("DSE"));
     assert(argc == 8 && "The DSE model must have 7 command line arguments (the first must be 'DSE')");
-    const int population_size = atoi(argv[2]);
-    const double selection_coefficient_homozygote = atof(argv[3]);
-    const double selection_coefficient_heterozygote = atof(argv[4]);
+    assert((std::string(argv[2]).compare("LSTM") == 0 || std::string(argv[2]).compare("QEF") == 0) &&
+	   "Incorrect model specification: specify whether the model type is LSTM or QEF in the second arg");
+    const int population_size = atoi(argv[3]);
+    const double selection_coefficient_homozygote = atof(argv[4]);
+    const double selection_coefficient_heterozygote = atof(argv[5]);
     double initial_trait_freq = 1.0 / static_cast<double>(population_size);
-    const int number_reinvasions = atoi(argv[5]);
-    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[6]));
+    const int number_reinvasions = atoi(argv[6]);
     const std::vector<int> trait_info {atoi(argv[7]), 2};
-    const DSE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions,
-	print_trait_raw_data, trait_info}, {selection_coefficient_homozygote, selection_coefficient_heterozygote}};
+    const DSE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions, trait_info},
+				       {selection_coefficient_homozygote, selection_coefficient_heterozygote}};
     return params;
   }
   /**
@@ -83,7 +85,12 @@ namespace DSE {
     const DSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
 
-    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs);
+    if (std::string(argv[2]).compare("QEF") == 0){
+      run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs);
+    } else if (std::string(argv[2]).compare("LSTM") == 0){
+      run_scenario::LSTM(params, rng, fitnesses, calculate_trait_freqs);
+    }
+
   }
 
 }
