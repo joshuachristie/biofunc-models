@@ -24,15 +24,14 @@ template <class P, class F>
 void trait_invasion(const std::vector<double> &fitnesses, const P &parameters, std::mt19937 &rng,
 		    std::vector<double> &trait_freq, F calculate_trait_freqs, data::Int64List* gen_extinct,
 		    int &gen){
-  bool allele_A_extinct, allele_A_fixed, reached_max_gen, output_pp_by_gen;
+  bool allele_A_extinct, allele_A_fixed, reached_max_gen;
   do {
     calculate_trait_freqs(trait_freq, fitnesses, parameters, rng, gen);
 
     allele_A_extinct = conditional_existence_status::allele_A_extinct(trait_freq, parameters);
     allele_A_fixed = conditional_existence_status::allele_A_fixed(trait_freq, parameters);
     reached_max_gen = conditional_existence_status::reached_max_gen(gen, parameters);
-    output_pp_by_gen = conditional_existence_status::output_pp_by_gen(gen, parameters);
   }
-  while ( (!allele_A_extinct && !allele_A_fixed && !reached_max_gen) || output_pp_by_gen );
+  while ( !allele_A_extinct && !allele_A_fixed && !reached_max_gen );
 }
 #endif

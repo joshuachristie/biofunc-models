@@ -18,7 +18,7 @@ namespace HTE {
   */
   const HTE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HTE");
-    assert(argc == 11 && "The HTE model must have 10 command line arguments (the first must be 'HTE')");
+    assert(argc == 10 && "The HTE model must have 9 command line arguments (the first must be 'HTE')");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient_A_env_1 = atof(argv[3]);
     const double selection_coefficient_A_env_2 = atof(argv[4]);
@@ -27,12 +27,10 @@ namespace HTE {
     const int gen_env_1 = atoi(argv[7]);
     const double initial_trait_freq = 1.0 / static_cast<double>(population_size);
     const int number_reinvasions = atoi(argv[8]);
-    const int number_gens_to_output_pp = atoi(argv[9]);
-    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[10]));
+    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[9]));
     const std::vector<int> trait_info {0, 1};
-    const HTE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions,
-	number_gens_to_output_pp, print_trait_raw_data, trait_info}, {selection_coefficient_A_env_1,
-					 selection_coefficient_A_env_2, selection_coefficient_a_env_1,
+    const HTE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions, print_trait_raw_data,
+	trait_info}, {selection_coefficient_A_env_1, selection_coefficient_A_env_2, selection_coefficient_a_env_1,
 					 selection_coefficient_a_env_2, gen_env_1}};
     return params;
   }

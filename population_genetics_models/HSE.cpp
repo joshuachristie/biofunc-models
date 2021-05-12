@@ -8,21 +8,21 @@
 #include "rng.h"
 #include "conditional_existence_probability.h"
 #include "trait_invasion.h"
+#include "run_scenario.h"
 
 namespace HSE {
   
   const HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]) == "HSE");
-    assert(argc == 7 && "The HSE model must have 6 command line arguments (the first must be HSE)");
+    assert(argc == 6 && "The HSE model must have 5 command line arguments (the first must be HSE)");
     const int population_size = atoi(argv[2]);
     const double selection_coefficient = atof(argv[3]);
     const double initial_trait_frequency = 1.0 / static_cast<double>(population_size);
     const int number_reinvasions = atoi(argv[4]);
-    const int number_gens_to_output_pp = atoi(argv[5]);
-    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[6]));
+    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[5]));
     const std::vector<int> trait_info {0, 1};
     const HSE_Model_Parameters params {{population_size, initial_trait_frequency, number_reinvasions,
-	number_gens_to_output_pp, print_trait_raw_data, trait_info}, {selection_coefficient}};
+	print_trait_raw_data, trait_info}, {selection_coefficient}};
     return params;
   }
   /**

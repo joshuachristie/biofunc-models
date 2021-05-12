@@ -16,8 +16,6 @@ struct Shared_Parameters {
   const int population_size; /**< Number of individuals in the population */
   const double initial_trait_freq; /**< Initial frequency of the trait  */
   const int number_reinvasions; /**< Number of reinvasion attempts that the trait faces */
-  /** Sets number of generations to calculate and print time-dependent conditional_existence_probability */
-  const int number_gens_to_output_pp;
   const bool print_trait_raw_data; /**< If true, will print raw trait data for each gen and replicate */
   /** First element is index of trait in \p trait_freq; second element is number of traits to track */
   const std::vector<int> trait_info;
