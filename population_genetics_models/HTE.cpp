@@ -83,7 +83,7 @@ namespace HTE {
     std::mt19937 rng = initialise_rng();
     const HTE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
-    run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs);
+    run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs, argv);
   }
   
 }

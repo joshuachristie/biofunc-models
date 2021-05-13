@@ -63,9 +63,9 @@ namespace HSE {
     const std::vector<double> fitnesses = get_fitness_function(params);
 
     if (std::string(argv[2]).compare("QEF") == 0){
-      run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs);
+      run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs, argv);
     } else if (std::string(argv[2]).compare("LSTM") == 0){
-      run_scenario::LSTM(params, rng, fitnesses, calculate_trait_freqs);
+      run_scenario::LSTM(params, rng, fitnesses, calculate_trait_freqs, argv);
     }
     
   }

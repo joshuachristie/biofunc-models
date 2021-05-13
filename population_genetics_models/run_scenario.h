@@ -7,11 +7,13 @@
 #include <vector>
 #include "include/example.pb.h"
 #include "conditional_existence_probability.h"
+#include "record_context.h"
 
 namespace run_scenario {
 
   template <class P, class F>
-  void QEF(const P &params, std::mt19937 &rng, const std::vector<double> &fitnesses, F calculate_trait_freqs){
+  void QEF(const P &params, std::mt19937 &rng, const std::vector<double> &fitnesses,
+	   F calculate_trait_freqs, char* argv[]){
 
     data::Example example = data::Example();
     data::Features* features = example.mutable_features();
@@ -20,7 +22,6 @@ namespace run_scenario {
     std::string key_gen = "generation_of_extinction";
     data::Feature generation_of_extinction = data::Feature();
     data::Int64List* gen_extinct = generation_of_extinction.mutable_int64_list();
-
     std::string key_reinvasion = "number_reinvasions";
     data::Feature number_reinvasions = data::Feature();
     data::Int64List* reinvasion_number = number_reinvasions.mutable_int64_list();
@@ -30,14 +31,15 @@ namespace run_scenario {
     
     (*feature_map)[key_gen] = generation_of_extinction;
     (*feature_map)[key_reinvasion] = number_reinvasions;
-
+    record_context::add_parameters_to_protobuf(feature_map, params, argv); // metadata, parameter values, etc.
     // below will move into its own function (in the io.cpp/h files if I keep them)
     std::fstream output("test", std::ios::out | std::ios::trunc | std::ios::binary);
     example.SerializeToOstream(&output);
   }
 
   template <class P, class F>
-  void LSTM(const P &params, std::mt19937 &rng, const std::vector<double> &fitnesses, F calculate_trait_freqs){
+  void LSTM(const P &params, std::mt19937 &rng, const std::vector<double> &fitnesses,
+	    F calculate_trait_freqs, char* argv[]){
     data::SequenceExample seq_example = data::SequenceExample();
     // generation of extinction
     data::Features* features = seq_example.mutable_context();
@@ -60,10 +62,10 @@ namespace run_scenario {
 						
     (*feature_map)[key_gen] = generation_of_extinction;
     (*featurelist_map)[key_freq] = featurelist;
-    
+    record_context::add_parameters_to_protobuf(feature_map, params, argv); // metadata, parameter values, etc.
+    // below will move into its own function (in the io.cpp/h files if I keep them)
     std::fstream output("test", std::ios::out | std::ios::trunc | std::ios::binary);
     seq_example.SerializeToOstream(&output);
-
   }
 
 }
