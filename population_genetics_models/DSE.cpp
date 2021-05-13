@@ -16,9 +16,9 @@ namespace DSE {
      @brief Reads in parameter values from command line into a struct
      @param[in] argc Number of commandline arguments
      @param[in] argv Command line arguments
-     @return params DSE_Model_Parameters struct
+     @return params parameters::DSE_Model_Parameters struct
   */
-  const DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
+  const parameters::DSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]).compare("DSE"));
     assert(argc == 8 && "The DSE model must have 7 command line arguments (the first must be 'DSE')");
     assert((std::string(argv[2]).compare("LSTM") == 0 || std::string(argv[2]).compare("QEF") == 0) &&
@@ -29,17 +29,17 @@ namespace DSE {
     double initial_trait_freq = 1.0 / static_cast<double>(population_size);
     const int number_reinvasions = atoi(argv[6]);
     const std::vector<int> trait_info {atoi(argv[7]), 2};
-    const DSE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions, trait_info},
-				       {selection_coefficient_homozygote, selection_coefficient_heterozygote}};
+    const parameters::DSE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions,
+	trait_info}, {selection_coefficient_homozygote, selection_coefficient_heterozygote}};
     return params;
   }
   /**
      @brief Calculates fitness function
-     @param[in] parameters DSE_Model_Parameters::DSE_Specific_Parameters::selection_coefficient_homozygote - selection coefficient of the AA genotype
-     @param[in] parameters DSE_Model_Parameters::DSE_Specific_Parameters::selection_coefficient_heterozygte - selection coefficient of the Aa genotype
+     @param[in] parameters parameters::DSE_Model_Parameters::DSE_Specific_Parameters::selection_coefficient_homozygote - selection coefficient of the AA genotype
+     @param[in] parameters parameters::DSE_Model_Parameters::DSE_Specific_Parameters::selection_coefficient_heterozygte - selection coefficient of the Aa genotype
      @return fitnesses A vector of length 3 containing the fitnesses of the AA, Aa, and aa genotypes [wAA, WAa, Waa]
   */
-  const std::vector<double> get_fitness_function(const DSE_Model_Parameters &parameters){
+  const std::vector<double> get_fitness_function(const parameters::DSE_Model_Parameters &parameters){
     // diploid_fitnesses[w_AA, w_Aa, w_aa] gives relative fitness of genotypes
     const std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient_homozygote,
       1.0 + parameters.model.selection_coefficient_heterozygote, 1.0};
@@ -49,13 +49,13 @@ namespace DSE {
      @brief Calculates frequency of the trait after selection and random mating
      @param[in, out] trait_freq The frequency of the trait
      @param[in] fitnesses Vector containing AA, Aa, and aa genotype fitnesses [wAA, wAa, waa]
-     @param[in] DSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
+     @param[in] parameters::DSE_Model_Parameters::Shared_Parameters::population_size Number of individuals in the population
      @param[in, out] rng Random number generator
      @param[in, out] gen The current generation
      @return Nothing (but modifies \p trait_freq and increments \p gen)
   */
   void calculate_trait_freqs(std::vector<double> &trait_freq, const std::vector<double> &fitnesses,
-			     const DSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
+			     const parameters::DSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
     double allele_A_freq = trait_freq[0] + 0.5 * trait_freq[1];
     std::vector<double> expected_genotype_freq(3);
     expected_genotype_freq[0] = std::pow(allele_A_freq, 2.0) * fitnesses[0]; // AA
@@ -81,8 +81,8 @@ namespace DSE {
      @return Nothing (but prints results)
   */
   void run_model(int argc, char* argv[]){
-    std::mt19937 rng = initialise_rng();
-    const DSE_Model_Parameters params = parse_parameter_values(argc, argv);
+    std::mt19937 rng = rng::initialise_rng();
+    const parameters::DSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
 
     if (std::string(argv[2]).compare("QEF") == 0){

@@ -7,13 +7,13 @@
 namespace record_context {
 
   void add_specific_parameters_to_protobuf(google::protobuf::Map<std::string, data::Feature>* map,
-					   HSE_Model_Parameters params);
+					   parameters::HSE_Model_Parameters params);
   void add_specific_parameters_to_protobuf(google::protobuf::Map<std::string, data::Feature>* map,
-					   DSE_Model_Parameters params);
+					   parameters::DSE_Model_Parameters params);
   void add_specific_parameters_to_protobuf(google::protobuf::Map<std::string, data::Feature>* map,
-					   HTE_Model_Parameters params);
+					   parameters::HTE_Model_Parameters params);
   void add_specific_parameters_to_protobuf(google::protobuf::Map<std::string, data::Feature>* map,
-					   HTEOE_Model_Parameters params);
+					   parameters::HTEOE_Model_Parameters params);
 
   template<class P>
   void add_shared_parameters_to_protobuf(google::protobuf::Map<std::string, data::Feature>* map,

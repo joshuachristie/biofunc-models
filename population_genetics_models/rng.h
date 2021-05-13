@@ -8,6 +8,9 @@
 
 #include <random>
 
-std::mt19937 initialise_rng();
-
+namespace rng {
+  
+  std::mt19937 initialise_rng();
+ 
+}
 #endif 

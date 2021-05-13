@@ -25,8 +25,8 @@ namespace run_scenario {
     data::Feature number_reinvasions = data::Feature();
     data::Int64List* reinvasion_number = number_reinvasions.mutable_int64_list();
 
-    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs,
-						gen_extinct, reinvasion_number);
+    conditional_existence_probability::calculate(params, rng, fitnesses, calculate_trait_freqs,
+						 gen_extinct, reinvasion_number);
     
     (*feature_map)[key_gen] = generation_of_extinction;
     (*feature_map)[key_reinvasion] = number_reinvasions;
@@ -54,8 +54,8 @@ namespace run_scenario {
     std::string key_freq = "raw_trait_frequencies";
     data::FeatureList featurelist = data::FeatureList();
 
-    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs, gen_extinct,
-						featurelist);
+    conditional_existence_probability::calculate(params, rng, fitnesses, calculate_trait_freqs,
+						 gen_extinct, featurelist);
 						
     (*feature_map)[key_gen] = generation_of_extinction;
     (*featurelist_map)[key_freq] = featurelist;

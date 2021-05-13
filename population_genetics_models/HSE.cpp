@@ -12,7 +12,7 @@
 
 namespace HSE {
   
-  const HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
+  const parameters::HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]).compare("HSE") == 0);
     assert(argc == 6 && "The HSE model must have 5 command line arguments (the first must be HSE)");
     assert((std::string(argv[2]).compare("LSTM") == 0 || std::string(argv[2]).compare("QEF") == 0) &&
@@ -22,14 +22,14 @@ namespace HSE {
     const double initial_trait_frequency = 1.0 / static_cast<double>(population_size);
     const int number_reinvasions = atoi(argv[5]);
     const std::vector<int> trait_info {0, 1};
-    const HSE_Model_Parameters params {{population_size, initial_trait_frequency, number_reinvasions,
-	trait_info}, {selection_coefficient}};
+    const parameters::HSE_Model_Parameters params {{population_size, initial_trait_frequency,
+	number_reinvasions, trait_info}, {selection_coefficient}};
     return params;
   }
   /**
      @details Calculates and returns a 1-by-2 vector of allele fitnesses [w_A, w_a].
   */
-  const std::vector<double> get_fitness_function(const HSE_Model_Parameters &parameters){
+  const std::vector<double> get_fitness_function(const parameters::HSE_Model_Parameters &parameters){
     const std::vector<double> fitnesses {1.0 + parameters.model.selection_coefficient, 1.0};
     return fitnesses;
   }
@@ -39,7 +39,7 @@ namespace HSE {
      \p trait_freq. It also increments the current \p gen.
   */
   void calculate_trait_freqs(std::vector<double> &trait_freq, const std::vector<double> &fitnesses,
-			     const HSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
+			     const parameters::HSE_Model_Parameters &parameters, std::mt19937 &rng, int &gen){
     std::vector<double> expected_allele_freq_raw(2);
     expected_allele_freq_raw[0] = trait_freq[0] * fitnesses[0];
     expected_allele_freq_raw[1] = (1.0 - trait_freq[0]) * fitnesses[1];
@@ -58,8 +58,8 @@ namespace HSE {
   */
   void run_model(int argc, char* argv[]){
 
-    std::mt19937 rng = initialise_rng();
-    const HSE_Model_Parameters params = parse_parameter_values(argc, argv);
+    std::mt19937 rng = rng::initialise_rng();
+    const parameters::HSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
 
     if (std::string(argv[2]).compare("QEF") == 0){

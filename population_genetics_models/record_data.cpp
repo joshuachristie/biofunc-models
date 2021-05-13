@@ -2,7 +2,7 @@
 #include "record_data.h"
 #include "include/example.pb.h"
 
-namespace record {
+namespace record_data {
 
   void raw_trait_freq(data::FloatList* raw_trait_freq, const std::vector<double> &trait_freq){
     // single value per gen for HSE (P(A); two values per gen for DSE (P(AA) and P(Aa))

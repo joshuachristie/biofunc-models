@@ -19,26 +19,26 @@
    Let's say that the resident population has trait (allele) a which is invaded by our allele of interest, A.
    Each allele (A/a) has two components to its fitness: fitness in env 1 and env 2.
    Trait/allele a is the resident trait and in environment 1 its fitness is 
-   1 + HTE_Model_Parameters::HTE_Specific_Parameters::selection_coefficient_a_env_1 while in environment 2 
-   its fitness is 1 + HTE_Model_Parameters::HTE_Specific_Parameters::selection_coefficient_a_env_2.
+   1 + parameters::HTE_Model_Parameters::HTE_Specific_Parameters::selection_coefficient_a_env_1 while in environment 2 
+   its fitness is 1 + parameters::HTE_Model_Parameters::HTE_Specific_Parameters::selection_coefficient_a_env_2.
    Trait/allele A is our trait of interest and in environment 1 its fitness is 
-   1 + HTE_Model_Parameters::HTE_Specific_Parameters::selection_coefficient_A_env_1 while in environment 2
-   its fitness is 1 + HTE_Model_Parameters::HTE_Specific_Parameters::selection_coefficient_A_env_2.
+   1 + parameters::HTE_Model_Parameters::HTE_Specific_Parameters::selection_coefficient_A_env_1 while in environment 2
+   its fitness is 1 + parameters::HTE_Model_Parameters::HTE_Specific_Parameters::selection_coefficient_A_env_2.
 
    It requires specification of a particular selection regime (i.e. environment at each generation).
    For simplicity, I only consider a selection regime in which environment 1 exists for 
-   HTE_Model_Parameters::HTE_Specific_Parameters::gen_env_1 generations, which is followed by environment 2 
+   parameters::HTE_Model_Parameters::HTE_Specific_Parameters::gen_env_1 generations, which is followed by environment 2 
    existing for the remaining generations (until fixation or loss). One interpretation of this model is the 
    evolved for/maintained by distinction (where evolved for is env 1 and maintained by is env 2).
 */
 namespace HTE {
 
-  const HTE_Model_Parameters parse_parameter_values(int argc, char* argv[]);
+  const parameters::HTE_Model_Parameters parse_parameter_values(int argc, char* argv[]);
   
-  const std::vector<double> get_fitness_function(const HTE_Model_Parameters &parameters);
+  const std::vector<double> get_fitness_function(const parameters::HTE_Model_Parameters &parameters);
 
   void calculate_allele_freqs(std::vector<double> &trait_freq, const std::vector<double> &fitnesses,
-			      const HTE_Model_Parameters &parameters, std::mt19937 &rng, int &gen);
+			      const parameters::HTE_Model_Parameters &parameters, std::mt19937 &rng, int &gen);
   
   void run_model(int argc, char* argv[]);
 
