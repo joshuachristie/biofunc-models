@@ -1,19 +1,18 @@
 #ifndef RUN_SCENARIO_H
 #define RUN_SCENARIO_H
 
-#include <iostream>
-#include <fstream>
 #include <string>
 #include <vector>
 #include "include/example.pb.h"
 #include "conditional_existence_probability.h"
 #include "record_context.h"
+#include "serialize_data.h"
 
 namespace run_scenario {
 
   template <class P, class F>
   void QEF(const P &params, std::mt19937 &rng, const std::vector<double> &fitnesses,
-	   F calculate_trait_freqs, char* argv[]){
+	   F calculate_trait_freqs, char* argv[], int argc){
 
     data::Example example = data::Example();
     data::Features* features = example.mutable_features();
@@ -32,14 +31,12 @@ namespace run_scenario {
     (*feature_map)[key_gen] = generation_of_extinction;
     (*feature_map)[key_reinvasion] = number_reinvasions;
     record_context::add_parameters_to_protobuf(feature_map, params, argv); // metadata, parameter values, etc.
-    // below will move into its own function (in the io.cpp/h files if I keep them)
-    std::fstream output("test", std::ios::out | std::ios::trunc | std::ios::binary);
-    example.SerializeToOstream(&output);
+    serialize::data(example, argc, argv);
   }
 
   template <class P, class F>
   void LSTM(const P &params, std::mt19937 &rng, const std::vector<double> &fitnesses,
-	    F calculate_trait_freqs, char* argv[]){
+	    F calculate_trait_freqs, char* argv[], int argc){
     data::SequenceExample seq_example = data::SequenceExample();
     // generation of extinction
     data::Features* features = seq_example.mutable_context();
@@ -63,9 +60,7 @@ namespace run_scenario {
     (*feature_map)[key_gen] = generation_of_extinction;
     (*featurelist_map)[key_freq] = featurelist;
     record_context::add_parameters_to_protobuf(feature_map, params, argv); // metadata, parameter values, etc.
-    // below will move into its own function (in the io.cpp/h files if I keep them)
-    std::fstream output("test", std::ios::out | std::ios::trunc | std::ios::binary);
-    seq_example.SerializeToOstream(&output);
+    serialize::data(seq_example, argc, argv);
   }
 
 }

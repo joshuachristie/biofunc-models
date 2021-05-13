@@ -19,15 +19,17 @@ namespace HTE {
   */
   const HTE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]).compare("HTE") == 0);
-    assert(argc == 9 && "The HTE model must have 8 command line arguments (the first must be 'HTE')");
-    const int population_size = atoi(argv[2]);
-    const double selection_coefficient_A_env_1 = atof(argv[3]);
-    const double selection_coefficient_A_env_2 = atof(argv[4]);
-    const double selection_coefficient_a_env_1 = atof(argv[5]);
-    const double selection_coefficient_a_env_2 = atof(argv[6]);
-    const int gen_env_1 = atoi(argv[7]);
+    assert(argc == 10 && "The HTE model must have 9 command line arguments (the first must be 'HTE')");
+    assert(std::string(argv[2]).compare("QEF") == 0 &&
+	   "Incorrect model specification: for HTE, the second arg must be QEF");
+    const int population_size = atoi(argv[3]);
+    const double selection_coefficient_A_env_1 = atof(argv[4]);
+    const double selection_coefficient_A_env_2 = atof(argv[5]);
+    const double selection_coefficient_a_env_1 = atof(argv[6]);
+    const double selection_coefficient_a_env_2 = atof(argv[7]);
+    const int gen_env_1 = atoi(argv[8]);
     const double initial_trait_freq = 1.0 / static_cast<double>(population_size);
-    const int number_reinvasions = atoi(argv[8]);
+    const int number_reinvasions = atoi(argv[9]);
     const std::vector<int> trait_info {0, 1};
     const HTE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions, trait_info},
 				       {selection_coefficient_A_env_1, selection_coefficient_A_env_2,
@@ -83,7 +85,7 @@ namespace HTE {
     std::mt19937 rng = initialise_rng();
     const HTE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
-    run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs, argv);
+    run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs, argv, argc);
   }
   
 }

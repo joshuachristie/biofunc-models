@@ -20,14 +20,16 @@ namespace HTEOE {
   */
   const HTEOE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
     assert(std::string(argv[1]).compare("HTEOE") == 0);
-    assert(argc == 8 && "The HTEOE model must have 7 command line arguments (the first must be 'HTEOE')");
-    const int population_size = atoi(argv[2]);
-    const double selection_coefficient_A1 = atof(argv[3]);
-    const double selection_coefficient_A2 = atof(argv[4]);
-    const double selection_coefficient_a1 = atof(argv[5]);
-    const double selection_coefficient_a2 = atof(argv[6]);
+    assert(argc == 9 && "The HTEOE model must have 8 command line arguments (the first must be 'HTEOE')");
+    assert(std::string(argv[2]).compare("QEF") == 0 &&
+	   "Incorrect model specification: for HTEOE, the second arg must be QEF");
+    const int population_size = atoi(argv[3]);
+    const double selection_coefficient_A1 = atof(argv[4]);
+    const double selection_coefficient_A2 = atof(argv[5]);
+    const double selection_coefficient_a1 = atof(argv[6]);
+    const double selection_coefficient_a2 = atof(argv[7]);
     const double initial_trait_freq = 1.0 / static_cast<double>(population_size);
-    const int number_reinvasions = atoi(argv[7]);
+    const int number_reinvasions = atoi(argv[8]);
     const std::vector<int> trait_info {0, 1};
     const HTEOE_Model_Parameters params {{population_size, initial_trait_freq, number_reinvasions, trait_info},
 					 {selection_coefficient_A1, selection_coefficient_A2,
@@ -81,7 +83,7 @@ namespace HTEOE {
     std::mt19937 rng = initialise_rng();
     const HTEOE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
-    run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs, argv);
+    run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs, argv, argc);
   }
 
 }
