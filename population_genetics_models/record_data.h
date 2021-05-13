@@ -6,7 +6,7 @@
 #include "include/example.pb.h"
 #include "conditional_existence_status.h"
 
-namespace record {
+namespace record_data {
 
   void raw_trait_freq(data::FloatList* raw_trait_freq, const std::vector<double> &trait_freq);
 

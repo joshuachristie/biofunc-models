@@ -6,7 +6,7 @@
 namespace record_context {
   
   void add_specific_parameters_to_protobuf(google::protobuf::Map<std::string, data::Feature>* map,
-					   HSE_Model_Parameters params){
+					   parameters::HSE_Model_Parameters params){
     data::Feature selection = data::Feature();
     data::FloatList* selection_coefficient = selection.mutable_float_list();
     selection_coefficient->add_value(params.model.selection_coefficient);
@@ -14,7 +14,7 @@ namespace record_context {
   }
   
   void add_specific_parameters_to_protobuf(google::protobuf::Map<std::string, data::Feature>* map,
-					   DSE_Model_Parameters params){
+					   parameters::DSE_Model_Parameters params){
     data::Feature selection_homo = data::Feature();
     data::FloatList* selection_homozygote = selection_homo.mutable_float_list();
     selection_homozygote->add_value(params.model.selection_coefficient_homozygote);
@@ -26,7 +26,7 @@ namespace record_context {
     (*map)["selection_coefficient_heterozygote"] = selection_hetero;
   }
   void add_specific_parameters_to_protobuf(google::protobuf::Map<std::string, data::Feature>* map,
-					   HTE_Model_Parameters params){
+					   parameters::HTE_Model_Parameters params){
     data::Feature selection_Ae1 = data::Feature();
     data::FloatList* selection_A_env_1 = selection_Ae1.mutable_float_list();
     selection_A_env_1->add_value(params.model.selection_coefficient_A_env_1);
@@ -54,7 +54,7 @@ namespace record_context {
   }
 
   void add_specific_parameters_to_protobuf(google::protobuf::Map<std::string, data::Feature>* map,
-					   HTEOE_Model_Parameters params){
+					   parameters::HTEOE_Model_Parameters params){
     data::Feature selection_A1 = data::Feature();
     data::FloatList* selection_coefficient_A1 = selection_A1.mutable_float_list();
     selection_coefficient_A1->add_value(params.model.selection_coefficient_A1);

@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]){
   
-  specify_and_run_model(argc, argv);
+  specification::specify_and_run_model(argc, argv);
   
   return 0;
   
