@@ -30,8 +30,6 @@ struct Fixed_Parameters {
   inline static const int number_replicates_LSTM = fixed_parameters::number_replicates_LSTM;
   /** Max number of generations to run a replicate (prevents a stable polymorphism causing an infinite loop) */
   inline static const int max_generations_per_sim = fixed_parameters::max_generations_per_sim;
-  /** Memory allocation for Data::_trait_freq_by_gen */
-  inline static const int reserve_memory_trait_freq = fixed_parameters::reserve_memory_trait_freq;
 };
 /**
    @brief Struct for parameters of the Haploid Single Environment model
