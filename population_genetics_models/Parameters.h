@@ -16,9 +16,6 @@ struct Shared_Parameters {
   const int population_size; /**< Number of individuals in the population */
   const double initial_trait_freq; /**< Initial frequency of the trait  */
   const int number_reinvasions; /**< Number of reinvasion attempts that the trait faces */
-  /** Sets number of generations to calculate and print time-dependent conditional_existence_probability */
-  const int number_gens_to_output_pp;
-  const bool print_trait_raw_data; /**< If true, will print raw trait data for each gen and replicate */
   /** First element is index of trait in \p trait_freq; second element is number of traits to track */
   const std::vector<int> trait_info;
 };
@@ -27,12 +24,12 @@ struct Shared_Parameters {
 */
 struct Fixed_Parameters {
   inline static const double tolerance = fixed_parameters::tolerance; /**< Tolerance for comparing doubles */
-   /** Number of independent stochastic replicates that are run */
-  inline static const int number_replicates = fixed_parameters::number_replicates;
+   /** Number of independent stochastic replicates that are run for the QEF inference */
+  inline static const int number_replicates_QEF = fixed_parameters::number_replicates_QEF;
+  /** Number of independent stochastic replicates that are run for the LSTM inference */
+  inline static const int number_replicates_LSTM = fixed_parameters::number_replicates_LSTM;
   /** Max number of generations to run a replicate (prevents a stable polymorphism causing an infinite loop) */
   inline static const int max_generations_per_sim = fixed_parameters::max_generations_per_sim;
-  /** Memory allocation for Data::_trait_freq_by_gen */
-  inline static const int reserve_memory_trait_freq = fixed_parameters::reserve_memory_trait_freq;
 };
 /**
    @brief Struct for parameters of the Haploid Single Environment model

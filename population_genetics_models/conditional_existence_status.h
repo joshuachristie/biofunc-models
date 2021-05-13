@@ -65,16 +65,6 @@ namespace conditional_existence_status {
   bool reached_max_gen(const double gen, const T &params){
     return gen >= params.fixed.max_generations_per_sim;
   }
-  /**
-     @brief Checks whether to output conditional existence probability by generation
-     @param[in] gen Current generation of simulation
-     @param[in] params.shared.number_gens_to_output_pp Number of generations to output conditional existence probability by generation
-     @return True if simulation should output conditional existence probability for this gen; false otherwise
-  */
-  template<class T>
-  bool output_pp_by_gen(const double gen, const T &params){
-    return gen < params.shared.number_gens_to_output_pp;
-  }
 
 }
 

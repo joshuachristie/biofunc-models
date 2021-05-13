@@ -5,10 +5,9 @@
 
 namespace paths {
 
-  inline constexpr std::string_view conditional_existence_infinite_data_dir = "../data/conditional_existence_probability/infinite_approximation/";
-  inline constexpr std::string_view conditional_existence_finite_data_dir = "../data/conditional_existence_probability/finite_generations/";
-  inline constexpr std::string_view trait_data_dir = "../data/raw_trait_data/";
-  inline constexpr std::string_view error_file_directory = "../run/error_logs/";
+  inline constexpr std::string_view error_file_directory = "../data/error_logs/";
+  inline constexpr std::string_view QEF_directory = "../data/QEF/";
+  inline constexpr std::string_view LSTM_directory = "../data/LSTM/";
 
 }
 

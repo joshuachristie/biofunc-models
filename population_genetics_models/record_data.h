@@ -1,47 +1,43 @@
 #ifndef RECORD_DATA_H
 #define RECORD_DATA_H
 
-#include "DataContainer.h"
+#include <string>
+#include <vector>
+#include "include/example.pb.h"
 #include "conditional_existence_status.h"
-#include "fixed_parameters.h"
 
 namespace record {
 
-  template<class P>
-  void trait_freq(const std::vector<double> &trait_freq, const P &parameters, const int replicate,
-		  DataContainer &data){
-    data.append_trait_freq(replicate, trait_freq[parameters.shared.trait_info[0]]);
-    // (re)reserve a large buffer if the replicate runs for a while (to avoid excessive memory allocations)
-    std::size_t current_size = data._simulation_data[replicate]._trait_freq_by_gen.size();
-    std::size_t current_capacity = data._simulation_data[replicate]._trait_freq_by_gen.capacity();
-    if (current_size == current_capacity){
-      data._simulation_data[replicate]._trait_freq_by_gen.reserve(current_capacity *
-								  fixed_parameters::factor_to_expand_vector_memory);
+  void raw_trait_freq(data::FloatList* raw_trait_freq, const std::vector<double> &trait_freq);
+
+  template <class P>
+  void generation_trait_extinction(data::Int64List* gen_extinct, const std::vector<double> &trait_freq,
+				   const P &params, const int gen){
+    if (conditional_existence_status::trait_extinct(trait_freq, params)){
+      gen_extinct->add_value(gen); // extinct trait, record generation of extinction
+    } else if (!conditional_existence_status::trait_extinct(trait_freq, params)){
+      gen_extinct->add_value(params.fixed.max_generations_per_sim); // trait persists, denote by max gen
+    } else {
+      exit(EXIT_FAILURE);
     }
   }
 
-  template<class P>
-  void trait_presence_infinite(const std::vector<double> &trait_freq, const P &parameters, const int replicate,
-			       DataContainer &data){
-    if (conditional_existence_status::trait_extinct(trait_freq, parameters)){
-      data.set_conditional_existence_outcome_infinite(replicate, false);
-    } else { // trait is either fixed or exists at a non-zero proportion
-      data.set_conditional_existence_outcome_infinite(replicate, true);
+  template <class P>
+  void number_reinvasions_before_extinction(data::Int64List* reinvasion_number, const std::vector<double>
+					    &trait_freq, const P &params, const int reinvasions){
+    // -1 if not looking at reinvasions
+    // if the trait is extinct, then the value of `reinvasions` is correct
+    // if the trait persists, however, we need to add 1 (otherwise I can't distinguish between traits
+    // that go extinct in the final reinvasion and those that survive all attempts)
+    if (conditional_existence_status::trait_extinct(trait_freq, params)){
+      reinvasion_number->add_value(reinvasions);
+    } else if (!conditional_existence_status::trait_extinct(trait_freq, params)){ 
+      reinvasion_number->add_value(reinvasions + 1);
+    } else {
+      exit(EXIT_FAILURE);
     }
   }
 
-  template<class P>
-  void trait_presence_by_gen(const std::vector<double> &trait_freq, const P &parameters, const int replicate,
-			     DataContainer &data){
-    if (conditional_existence_status::trait_extinct(trait_freq, parameters)){
-      data.append_conditional_existence(replicate, false);
-    } else { // trait is either fixed or exists at a non-zero proportion
-      data.append_conditional_existence(replicate, true);
-    }
-  }
-  
-  void trait_freq(const double allele_A_freq, const int replicate, DataContainer &data);
-  
 }
 
 #endif

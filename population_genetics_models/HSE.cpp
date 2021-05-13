@@ -7,24 +7,23 @@
 #include "HSE.h"
 #include "rng.h"
 #include "conditional_existence_probability.h"
-#include "print_results.h"
 #include "trait_invasion.h"
-#include "DataContainer.h"
+#include "run_scenario.h"
 
 namespace HSE {
   
   const HSE_Model_Parameters parse_parameter_values(int argc, char* argv[]){
-    assert(std::string(argv[1]) == "HSE");
-    assert(argc == 7 && "The HSE model must have 6 command line arguments (the first must be HSE)");
-    const int population_size = atoi(argv[2]);
-    const double selection_coefficient = atof(argv[3]);
+    assert(std::string(argv[1]).compare("HSE") == 0);
+    assert(argc == 6 && "The HSE model must have 5 command line arguments (the first must be HSE)");
+    assert((std::string(argv[2]).compare("LSTM") == 0 || std::string(argv[2]).compare("QEF") == 0) &&
+	   "Incorrect model specification: specify whether the model type is LSTM or QEF in the second arg");
+    const int population_size = atoi(argv[3]);
+    const double selection_coefficient = atof(argv[4]);
     const double initial_trait_frequency = 1.0 / static_cast<double>(population_size);
-    const int number_reinvasions = atoi(argv[4]);
-    const int number_gens_to_output_pp = atoi(argv[5]);
-    const bool print_trait_raw_data = static_cast<bool>(atoi(argv[6]));
+    const int number_reinvasions = atoi(argv[5]);
     const std::vector<int> trait_info {0, 1};
     const HSE_Model_Parameters params {{population_size, initial_trait_frequency, number_reinvasions,
-	number_gens_to_output_pp, print_trait_raw_data, trait_info}, {selection_coefficient}};
+	trait_info}, {selection_coefficient}};
     return params;
   }
   /**
@@ -54,8 +53,7 @@ namespace HSE {
     ++gen;
   }
   /**
-     @details Calls initialise_rng(), HSE::parse_parameter_values(), HSE::get_fitness_function(), sets up
-     a DataContainer object, calls calculate_conditional_existence_probability(), and finally calls
+     @details Calls initialise_rng(), HSE::parse_parameter_values(), HSE::get_fitness_function(), calls calculate_conditional_existence_probability(), and finally calls
      print::print_results().
   */
   void run_model(int argc, char* argv[]){
@@ -63,10 +61,13 @@ namespace HSE {
     std::mt19937 rng = initialise_rng();
     const HSE_Model_Parameters params = parse_parameter_values(argc, argv);
     const std::vector<double> fitnesses = get_fitness_function(params);
-    DataContainer data(params.fixed.number_replicates, params.shared.number_gens_to_output_pp,
-		       params.fixed.reserve_memory_trait_freq);
-    calculate_conditional_existence_probability(params, rng, fitnesses, calculate_trait_freqs, data);
-    print::print_results(argc, argv, data, params);
+
+    if (std::string(argv[2]).compare("QEF") == 0){
+      run_scenario::QEF(params, rng, fitnesses, calculate_trait_freqs, argv, argc);
+    } else if (std::string(argv[2]).compare("LSTM") == 0){
+      run_scenario::LSTM(params, rng, fitnesses, calculate_trait_freqs, argv, argc);
+    }
+    
   }
 
 }

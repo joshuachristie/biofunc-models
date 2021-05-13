@@ -35,7 +35,7 @@ void specify_and_run_model(int argc, char* argv[]){
   }
   catch (const std::bad_function_call &e){
     const std::string error_file_path =
-      io::create_dir_and_get_file_path(argc, argv, paths::error_file_directory, "_error.txt");
+      io::setup_dir_and_file(argc, argv, paths::error_file_directory, "_error.txt");
     std::ofstream error_file(error_file_path, std::ofstream::app);
     error_file << "exception: " << e.what() << " - is the first cmdline argument the model identifier (e.g. HSE)?" << "\n";
   }
