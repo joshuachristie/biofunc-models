@@ -5,8 +5,8 @@
 
 namespace serialize {
   
-  void data(data::Example& example, int argc, char* argv[]);
-  void data(data::SequenceExample& seq_example, int argc, char* argv[]);
+  void data(tensorflow::Example& example, int argc, char* argv[]);
+  void data(tensorflow::SequenceExample& seq_example, int argc, char* argv[]);
 
 }
 

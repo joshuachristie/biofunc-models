@@ -55,24 +55,24 @@ struct TableStruct_example_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_example_2eproto;
 ::PROTOBUF_NAMESPACE_ID::Metadata descriptor_table_example_2eproto_metadata_getter(int index);
-namespace data {
+namespace tensorflow {
 class Example;
 struct ExampleDefaultTypeInternal;
 extern ExampleDefaultTypeInternal _Example_default_instance_;
 class SequenceExample;
 struct SequenceExampleDefaultTypeInternal;
 extern SequenceExampleDefaultTypeInternal _SequenceExample_default_instance_;
-}  // namespace data
+}  // namespace tensorflow
 PROTOBUF_NAMESPACE_OPEN
-template<> ::data::Example* Arena::CreateMaybeMessage<::data::Example>(Arena*);
-template<> ::data::SequenceExample* Arena::CreateMaybeMessage<::data::SequenceExample>(Arena*);
+template<> ::tensorflow::Example* Arena::CreateMaybeMessage<::tensorflow::Example>(Arena*);
+template<> ::tensorflow::SequenceExample* Arena::CreateMaybeMessage<::tensorflow::SequenceExample>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
-namespace data {
+namespace tensorflow {
 
 // ===================================================================
 
 class Example PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:data.Example) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:tensorflow.Example) */ {
  public:
   inline Example() : Example(nullptr) {}
   virtual ~Example();
@@ -162,7 +162,7 @@ class Example PROTOBUF_FINAL :
   void InternalSwap(Example* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "data.Example";
+    return "tensorflow.Example";
   }
   protected:
   explicit Example(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -186,39 +186,39 @@ class Example PROTOBUF_FINAL :
   enum : int {
     kFeaturesFieldNumber = 1,
   };
-  // .data.Features features = 1;
+  // .tensorflow.Features features = 1;
   bool has_features() const;
   private:
   bool _internal_has_features() const;
   public:
   void clear_features();
-  const ::data::Features& features() const;
-  ::data::Features* release_features();
-  ::data::Features* mutable_features();
-  void set_allocated_features(::data::Features* features);
+  const ::tensorflow::Features& features() const;
+  ::tensorflow::Features* release_features();
+  ::tensorflow::Features* mutable_features();
+  void set_allocated_features(::tensorflow::Features* features);
   private:
-  const ::data::Features& _internal_features() const;
-  ::data::Features* _internal_mutable_features();
+  const ::tensorflow::Features& _internal_features() const;
+  ::tensorflow::Features* _internal_mutable_features();
   public:
   void unsafe_arena_set_allocated_features(
-      ::data::Features* features);
-  ::data::Features* unsafe_arena_release_features();
+      ::tensorflow::Features* features);
+  ::tensorflow::Features* unsafe_arena_release_features();
 
-  // @@protoc_insertion_point(class_scope:data.Example)
+  // @@protoc_insertion_point(class_scope:tensorflow.Example)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::data::Features* features_;
+  ::tensorflow::Features* features_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_example_2eproto;
 };
 // -------------------------------------------------------------------
 
 class SequenceExample PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:data.SequenceExample) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:tensorflow.SequenceExample) */ {
  public:
   inline SequenceExample() : SequenceExample(nullptr) {}
   virtual ~SequenceExample();
@@ -308,7 +308,7 @@ class SequenceExample PROTOBUF_FINAL :
   void InternalSwap(SequenceExample* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "data.SequenceExample";
+    return "tensorflow.SequenceExample";
   }
   protected:
   explicit SequenceExample(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -333,51 +333,51 @@ class SequenceExample PROTOBUF_FINAL :
     kContextFieldNumber = 1,
     kFeatureListsFieldNumber = 2,
   };
-  // .data.Features context = 1;
+  // .tensorflow.Features context = 1;
   bool has_context() const;
   private:
   bool _internal_has_context() const;
   public:
   void clear_context();
-  const ::data::Features& context() const;
-  ::data::Features* release_context();
-  ::data::Features* mutable_context();
-  void set_allocated_context(::data::Features* context);
+  const ::tensorflow::Features& context() const;
+  ::tensorflow::Features* release_context();
+  ::tensorflow::Features* mutable_context();
+  void set_allocated_context(::tensorflow::Features* context);
   private:
-  const ::data::Features& _internal_context() const;
-  ::data::Features* _internal_mutable_context();
+  const ::tensorflow::Features& _internal_context() const;
+  ::tensorflow::Features* _internal_mutable_context();
   public:
   void unsafe_arena_set_allocated_context(
-      ::data::Features* context);
-  ::data::Features* unsafe_arena_release_context();
+      ::tensorflow::Features* context);
+  ::tensorflow::Features* unsafe_arena_release_context();
 
-  // .data.FeatureLists feature_lists = 2;
+  // .tensorflow.FeatureLists feature_lists = 2;
   bool has_feature_lists() const;
   private:
   bool _internal_has_feature_lists() const;
   public:
   void clear_feature_lists();
-  const ::data::FeatureLists& feature_lists() const;
-  ::data::FeatureLists* release_feature_lists();
-  ::data::FeatureLists* mutable_feature_lists();
-  void set_allocated_feature_lists(::data::FeatureLists* feature_lists);
+  const ::tensorflow::FeatureLists& feature_lists() const;
+  ::tensorflow::FeatureLists* release_feature_lists();
+  ::tensorflow::FeatureLists* mutable_feature_lists();
+  void set_allocated_feature_lists(::tensorflow::FeatureLists* feature_lists);
   private:
-  const ::data::FeatureLists& _internal_feature_lists() const;
-  ::data::FeatureLists* _internal_mutable_feature_lists();
+  const ::tensorflow::FeatureLists& _internal_feature_lists() const;
+  ::tensorflow::FeatureLists* _internal_mutable_feature_lists();
   public:
   void unsafe_arena_set_allocated_feature_lists(
-      ::data::FeatureLists* feature_lists);
-  ::data::FeatureLists* unsafe_arena_release_feature_lists();
+      ::tensorflow::FeatureLists* feature_lists);
+  ::tensorflow::FeatureLists* unsafe_arena_release_feature_lists();
 
-  // @@protoc_insertion_point(class_scope:data.SequenceExample)
+  // @@protoc_insertion_point(class_scope:tensorflow.SequenceExample)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::data::Features* context_;
-  ::data::FeatureLists* feature_lists_;
+  ::tensorflow::Features* context_;
+  ::tensorflow::FeatureLists* feature_lists_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_example_2eproto;
 };
@@ -392,24 +392,24 @@ class SequenceExample PROTOBUF_FINAL :
 #endif  // __GNUC__
 // Example
 
-// .data.Features features = 1;
+// .tensorflow.Features features = 1;
 inline bool Example::_internal_has_features() const {
   return this != internal_default_instance() && features_ != nullptr;
 }
 inline bool Example::has_features() const {
   return _internal_has_features();
 }
-inline const ::data::Features& Example::_internal_features() const {
-  const ::data::Features* p = features_;
-  return p != nullptr ? *p : reinterpret_cast<const ::data::Features&>(
-      ::data::_Features_default_instance_);
+inline const ::tensorflow::Features& Example::_internal_features() const {
+  const ::tensorflow::Features* p = features_;
+  return p != nullptr ? *p : reinterpret_cast<const ::tensorflow::Features&>(
+      ::tensorflow::_Features_default_instance_);
 }
-inline const ::data::Features& Example::features() const {
-  // @@protoc_insertion_point(field_get:data.Example.features)
+inline const ::tensorflow::Features& Example::features() const {
+  // @@protoc_insertion_point(field_get:tensorflow.Example.features)
   return _internal_features();
 }
 inline void Example::unsafe_arena_set_allocated_features(
-    ::data::Features* features) {
+    ::tensorflow::Features* features) {
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(features_);
   }
@@ -419,37 +419,37 @@ inline void Example::unsafe_arena_set_allocated_features(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:data.Example.features)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tensorflow.Example.features)
 }
-inline ::data::Features* Example::release_features() {
+inline ::tensorflow::Features* Example::release_features() {
   
-  ::data::Features* temp = features_;
+  ::tensorflow::Features* temp = features_;
   features_ = nullptr;
   if (GetArena() != nullptr) {
     temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
   return temp;
 }
-inline ::data::Features* Example::unsafe_arena_release_features() {
-  // @@protoc_insertion_point(field_release:data.Example.features)
+inline ::tensorflow::Features* Example::unsafe_arena_release_features() {
+  // @@protoc_insertion_point(field_release:tensorflow.Example.features)
   
-  ::data::Features* temp = features_;
+  ::tensorflow::Features* temp = features_;
   features_ = nullptr;
   return temp;
 }
-inline ::data::Features* Example::_internal_mutable_features() {
+inline ::tensorflow::Features* Example::_internal_mutable_features() {
   
   if (features_ == nullptr) {
-    auto* p = CreateMaybeMessage<::data::Features>(GetArena());
+    auto* p = CreateMaybeMessage<::tensorflow::Features>(GetArena());
     features_ = p;
   }
   return features_;
 }
-inline ::data::Features* Example::mutable_features() {
-  // @@protoc_insertion_point(field_mutable:data.Example.features)
+inline ::tensorflow::Features* Example::mutable_features() {
+  // @@protoc_insertion_point(field_mutable:tensorflow.Example.features)
   return _internal_mutable_features();
 }
-inline void Example::set_allocated_features(::data::Features* features) {
+inline void Example::set_allocated_features(::tensorflow::Features* features) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(features_);
@@ -466,31 +466,31 @@ inline void Example::set_allocated_features(::data::Features* features) {
     
   }
   features_ = features;
-  // @@protoc_insertion_point(field_set_allocated:data.Example.features)
+  // @@protoc_insertion_point(field_set_allocated:tensorflow.Example.features)
 }
 
 // -------------------------------------------------------------------
 
 // SequenceExample
 
-// .data.Features context = 1;
+// .tensorflow.Features context = 1;
 inline bool SequenceExample::_internal_has_context() const {
   return this != internal_default_instance() && context_ != nullptr;
 }
 inline bool SequenceExample::has_context() const {
   return _internal_has_context();
 }
-inline const ::data::Features& SequenceExample::_internal_context() const {
-  const ::data::Features* p = context_;
-  return p != nullptr ? *p : reinterpret_cast<const ::data::Features&>(
-      ::data::_Features_default_instance_);
+inline const ::tensorflow::Features& SequenceExample::_internal_context() const {
+  const ::tensorflow::Features* p = context_;
+  return p != nullptr ? *p : reinterpret_cast<const ::tensorflow::Features&>(
+      ::tensorflow::_Features_default_instance_);
 }
-inline const ::data::Features& SequenceExample::context() const {
-  // @@protoc_insertion_point(field_get:data.SequenceExample.context)
+inline const ::tensorflow::Features& SequenceExample::context() const {
+  // @@protoc_insertion_point(field_get:tensorflow.SequenceExample.context)
   return _internal_context();
 }
 inline void SequenceExample::unsafe_arena_set_allocated_context(
-    ::data::Features* context) {
+    ::tensorflow::Features* context) {
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(context_);
   }
@@ -500,37 +500,37 @@ inline void SequenceExample::unsafe_arena_set_allocated_context(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:data.SequenceExample.context)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tensorflow.SequenceExample.context)
 }
-inline ::data::Features* SequenceExample::release_context() {
+inline ::tensorflow::Features* SequenceExample::release_context() {
   
-  ::data::Features* temp = context_;
+  ::tensorflow::Features* temp = context_;
   context_ = nullptr;
   if (GetArena() != nullptr) {
     temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
   return temp;
 }
-inline ::data::Features* SequenceExample::unsafe_arena_release_context() {
-  // @@protoc_insertion_point(field_release:data.SequenceExample.context)
+inline ::tensorflow::Features* SequenceExample::unsafe_arena_release_context() {
+  // @@protoc_insertion_point(field_release:tensorflow.SequenceExample.context)
   
-  ::data::Features* temp = context_;
+  ::tensorflow::Features* temp = context_;
   context_ = nullptr;
   return temp;
 }
-inline ::data::Features* SequenceExample::_internal_mutable_context() {
+inline ::tensorflow::Features* SequenceExample::_internal_mutable_context() {
   
   if (context_ == nullptr) {
-    auto* p = CreateMaybeMessage<::data::Features>(GetArena());
+    auto* p = CreateMaybeMessage<::tensorflow::Features>(GetArena());
     context_ = p;
   }
   return context_;
 }
-inline ::data::Features* SequenceExample::mutable_context() {
-  // @@protoc_insertion_point(field_mutable:data.SequenceExample.context)
+inline ::tensorflow::Features* SequenceExample::mutable_context() {
+  // @@protoc_insertion_point(field_mutable:tensorflow.SequenceExample.context)
   return _internal_mutable_context();
 }
-inline void SequenceExample::set_allocated_context(::data::Features* context) {
+inline void SequenceExample::set_allocated_context(::tensorflow::Features* context) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(context_);
@@ -547,27 +547,27 @@ inline void SequenceExample::set_allocated_context(::data::Features* context) {
     
   }
   context_ = context;
-  // @@protoc_insertion_point(field_set_allocated:data.SequenceExample.context)
+  // @@protoc_insertion_point(field_set_allocated:tensorflow.SequenceExample.context)
 }
 
-// .data.FeatureLists feature_lists = 2;
+// .tensorflow.FeatureLists feature_lists = 2;
 inline bool SequenceExample::_internal_has_feature_lists() const {
   return this != internal_default_instance() && feature_lists_ != nullptr;
 }
 inline bool SequenceExample::has_feature_lists() const {
   return _internal_has_feature_lists();
 }
-inline const ::data::FeatureLists& SequenceExample::_internal_feature_lists() const {
-  const ::data::FeatureLists* p = feature_lists_;
-  return p != nullptr ? *p : reinterpret_cast<const ::data::FeatureLists&>(
-      ::data::_FeatureLists_default_instance_);
+inline const ::tensorflow::FeatureLists& SequenceExample::_internal_feature_lists() const {
+  const ::tensorflow::FeatureLists* p = feature_lists_;
+  return p != nullptr ? *p : reinterpret_cast<const ::tensorflow::FeatureLists&>(
+      ::tensorflow::_FeatureLists_default_instance_);
 }
-inline const ::data::FeatureLists& SequenceExample::feature_lists() const {
-  // @@protoc_insertion_point(field_get:data.SequenceExample.feature_lists)
+inline const ::tensorflow::FeatureLists& SequenceExample::feature_lists() const {
+  // @@protoc_insertion_point(field_get:tensorflow.SequenceExample.feature_lists)
   return _internal_feature_lists();
 }
 inline void SequenceExample::unsafe_arena_set_allocated_feature_lists(
-    ::data::FeatureLists* feature_lists) {
+    ::tensorflow::FeatureLists* feature_lists) {
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(feature_lists_);
   }
@@ -577,37 +577,37 @@ inline void SequenceExample::unsafe_arena_set_allocated_feature_lists(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:data.SequenceExample.feature_lists)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tensorflow.SequenceExample.feature_lists)
 }
-inline ::data::FeatureLists* SequenceExample::release_feature_lists() {
+inline ::tensorflow::FeatureLists* SequenceExample::release_feature_lists() {
   
-  ::data::FeatureLists* temp = feature_lists_;
+  ::tensorflow::FeatureLists* temp = feature_lists_;
   feature_lists_ = nullptr;
   if (GetArena() != nullptr) {
     temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
   return temp;
 }
-inline ::data::FeatureLists* SequenceExample::unsafe_arena_release_feature_lists() {
-  // @@protoc_insertion_point(field_release:data.SequenceExample.feature_lists)
+inline ::tensorflow::FeatureLists* SequenceExample::unsafe_arena_release_feature_lists() {
+  // @@protoc_insertion_point(field_release:tensorflow.SequenceExample.feature_lists)
   
-  ::data::FeatureLists* temp = feature_lists_;
+  ::tensorflow::FeatureLists* temp = feature_lists_;
   feature_lists_ = nullptr;
   return temp;
 }
-inline ::data::FeatureLists* SequenceExample::_internal_mutable_feature_lists() {
+inline ::tensorflow::FeatureLists* SequenceExample::_internal_mutable_feature_lists() {
   
   if (feature_lists_ == nullptr) {
-    auto* p = CreateMaybeMessage<::data::FeatureLists>(GetArena());
+    auto* p = CreateMaybeMessage<::tensorflow::FeatureLists>(GetArena());
     feature_lists_ = p;
   }
   return feature_lists_;
 }
-inline ::data::FeatureLists* SequenceExample::mutable_feature_lists() {
-  // @@protoc_insertion_point(field_mutable:data.SequenceExample.feature_lists)
+inline ::tensorflow::FeatureLists* SequenceExample::mutable_feature_lists() {
+  // @@protoc_insertion_point(field_mutable:tensorflow.SequenceExample.feature_lists)
   return _internal_mutable_feature_lists();
 }
-inline void SequenceExample::set_allocated_feature_lists(::data::FeatureLists* feature_lists) {
+inline void SequenceExample::set_allocated_feature_lists(::tensorflow::FeatureLists* feature_lists) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   if (message_arena == nullptr) {
     delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(feature_lists_);
@@ -624,7 +624,7 @@ inline void SequenceExample::set_allocated_feature_lists(::data::FeatureLists* f
     
   }
   feature_lists_ = feature_lists;
-  // @@protoc_insertion_point(field_set_allocated:data.SequenceExample.feature_lists)
+  // @@protoc_insertion_point(field_set_allocated:tensorflow.SequenceExample.feature_lists)
 }
 
 #ifdef __GNUC__
@@ -635,7 +635,7 @@ inline void SequenceExample::set_allocated_feature_lists(::data::FeatureLists* f
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace data
+}  // namespace tensorflow
 
 // @@protoc_insertion_point(global_scope)
 

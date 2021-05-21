@@ -39,7 +39,7 @@ namespace invasion {
   template <class P, class F>
   void trait_invasion(const std::vector<double> &fitnesses, const P &parameters, std::mt19937 &rng,
 		      std::vector<double> &trait_freq, F calculate_trait_freqs, int &gen,
-		      data::FloatList* raw_trait_freq){
+		      tensorflow::FloatList* raw_trait_freq){
     bool allele_A_extinct, allele_A_fixed, reached_max_gen;
     record_data::raw_trait_freq(raw_trait_freq, trait_freq); // record initial freqs
     do {
