@@ -1,3 +1,7 @@
 *~
-/build/*
+/population_genetics_models/build/*
+/population_genetics_models/makefile
+read
+read.cpp
+analysis/
 /data/*

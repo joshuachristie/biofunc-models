@@ -25,7 +25,7 @@ namespace conditional_existence_probability {
   */
   template <class P, class F>
   void calculate(const P &params, std::mt19937 &rng, const std::vector<double> &fitnesses,
-		 F calculate_trait_freqs, data::Int64List* gen_extinct, data::Int64List* reinvasion_number){
+		 F calculate_trait_freqs, tensorflow::Int64List* gen_extinct, tensorflow::Int64List* reinvasion_number){
 
     for (int i = 0; i < params.fixed.number_replicates_QEF; i++){
       std::vector<double> trait_freq = trait_freq::initialise_trait_freq(params);
@@ -51,13 +51,13 @@ namespace conditional_existence_probability {
   // overloaded method for LSTM scenario
   template <class P, class F>
   void calculate(const P &params, std::mt19937 &rng, const std::vector<double> &fitnesses,
-		 F calculate_trait_freqs, data::Int64List* gen_extinct, data::FeatureList &featurelist){
+		 F calculate_trait_freqs, tensorflow::Int64List* gen_extinct, tensorflow::FeatureList &featurelist){
 
     for (int i = 0; i < params.fixed.number_replicates_LSTM; i++){
       std::vector<double> trait_freq = trait_freq::initialise_trait_freq(params);
       int gen = -1;
-      data::Feature* raw_trait_frequencies = featurelist.add_feature();
-      data::FloatList* raw_trait_freq = raw_trait_frequencies->mutable_float_list();
+      tensorflow::Feature* raw_trait_frequencies = featurelist.add_feature();
+      tensorflow::FloatList* raw_trait_freq = raw_trait_frequencies->mutable_float_list();
       // run replicate, record raw_trait_freq
       invasion::trait_invasion(fitnesses, params, rng, trait_freq, calculate_trait_freqs, gen, raw_trait_freq);
       // record conditional existence status of trait

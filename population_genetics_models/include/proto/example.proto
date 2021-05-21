@@ -2,7 +2,7 @@
 // model training or inference.
 syntax = "proto3";
 
-package data;
+package tensorflow;
 
 import "feature.proto";
 

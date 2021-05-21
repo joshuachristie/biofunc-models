@@ -55,7 +55,7 @@
 
 syntax = "proto3";
 
-package data;
+package tensorflow;
 
 // package tensorflow;
 

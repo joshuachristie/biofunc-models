@@ -8,10 +8,10 @@
 
 namespace record_data {
 
-  void raw_trait_freq(data::FloatList* raw_trait_freq, const std::vector<double> &trait_freq);
+  void raw_trait_freq(tensorflow::FloatList* raw_trait_freq, const std::vector<double> &trait_freq);
 
   template <class P>
-  void generation_trait_extinction(data::Int64List* gen_extinct, const std::vector<double> &trait_freq,
+  void generation_trait_extinction(tensorflow::Int64List* gen_extinct, const std::vector<double> &trait_freq,
 				   const P &params, const int gen){
     if (conditional_existence_status::trait_extinct(trait_freq, params)){
       gen_extinct->add_value(gen); // extinct trait, record generation of extinction
@@ -23,7 +23,7 @@ namespace record_data {
   }
 
   template <class P>
-  void number_reinvasions_before_extinction(data::Int64List* reinvasion_number, const std::vector<double>
+  void number_reinvasions_before_extinction(tensorflow::Int64List* reinvasion_number, const std::vector<double>
 					    &trait_freq, const P &params, const int reinvasions){
     // -1 if not looking at reinvasions
     // if the trait is extinct, then the value of `reinvasions` is correct
